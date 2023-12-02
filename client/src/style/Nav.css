@@ -1,0 +1,37 @@
+
+
+
+/* nav log css rortae start */
+.container{
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #D8D8D8;
+    padding: 6px;
+}
+
+/* Define a CSS animation named "rotate" */
+@keyframes rotate {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+  /* Apply the "rotate" animation to the image */
+  .rotate-image {
+    /* Set the width and height of the image */
+    width: 100px;
+    height: 100px;
+  
+    /* Apply the animation */
+    animation: rotate 25s linear infinite; /* Rotate for 5 seconds, linear timing, infinite repetitions */
+  }
+  
+  /* nav log css rortae end */
+  
+  
