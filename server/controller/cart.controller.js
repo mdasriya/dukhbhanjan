@@ -3,19 +3,13 @@ const { CartModel } = require("../model/cart.model")
 
 const handleCreateCartProduct = async(req,res) => {
     const data = req.body
-    console.log("cartdata",data)
-    const {image} = req.body
+   
 
     try {
-
-const result = CartModel.findOne({image:image})
-    if(result){
-        res.status(200).json({msg:"Product alredy in cart", state:false})
-    }else{
         const cart = new CartModel(data)
         await cart.save()
-        res.status(200).json({msg:"product added in cart Success!!!"})  
-    }
+        res.status(200).json({msg:"product added in cart Success!!!",state:true})  
+    
 
     } catch (error) {
      res.status(400).json({msg:"unable to add product in cart ", state:false})

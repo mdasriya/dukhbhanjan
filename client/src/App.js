@@ -8,7 +8,7 @@ import Nav from "./Nav";
 import Footer from "./Footer";
 import AboutUs from "./components/AboutUs";
 import SignUp from "./components/SignUp";
-import MyCart from "./components/MyCart";
+
 import "aos/dist/aos.css";
 import AOS from "aos";
 import Login from "./components/Login";
@@ -22,7 +22,6 @@ import Cancel from "./pages/Cancel";
 import PrivateRoutes from "./components/privateRoutes";
 import Profile from "./pages/Profile";
 import Oderse from "./pages/Oderse";
-import SingleProduct from "./components/SingleProduct";
 import Cart from "./pages/Cart";
 AOS.init({
   duration: 1200,
@@ -49,7 +48,7 @@ function App() {
             path="login"
             element={<Login />} // Pass setUser to Login
           />
-          <Route path="cart" element={<PrivateRoutes><MyCart /></PrivateRoutes>} />
+          {/* <Route path="cart" element={<PrivateRoutes><Cart /></PrivateRoutes>} /> */}
           <Route path="kundali" element={<PrivateRoutes><Kundali /></PrivateRoutes>} />
           <Route path="readmore" element={<ReadMore />} />
           <Route path="workshipitems" element={<WorkshipItems />} />
@@ -59,7 +58,7 @@ function App() {
           <Route path="/profile" element={<PrivateRoutes><Profile /></PrivateRoutes>} />
           <Route path="/orders" element={<Oderse />} />
           <Route path="/newcart" element={<Cart />} />
-          <Route path="/gemstones/:id" element={<SingleProduct />}></Route>
+          {/* <Route path="/gemstones/:id" element={<SingleProduct />}></Route> */}
         </Routes>
         <Footer />
       </Router>
