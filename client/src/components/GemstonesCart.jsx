@@ -41,7 +41,7 @@ const GemstonesCart = ({
 
   const handleCartData = async () => {
     let finalData = {
-      _id,
+      compareId:_id,
       quality: selectedQuality,
       image,
       price,
@@ -63,7 +63,7 @@ const GemstonesCart = ({
 
       if (response.data.state) {
         toast({
-          title: response.data.msg,
+          title: "product is added in cart ",
           status: 'success',
           duration: 3000,
           isClosable: true,
@@ -71,7 +71,7 @@ const GemstonesCart = ({
         });
       } else {
         toast({
-          title: response.data.msg,
+          title: "product is Already in your cart",
           status: 'error',
           duration: 3000,
           isClosable: true,
@@ -80,7 +80,7 @@ const GemstonesCart = ({
     } catch (error) {
       console.error('Error submitting form:', error.response.data.error);
       toast({
-        title: error,
+        title: "something went wrong ",
         status: 'error',
         duration: 5000,
         isClosable: true,

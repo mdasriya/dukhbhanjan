@@ -3,11 +3,11 @@ const { CartModel } = require("../model/cart.model")
 
 const handleCreateCartProduct = async(req,res) => {
     const data = req.body
-  const {UserId, _id} = req.body
+  const {UserId, compareId} = req.body
 
     try {
 
-        const userAllCartData = await CartModel.findOne({_id})
+        const userAllCartData = await CartModel.findOne({compareId})
        if(userAllCartData && userAllCartData.UserId===UserId){
          res.status(200).json({msg:"Product is already in cart", state:false})
        }else{
