@@ -1,105 +1,209 @@
-
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Flex,
   Heading,
+  Image,
+  Stack,
+  Center,
   HStack,
   Link,
-  Stack,
-  useColorModeValue as mode,
-  Image,
   Text,
   Select,
-} from '@chakra-ui/react'
+  Button,
+  useColorModeValue as mode,
+} from '@chakra-ui/react';
+import { FaArrowRight } from 'react-icons/fa';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { CloseIcon } from '@chakra-ui/icons';
 
 
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { getCartProduct } from '../redux/cartReducer/action';
-
 const Cart = () => {
-const dispatch = useDispatch()
-const [cart, setCartData] = useState("")
-const cartData = useSelector((store) => store.cartReducer.carts);
+  const navigate = useNavigate();
+  const [update, setUpdate] = useState(false);
+  const [data, setData] = useState([]);
 
-useEffect(()=>{
-  dispatch(getCartProduct())
-},[])
-console.log("cart",cart)
+  const handleQuantity = (id, e) => {
+    let quantity = e.target.value;
+    const updatedItems = data.map((item) => {
+      if (item._id === id) {
+        return {
+          ...item,
+          quantity: +quantity,
+        };
+      }
+      return item;
+    });
+    setData(updatedItems);
+  };
+
+  const func = () => {
+    setUpdate((prev) => !prev);
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      const response = await axios.delete(`http://localhost:4000/cart/delete/${id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      setUpdate((prev) => !prev);
+    } catch (error) {
+      func();
+    }
+  };
+
+  const getCartProduct = () => {
+    return axios
+      .get('http://localhost:4000/cart', {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      })
+      .then((res) => {
+        setData(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    getCartProduct();
+  }, [update]);
+
+  const totalPrice = data.reduce((acc, item) => acc + item.price * item.quantity, 0);
+
   return (
-    
-    
-      <>
-        <Heading border={"1px solid red"} mt={5} fontSize="2xl" fontWeight="extrabold">
-          Shopping Cart (3 items)
-        </Heading>
-     <Box width={"100%"} padding={"20px"} justifyContent={"space-between"} display={"flex"} border={"1px solid blue"} height={"600px"}>
+    <>
+      <Heading mt={5} fontSize="2xl" fontWeight="extrabold">
+        Shopping Cart ({data.length} items)
+      </Heading>
+      <Box
+        width="100%"
+        padding="20px"
+        justifyContent="space-between"
+        display="flex"
+        flexDirection={['column', 'column', 'row']}
+      >
+        {/* Left box */}
+        <Box width={['100%', '100%', '65%']} height="100%" mb={['20px', '20px', '0']}>
+          {data &&
+            data.map((item) => (
+              <Box
+                key={item._id}
+                boxShadow="rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px"
+                flexWrap="wrap"
+                mt={10}
+                justifyContent="space-between"
+                display="flex"
+                height="30%"
+              >
+                {/* Image */}
+                <Box width="25%" height="100%">
+                  <Image
+                    mt={2}
+                    ml={5}
+                    borderRadius="10px"
+                    width="90%"
+                    height="90%"
+                    objectFit="cover"
+                    src={item.image}
+                    alt={item.title}
+                  />
+                </Box>
 
-{/* left box */}
-<Box width={"60%"}  border={"1px solid green"} height={"100%"}>
- 
- {cartData.map((item)=> {
-  return  <Box  border={"1px solid red"} flexWrap={"wrap"} mt={10} justifyContent={"space-between"} display={"flex"} height={"30%"}>
-  {/* image start */}
-  <Box width={"25%"} border={"1px solid black"} height={"100%"}>
-  <Image
-    width={"100%"}
-    height={"100%"}
-    objectFit='cover'
-    src={item.image}
-    alt='Dan Abramov'
-  />
-  </Box>
-  {/* image start end*/}
+                {/* Title box */}
+                <Box width="20%" position="relative" height="100%">
+                  <Text fontSize="23px" position="absolute" top="40%" color="gray.600">
+                    {item.title}
+                  </Text>
+                </Box>
 
-  {/* title box */}
-  <Box width={"20%"} border={"1px solid black"} height={"100%"}>
-    <Text fontSize={"23px"} color={"gray.600"}>{item.title}</Text>
-  </Box>
-   {/* title box */}
+                {/* Select quantity box */}
+                <Box width="10%" position="relative" height="100%">
+                  <Select onChange={(e) => handleQuantity(item._id, e)} position="absolute" top="40%">
+                    {[1, 2, 3, 4, 5].map((value) => (
+                      <option key={value} value={value}>
+                        {value}
+                      </option>
+                    ))}
+                  </Select>
+                </Box>
 
-{/* select quantity box */}
-  <Box width={"10%"} position="relative" border={"1px solid black"} height={"100%"}>
-  <Select position={"absolute"} top={"40%"}>
-  <option value='1'>1</option>
-  <option value='2'>2</option>
-  <option value='3'>3</option>
-  <option value='4'>4</option>
-  <option value='5'>5</option>
-</Select>
-  </Box>
-  {/* select quantity box */}
+                {/* Price box */}
+                <Box width="10%" position="relative" height="100%">
+                  <Text fontSize="20px" position="absolute" top="40%" color="gray.600">
+                    ₹{item.price * item.quantity}
+                  </Text>
+                </Box>
 
-  {/* price box start */}
-  <Box width={"10%"} position={"relative"} border={"1px solid black"} height={"100%"}>
-    <Text fontSize={"20px"} position={"absolute"} top={"40%"} color={"gray.600"}>₹ {item.price}</Text>
-  </Box>
-   {/* price box end */}
+                {/* Delete icon */}
+                <Box width="10%" position="relative" height="100%">
+                  <CloseIcon
+                    cursor="pointer"
+                    _hover={{ color: 'red' }}
+                    onClick={() => handleDelete(item._id)}
+                    boxSize={4}
+                    position="absolute"
+                    top="40%"
+                    color="GrayText"
+                  />
+                </Box>
+              </Box>
+            ))}
+        </Box>
 
+        {/* Right box */}
+        <Box width={['100%', '100%', '30%']} borderRadius="5px" height="100%">
+          <Stack spacing="8" borderWidth="1px" rounded="lg" padding="8" width="full">
+            <Heading size="md">Order Summary</Heading>
 
-  {/* delete icon start */}
-  <Box width={"10%"} position={"relative"} border={"1px solid black"} height={"100%"}>
-  <CloseIcon boxSize={4} position={"absolute"} top={"40%"} color={"GrayText"}/>
-  </Box>
-  {/* delete icon end */}
- </Box>
- })}
- {/* map box start */}
+            <Stack spacing="6">
+              <Box display="flex" justifyContent="space-between">
+                <Text fontSize="17px" color="gray.700" fontWeight={500}>
+                  Subtotal
+                </Text>
+                <Text>₹{totalPrice}</Text>
+              </Box>
+              <Box display="flex" justifyContent="space-between">
+                <Text fontSize="17px" color="gray.700" fontWeight={500}>
+                  Shipping + Tax
+                </Text>
+                <Text>40</Text>
+              </Box>
 
- {/* map box start end*/}
+              <Flex justify="space-between">
+                <Text fontSize="21px" fontWeight="semibold">
+                  Total
+                </Text>
+                <Text fontSize="xl" fontWeight="extrabold">
+                  ₹{totalPrice}
+                </Text>
+              </Flex>
+            </Stack>
 
-</Box>
-{/* left box */}
-{/* right box */}
-<Box width={"30%"} border={"1px solid green"} height={"100%"}></Box>
-     </Box>
-          </>
-       
- 
+            <Button colorScheme="yellow" color="white" size="lg" fontSize="md" rightIcon={<FaArrowRight />}>
+              Checkout
+            </Button>
 
- 
-  )
-}
+            <Center>
+              <HStack textAlign="center" mt="6" fontWeight="semibold">
+                <p>or</p>
+                <Link color={mode('blue.500', 'blue.200')} onClick={() => navigate('/gemstones')}>
+                  Continue shopping
+                </Link>
+              </HStack>
+            </Center>
+          </Stack>
+        </Box>
+      </Box>
+    </>
+  );
+};
 
-export default Cart
+export default Cart;

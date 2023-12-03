@@ -22,7 +22,7 @@ export const addCartProduct = (product) => (dispatch) => {
 export const getCartProduct = () => (dispatch) => {
 
    dispatch({ type: CART_PRODUCT_REQUEST })
-   axios.get("http://localhost:4000/cart",{
+  return axios.get("http://localhost:4000/cart",{
       headers: {
          "Content-Type": "application/json",
          "Authorization": `Bearer ${localStorage.getItem("token")}`

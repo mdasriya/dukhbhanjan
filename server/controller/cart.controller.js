@@ -3,14 +3,20 @@ const { CartModel } = require("../model/cart.model")
 
 const handleCreateCartProduct = async(req,res) => {
     const data = req.body
-   
+  const {UserId, _id} = req.body
 
     try {
-        const cart = new CartModel(data)
-        await cart.save()
-        res.status(200).json({msg:"product added in cart Success!!!",state:true})  
-    
 
+        const userAllCartData = await CartModel.findOne({_id})
+       if(userAllCartData && userAllCartData.UserId===UserId){
+         res.status(200).json({msg:"Product is already in cart", state:false})
+       }else{
+         const cart = new CartModel(data)
+        await cart.save()
+        console.log("added in model")
+        res.status(200).json({msg:"product added in cart Success!!!",state:true}) 
+       }
+       
     } catch (error) {
      res.status(400).json({msg:"unable to add product in cart ", state:false})
     }

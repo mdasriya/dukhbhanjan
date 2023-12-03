@@ -4,6 +4,27 @@
 //   "sk_test_51OFC6TSB2DdCLQ7Hqs6jm6WtNJ5rhjsX0j76NN9igxtm9oWSBBtoRWMInvkWdWnqgR6fZ4w11SuSxUFQThWpfxKS00AQaN85Is"
 // );
 
+
+
+// {
+//   "title": "Diamond Stone",
+//   "image": "https://admin.petragems.com/api/Images/Picture117.jpg",
+//   "description": "Diamonds are known for their brilliance and durability.",
+//   "benefits":"Enhances inner vision and creativity.Promotes clarity and purity of thought.Boosts self-confidence and positive energy.Aids in better relationships and communication.Provides mental strength and resilience.",
+//   "price": 5000,
+//  "quantity":1
+// }
+
+
+
+
+
+
+
+
+
+
+
 // const app = express();
 // app.use(cors());
 // app.use(express.static("public"));

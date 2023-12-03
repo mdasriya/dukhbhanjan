@@ -9,6 +9,7 @@ const token = req.headers.authorization?.split(" ")[1]
    req.body.user = decoded.user
    next()
   }else{
+   console.log("not authorized")
   res.status(200).json({msg:"you are not authorized"})
   }
  }else{
