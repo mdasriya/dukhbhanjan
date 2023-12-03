@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Container,
   FormControl,
@@ -19,7 +19,8 @@ import {
 import { IoLocation } from "react-icons/io5";
 import { FaPhone } from "react-icons/fa";
 import { IoMail } from "react-icons/io5";
-
+import { useToast } from '@chakra-ui/react'
+import axios from "axios";
 const contactOptions = [
   {
     label: "Address",
@@ -39,7 +40,101 @@ const contactOptions = [
   },
 ];
 
+const initialState = {
+  name:"",
+  email:"",
+  PhoneNo:"",
+  subject:"",
+  message:""
+}
+
+
 const Contact = () => {
+const [data, setData] = useState(initialState)
+const toast = useToast()
+const handleChangeData = (e) => {
+   const {name,value} = e.target
+   setData((prev)=> {
+    return {...prev, [name]:value}
+   })
+}
+// const handleSend = () => {
+// if(data.name && data.email && data.PhoneNo && data.message && data.subject){
+
+
+// }else{
+
+//     toast({
+//       title: 'Input Filed is required',
+//     position:"top-right",
+//       status: 'error',
+//       duration: 3000,
+//       isClosable: true,
+//     })
+// }
+// }
+const handleSend = async() => {
+if(data.name && data.email && data.PhoneNo && data.message && data.subject){
+  try {
+    // Make the HTTP request and wait for the response
+    const response = await axios.post("http://localhost:4000/contact/create", data, {
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("token")}`
+      }
+    });
+    // Log the response data
+// Show a success toast
+if(response.data){
+toast({
+title: "query submitted successfully",
+status: "success",
+duration: 5000,
+isClosable: true,
+position:"top-right"
+})
+setData(initialState)
+
+}else{
+toast({
+title: "input fiels is required",
+status: "error",
+duration: 3000,
+isClosable: true,
+});
+
+}
+
+} catch (error) {
+  // Log and show an error toast
+  console.error("Error submitting form:", error.response.data.error);
+  toast({
+    title: "something wrong try again after sometime",
+    status: "error",
+    duration: 3000,
+    isClosable: true,
+    position:"top-right"
+  });
+}
+
+}else{
+
+      toast({
+        title: 'Input Filed is required',
+      position:"top-right",
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      })
+  }
+  
+
+
+ 
+};
+
+
+
   return (
     <div data-aos="fade-in">
       <Container maxW="7xl" py={10} px={{ base: 5, md: 8 }}>
@@ -86,12 +181,17 @@ const Contact = () => {
                   <Input
                     type="text"
                     placeholder="Write Your Name"
+                    name="name"
+                    value={data.name}
+                    onChange={handleChangeData}
                     rounded="md"
                   />
                 </FormControl>
                 <FormControl id="email">
                   <FormLabel>Email</FormLabel>
-                  <Input type="email" placeholder="Your Mail" rounded="md" />
+                  <Input type="email" placeholder="Your Mail" required rounded="md"  name="email"
+                    value={data.email}
+                    onChange={handleChangeData}/>
                 </FormControl>
                 <FormControl id="phone">
                   <FormLabel>Phone Number</FormLabel>
@@ -99,12 +199,17 @@ const Contact = () => {
                     type="tel"
                     placeholder="Your Phone Number"
                     rounded="md"
+                    name="PhoneNo"
+                    value={data.PhoneNo}
+                    onChange={handleChangeData}
                   />
                 </FormControl>
               </SimpleGrid>
               <FormControl id="subject">
                 <FormLabel>Subject</FormLabel>
-                <Input type="text" placeholder="Your Problem" rounded="md" />
+                <Input type="text" placeholder="Your Problem" rounded="md"  name="subject"
+                    value={data.subject}
+                    onChange={handleChangeData}/>
               </FormControl>
               <FormControl id="message">
                 <FormLabel>Message</FormLabel>
@@ -112,11 +217,15 @@ const Contact = () => {
                   size="lg"
                   placeholder="Enter your message"
                   rounded="md"
+                  name="message"
+                  value={data.message}
+                  onChange={handleChangeData}
                 />
               </FormControl>
             </VStack>
             <VStack w="100%">
               <Button
+              onClick={handleSend}
                 bg="yellow.500"
                 color="white"
                 _hover={{

@@ -8,7 +8,6 @@ const cartSchema = mongoose.Schema({
     quantity:{type:"Number", required:true},
     quality:{type:"String", required:true},
  UserId:{type:"String", required:true},
- compareId:{type:"String", required:true},
     user:{type:"String", required:true}
    },{
       versionKey:false

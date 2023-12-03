@@ -80,6 +80,7 @@ const { UserRouter } = require("./routes/user.router");
 const { KundaliRouter } = require("./routes/kundali.router");
 const { ProductRouter } = require("./routes/product.router");
 const { CartRouter } = require("./routes/cart.router");
+const { ContactRouter } = require("./routes/contact.router");
 require("dotenv").config()
 const stripe = require("stripe")(
   "sk_test_51OFC6TSB2DdCLQ7Hqs6jm6WtNJ5rhjsX0j76NN9igxtm9oWSBBtoRWMInvkWdWnqgR6fZ4w11SuSxUFQThWpfxKS00AQaN85Is"
@@ -94,6 +95,7 @@ app.use("/user", UserRouter)
 app.use("/kundali", KundaliRouter)
 app.use("/products", ProductRouter)
 app.use("/cart", CartRouter)
+app.use("/contact", ContactRouter)
 
 
 // server home page

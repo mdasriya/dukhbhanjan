@@ -82,11 +82,11 @@ if(username){
               position={"relative"}
               left={"12rem"}
             >
-              <Link to="/">Home</Link>
-              <Link to="/contact">Contact Us</Link>
+              <Link to="/">HOME</Link>
+              <Link to="/contact">CONTACT US</Link>
               <Menu>
                 <MenuButton as={Button} bg="transparent" fontWeight={"400"}>
-                  Shop
+                  SHOP
                 </MenuButton>
                 <MenuList>
                   <MenuItem>
@@ -102,7 +102,7 @@ if(username){
               </Menu>
               <Menu>
                 <MenuButton as={Button} bg="transparent" fontWeight={"400"}>
-                  Services
+                  SERVICES
                 </MenuButton>
                 <MenuList>
                   <MenuItem>
@@ -114,8 +114,8 @@ if(username){
                 </MenuList>
               </Menu>
 
-              <Link to="/about">About Us</Link>
-              <Link to="/newcart">My Cart</Link>
+              <Link to="/about">ABOUT US</Link>
+              <Link to="/newcart">MY CART</Link>
             </HStack>
           </HStack>
           <Flex alignItems={"center"} gap={"10px"}>
