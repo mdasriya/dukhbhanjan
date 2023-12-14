@@ -81,9 +81,6 @@ const Cart = () => {
 
   const totalPrice = data.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
-
-
-
   return (
     <>
 
@@ -137,7 +134,7 @@ const Cart = () => {
           <Box width="10%" position="relative" height="100%">
             <Select onChange={(e) => handleQuantity(item._id, e)} position="absolute" top="40%">
               {[1, 2, 3, 4, 5].map((value) => (
-                <option key={value} value={value}>
+               <option key={value} value={value}>
                   {value}
                 </option>
               ))}

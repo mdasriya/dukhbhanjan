@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "../style/contact.css"
 import {
   Container,
   FormControl,
@@ -147,13 +148,17 @@ isClosable: true,
               FEEL FREE TO REACH US{" "}
             </Text>
           </VStack>
-          <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6}>
+          <SimpleGrid columns={{ base: 1, md: 3 }} spacing={20}>
             {contactOptions.map((option, index) => (
-              <Flex
+              <Flex 
+              borderRadius="5px"
+           boxShadow={"rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em, rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;"}
+              padding={"30px"}
                 key={index}
                 direction="column"
                 align="center"
                 textAlign="center"
+                _hover={{bgColor:"yellow.300",borderRadius:"5px", cursor:"pointer"}}
               >
                 <Icon as={option.icon} w={10} h={10} color="yellow.400" />
                 <Text fontSize="lg" fontWeight="semibold">
@@ -225,8 +230,9 @@ isClosable: true,
             </VStack>
             <VStack w="100%">
               <Button
+              padding={"50px"}
               onClick={handleSend}
-                bg="yellow.500"
+                colorScheme="yellow"
                 color="white"
                 _hover={{
                   bg: "yellow.500",
@@ -235,7 +241,15 @@ isClosable: true,
                 w={{ base: "100%", md: "max-content" }}
               >
                 Send Message
+                 <div className="wrapper">
+  <div className="arrow">
+    <div className="arrow-head"></div>
+    <div className="arrow-body"></div>
+  </div>   
+</div>
               </Button>
+              
+              
             </VStack>
           </VStack>
         </Stack>
@@ -245,3 +259,6 @@ isClosable: true,
 };
 
 export default Contact;
+
+
+

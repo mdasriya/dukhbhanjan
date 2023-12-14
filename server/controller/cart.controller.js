@@ -3,21 +3,27 @@ const { CartModel } = require("../model/cart.model")
 
 const handleCreateCartProduct = async(req,res) => {
     const data = req.body
-  const {UserId, compareId} = req.body
+  const {productId} = req.body
 
     try {
-
-        const userAllCartData = await CartModel.findOne({compareId})
-       if(userAllCartData && userAllCartData.UserId===UserId){
-         res.status(200).json({msg:"Product is already in cart", state:false})
+        const userCartData = await CartModel.findOne({productId})
+        // console.log("from user doc " , compareId)
+        // console.log("from find collection", userAllCartData.compareId)
+    
+         if(userCartData){
+        console.log("compare found")
+        //  res.status(200).json({msg:"Product is already in cart", state:false})
        }else{
-         const cart = new CartModel(data)
+         let storedata = {...data, productId:data._id}
+         const cart = new CartModel(storedata)
         await cart.save()
         console.log("added in model")
         res.status(200).json({msg:"product added in cart Success!!!",state:true}) 
        }
        
     } catch (error) {
+      console.log("error")
+      console.log(error.message)
      res.status(400).json({msg:"unable to add product in cart ", state:false})
     }
 } 

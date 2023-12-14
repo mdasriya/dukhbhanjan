@@ -19,7 +19,6 @@ import {
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useToast } from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
 
 const GemstonesCart = ({
   _id,
@@ -27,28 +26,29 @@ const GemstonesCart = ({
   description,
   image,
   price,
-  quantity,
   title,
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedQuality, setSelectedQuality] = useState('');
+  const [selectedQualityPrice, setSelectedQualityPrice] = useState('');
   const toast = useToast();
-  const qualityOptions = ['quality 1', 'quality 2', 'quality 3'];
+
 
   const handleQualityChange = (e) => {
+    const { value } = e.target
     setSelectedQuality(e.target.value);
+    setSelectedQualityPrice(+value)
   };
 
   const handleCartData = async () => {
     let finalData = {
-      compareId:_id,
+      _id,
       quality: selectedQuality,
       image,
-      price,
-      quantity,
+      price: selectedQualityPrice,
       title,
     };
-   
+    console.log(finalData)
     try {
       const response = await axios.post(
         'http://localhost:4000/cart/create',
@@ -78,9 +78,9 @@ const GemstonesCart = ({
         });
       }
     } catch (error) {
-      console.error('Error submitting form:', error.response.data.error);
+      console.error('Error submitting form:', error);
       toast({
-        title: "something went wrong ",
+        title: error.response.data.msg,
         status: 'error',
         duration: 5000,
         isClosable: true,
@@ -113,7 +113,7 @@ const GemstonesCart = ({
         </Box>
       </Box>
 
-      <Modal isOpen={isOpen} onClose={onClose} size="xl">
+      <Modal isOpen={isOpen} onClose={onClose}  size="xl">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>{title}</ModalHeader>
@@ -121,7 +121,7 @@ const GemstonesCart = ({
           <ModalBody>
             <Image height={['50%', '70%']} src={image} alt={title} />
             <Box mt={4}>
-              <Text>{}</Text>
+              {/* <Text>{}</Text> */}
               <Flex>
                 <FormLabel>Description</FormLabel>
                 <Text>{description}</Text>
@@ -132,23 +132,20 @@ const GemstonesCart = ({
               </Flex>
               <Flex>
                 <FormLabel>Price:</FormLabel>
-                <Text>{price}</Text>
+                <Text>{price + selectedQualityPrice}</Text>
               </Flex>
             </Box>
-            <FormControl mt={4}>
+            <Box display={"flex"}>
+            <FormControl mt={4} width={"40%"}>
               <FormLabel>Quality</FormLabel>
-              <Select
-                placeholder="Select quality"
-                value={selectedQuality}
-                onChange={handleQualityChange}
-              >
-                {qualityOptions.map((quality) => (
-                  <option key={quality} value={quality}>
-                    {quality}
-                  </option>
-                ))}
+              <Select placeholder='Select quality' onChange={handleQualityChange}>
+                <option name="quality1" value='500'>quality 1</option>
+                <option name="quality2" value='1000'>quality 2</option>
+                <option name="quality3" value='1500'>Special quality</option>
+                <option name="quality4" value='2000'>Super quality</option>
               </Select>
             </FormControl>
+            </Box>
           </ModalBody>
 
           <ModalFooter>

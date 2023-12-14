@@ -19,7 +19,7 @@ const Footer = () => {
 
   var currentDate = new Date();
   // Get the current year
-var currentYear = currentDate.getFullYear();
+  var currentYear = currentDate.getFullYear();
 
   return (
     <div data-aos="fade-down">
@@ -97,22 +97,22 @@ var currentYear = currentDate.getFullYear();
           </Stack>
         </Stack>
       </Box>
-      <Box  w='100%' p={4} >
-<Center>
-<Text color={'gray'} fontWeight={"600"} fontSize={'lg'}>
-Designed and Developed by &copy;
-</Text>
-<Link href="http://royalswebtechpvtltd.com" isExternal target="_blank">
-<Text color={'gray'} _hover={{color:"black"}} fontWeight={"600"} fontSize={'lg'}>
-Royal's WebTech
-</Text>
-</Link>
-<Text color={'gray'} fontWeight={"600"}  fontSize={'lg'} href="http://royalswebtechpvtltd.com/">
-&nbsp;{currentYear}
-</Text>
-</Center>
-</Box>
-     
+      <Box w='100%' p={4} >
+        <Center>
+          <Text color={'gray'} fontWeight={"600"} fontSize={'lg'}>
+            Designed and Developed by &copy;
+          </Text>
+          <Link href="http://royalswebtechpvtltd.com" isExternal target="_blank">
+            <Text color={'gray'} _hover={{ color: "black" }} fontWeight={"600"} fontSize={'lg'}>
+              Royal's WebTech
+            </Text>
+          </Link>
+          <Text color={'gray'} fontWeight={"600"} fontSize={'lg'} href="http://royalswebtechpvtltd.com/">
+            &nbsp;{currentYear}
+          </Text>
+        </Center>
+      </Box>
+
 
 
 
