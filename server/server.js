@@ -75,16 +75,23 @@
 // app.listen(4000, () => console.log("Listening on port 4000!"));
 const express = require("express");
 const cors = require("cors");
+const Razorpay = require("razorpay");
+const crypto = require("crypto");
 const { connection } = require("./config/db");
 const { UserRouter } = require("./routes/user.router");
 const { KundaliRouter } = require("./routes/kundali.router");
 const { ProductRouter } = require("./routes/product.router");
 const { CartRouter } = require("./routes/cart.router");
 const { ContactRouter } = require("./routes/contact.router");
+const { PaymentRouter } = require("./routes/payment");
 require("dotenv").config()
-const stripe = require("stripe")(
-  "sk_test_51OFC6TSB2DdCLQ7Hqs6jm6WtNJ5rhjsX0j76NN9igxtm9oWSBBtoRWMInvkWdWnqgR6fZ4w11SuSxUFQThWpfxKS00AQaN85Is"
-);
+// const stripe = require("stripe")(
+//   "sk_test_51OFC6TSB2DdCLQ7Hqs6jm6WtNJ5rhjsX0j76NN9igxtm9oWSBBtoRWMInvkWdWnqgR6fZ4w11SuSxUFQThWpfxKS00AQaN85Is"
+// );
+const razorpay = new Razorpay({
+  key_id: "rzp_test_FZa7FJ6Bglhj8Y", // Replace with your actual key
+  key_secret: "oOx40LBFhDdweDdbBHa4hLis", // Replace with your actual secret
+});
 
 // middleware section import
 const app = express();
@@ -96,7 +103,7 @@ app.use("/kundali", KundaliRouter)
 app.use("/products", ProductRouter)
 app.use("/cart", CartRouter)
 app.use("/contact", ContactRouter)
-
+app.use("/api/payment", PaymentRouter)
 
 // server home page
 app.get("/", (req,res)=> {

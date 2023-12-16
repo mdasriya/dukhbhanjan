@@ -27,11 +27,14 @@ const GemstonesCart = ({
   image,
   price,
   title,
+  qualities
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [selectedQuality, setSelectedQuality] = useState('');
   const [selectedQualityPrice, setSelectedQualityPrice] = useState('');
   const toast = useToast();
+  const [selectedQuality, setSelectedQuality] = useState("")
+  const [radioItem, setRadioItem] = useState(0)
+
 
 
   const handleQualityChange = (e) => {
@@ -40,15 +43,17 @@ const GemstonesCart = ({
     setSelectedQualityPrice(+value)
   };
 
+  let matchdatafound = qualities.find((el) => el.type == selectedQuality)
+
   const handleCartData = async () => {
     let finalData = {
       _id,
       quality: selectedQuality,
       image,
-      price: selectedQualityPrice,
+      price: radioItem,
       title,
     };
-    console.log(finalData)
+    // console.log(finalData)
     try {
       const response = await axios.post(
         'http://localhost:4000/cart/create',
@@ -88,6 +93,11 @@ const GemstonesCart = ({
     }
   };
 
+  const handleSort = (e) => {
+    const { value } = e.target
+    setRadioItem(+value)
+  }
+console.log(typeof radioItem)
   return (
     <Box>
       <Box
@@ -113,7 +123,7 @@ const GemstonesCart = ({
         </Box>
       </Box>
 
-      <Modal isOpen={isOpen} onClose={onClose}  size="xl">
+      <Modal isOpen={isOpen} onClose={onClose} size="xl">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>{title}</ModalHeader>
@@ -128,23 +138,43 @@ const GemstonesCart = ({
               </Flex>
               <Flex>
                 <FormLabel>Benefits</FormLabel>
-                <Text>{benefits[0][0]}</Text>
+                {/* <Text>{benefits[0][0]}</Text> */}
               </Flex>
-              <Flex>
+              {/* <Flex>
                 <FormLabel>Price:</FormLabel>
                 <Text>{price + selectedQualityPrice}</Text>
-              </Flex>
+              </Flex> */}
             </Box>
             <Box display={"flex"}>
-            <FormControl mt={4} width={"40%"}>
-              <FormLabel>Quality</FormLabel>
-              <Select placeholder='Select quality' onChange={handleQualityChange}>
-                <option name="quality1" value='500'>quality 1</option>
-                <option name="quality2" value='1000'>quality 2</option>
-                <option name="quality3" value='1500'>Special quality</option>
-                <option name="quality4" value='2000'>Super quality</option>
-              </Select>
-            </FormControl>
+              <FormControl mt={4} width={"40%"}>
+                <FormLabel>Quality</FormLabel>
+                <Select placeholder='Select quality' width={"70%"} onChange={(e) => setSelectedQuality(e.target.value)}>
+                  {
+                    qualities && qualities.map((item) => (
+                      <>
+                        <option value={item.type}>{item.type}</option>
+
+                      </>
+                    ))
+
+                  }
+                </Select>
+<br />
+                {/* radio input start here  */}
+                <FormLabel>Quality Per Ratti Price</FormLabel>
+                {
+                  matchdatafound && matchdatafound.prices.map((item) => {
+                    return (<Box onChange={handleSort}>
+                      <input type="radio" name='order' value={item} />
+                      <label>{item}</label><br />
+                    </Box>)
+                  })
+
+                }
+                {/* radio input end here  */}
+
+
+              </FormControl>
             </Box>
           </ModalBody>
 

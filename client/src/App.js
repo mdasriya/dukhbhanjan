@@ -23,6 +23,7 @@ import PrivateRoutes from "./components/privateRoutes";
 import Profile from "./pages/Profile";
 import Oderse from "./pages/Oderse";
 import Cart from "./pages/Cart";
+import Practiescart from "./pages/Practiescart";
 AOS.init({
   duration: 1200,
 });
@@ -58,6 +59,7 @@ function App() {
           <Route path="/profile" element={<PrivateRoutes><Profile /></PrivateRoutes>} />
           <Route path="/orders" element={<Oderse />} />
           <Route path="/newcart" element={<Cart />} />
+          <Route path="/pra" element={<Practiescart />} />
           {/* <Route path="/gemstones/:id" element={<SingleProduct />}></Route> */}
         </Routes>
         <Footer />

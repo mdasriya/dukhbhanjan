@@ -3,23 +3,40 @@ const { CartModel } = require("../model/cart.model")
 
 const handleCreateCartProduct = async(req,res) => {
     const data = req.body
-  const {productId} = req.body
+
 
     try {
-        const userCartData = await CartModel.findOne({productId})
-        // console.log("from user doc " , compareId)
-        // console.log("from find collection", userAllCartData.compareId)
-    
-         if(userCartData){
-        console.log("compare found")
-        //  res.status(200).json({msg:"Product is already in cart", state:false})
+
+       const foundCart =  await CartModel.findOne({productId:data._id+"UID"+data.UserId}) 
+       if(foundCart){
+        console.log(foundCart)
+        res.status(200).json({msg:"Product Already in cart"})
        }else{
-         let storedata = {...data, productId:data._id}
-         const cart = new CartModel(storedata)
-        await cart.save()
-        console.log("added in model")
-        res.status(200).json({msg:"product added in cart Success!!!",state:true}) 
+        let storedata = {...data, productId:data._id+"UID"+data.UserId}
+        delete storedata._id
+            const cart = new CartModel(storedata)
+      
+             await cart.save()
+             console.log("product added in cart model")
+            res.status(200).json({msg:"product added in cart Success!!!",state:true})
+  
        }
+      
+
+    //     const userCartData = await CartModel.findOne({productId})
+    //     // console.log("from user doc " , compareId)
+    //     // console.log("from find collection", userAllCartData.compareId)
+    
+    //      if(userCartData){
+    //     console.log("compare found")
+    //     //  res.status(200).json({msg:"Product is already in cart", state:false})
+    //    }else{
+    //      let storedata = {...data, productId:data._id}
+    //      const cart = new CartModel(storedata)
+    //     await cart.save()
+    //     console.log("added in model")
+    //     res.status(200).json({msg:"product added in cart Success!!!",state:true}) 
+    //    }
        
     } catch (error) {
       console.log("error")
