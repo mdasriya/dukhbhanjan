@@ -195,7 +195,7 @@ setFaild(true)
 
                     {/* Title box */}
                     <Box width="10%" position="relative" height="100%">
-                      <Text fontSize="23px" position="absolute" top="40%" color="gray.600">
+                      <Text fontSize="17px" position="absolute" top="40%" color="gray.600">
                         {item.title}
                       </Text>
                     </Box>

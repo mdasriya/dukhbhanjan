@@ -15,6 +15,9 @@ import {
   Select,
   useDisclosure,
   Flex,
+  AlertIcon,
+  Alert,
+  AlertTitle,
 } from '@chakra-ui/react';
 import axios from 'axios';
 import React, { useState } from 'react';
@@ -22,7 +25,6 @@ import { useToast } from '@chakra-ui/react';
 
 const GemstonesCart = ({
   _id,
-  benefits,
   description,
   image,
   price,
@@ -30,22 +32,18 @@ const GemstonesCart = ({
   qualities
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [selectedQualityPrice, setSelectedQualityPrice] = useState('');
   const toast = useToast();
-  const [selectedQuality, setSelectedQuality] = useState("")
-  const [radioItem, setRadioItem] = useState(0)
+  const [selectedQuality, setSelectedQuality] = useState("");
+  const [radioItem, setRadioItem] = useState(0);
+  const [emptyRadio, setEmptyRadio] = useState(false);
 
-
-
-  const handleQualityChange = (e) => {
-    const { value } = e.target
-    setSelectedQuality(e.target.value);
-    setSelectedQualityPrice(+value)
-  };
-
-  let matchdatafound = qualities.find((el) => el.type == selectedQuality)
+  let matchdatafound = qualities.find((el) => el.type === selectedQuality);
 
   const handleCartData = async () => {
+    if (!radioItem) {
+      setEmptyRadio(true);
+      return;
+    }
     let finalData = {
       _id,
       quality: selectedQuality,
@@ -53,7 +51,6 @@ const GemstonesCart = ({
       price: radioItem,
       title,
     };
-    // console.log(finalData)
     try {
       const response = await axios.post(
         'http://localhost:4000/cart/create',
@@ -74,6 +71,7 @@ const GemstonesCart = ({
           isClosable: true,
           position: 'top-right',
         });
+        onClose();
       } else {
         toast({
           title: "product is Already in your cart",
@@ -93,11 +91,21 @@ const GemstonesCart = ({
     }
   };
 
+  const handleQuality = (e) => {
+    setRadioItem(0);
+    setSelectedQuality(e.target.value);
+  };
+
   const handleSort = (e) => {
-    const { value } = e.target
-    setRadioItem(+value)
-  }
-console.log(typeof radioItem)
+    setEmptyRadio(false);
+    const { value } = e.target;
+    setRadioItem(+value);
+  };
+
+  const handleQualityChange = () => {
+    setRadioItem(0);
+  };
+
   return (
     <Box>
       <Box
@@ -129,55 +137,37 @@ console.log(typeof radioItem)
           <ModalHeader>{title}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Image height={['50%', '70%']} src={image} alt={title} />
+            <Image height={['50%', '200px']} src={image} alt={title} />
             <Box mt={4}>
-              {/* <Text>{}</Text> */}
               <Flex>
                 <FormLabel>Description</FormLabel>
                 <Text>{description}</Text>
               </Flex>
-              <Flex>
-                <FormLabel>Benefits</FormLabel>
-                {/* <Text>{benefits[0][0]}</Text> */}
-              </Flex>
-              {/* <Flex>
-                <FormLabel>Price:</FormLabel>
-                <Text>{price + selectedQualityPrice}</Text>
-              </Flex> */}
             </Box>
             <Box display={"flex"}>
               <FormControl mt={4} width={"40%"}>
                 <FormLabel>Quality</FormLabel>
-                <Select placeholder='Select quality' width={"70%"} onChange={(e) => setSelectedQuality(e.target.value)}>
-                  {
-                    qualities && qualities.map((item) => (
-                      <>
-                        <option value={item.type}>{item.type}</option>
-
-                      </>
-                    ))
-
-                  }
+                <Select placeholder='Select quality' width={"70%"} onChange={(e) => { handleQuality(e); handleQualityChange(); }}>
+                  {qualities && qualities.map((item) => (
+                    <option key={item.type} value={item.type}>{item.type}</option>
+                  ))}
                 </Select>
-<br />
-                {/* radio input start here  */}
-                <FormLabel>Quality Per Ratti Price</FormLabel>
-                {
-                  matchdatafound && matchdatafound.prices.map((item) => {
-                    return (<Box onChange={handleSort}>
-                      <input type="radio" name='order' value={item} />
-                      <label>{item}</label><br />
-                    </Box>)
-                  })
+                <br />
+                {emptyRadio && <Alert status='error' width={"100%"}>
+                  <AlertIcon />
+                  <AlertTitle>Select Price As per Ratti</AlertTitle>
+                </Alert>}
 
-                }
-                {/* radio input end here  */}
-
-
+                {selectedQuality && <FormLabel>Quality Per Ratti Price</FormLabel>}
+                {matchdatafound && matchdatafound.prices.map((item) => (
+                  <Box key={item} onChange={handleSort}>
+                    <input type="radio" name='order' value={item} />
+                    <label>{item}</label><br />
+                  </Box>
+                ))}
               </FormControl>
             </Box>
           </ModalBody>
-
           <ModalFooter>
             <Button colorScheme="yellow" mr={3} onClick={handleCartData}>
               ADD TO CART
