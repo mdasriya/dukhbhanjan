@@ -27,7 +27,6 @@ const GemstonesCart = ({
   _id,
   description,
   image,
-  price,
   title,
   qualities
 }) => {
@@ -126,7 +125,7 @@ const GemstonesCart = ({
         <Image src={image} alt={title} width="100%" height={['150px', '200px']} />
         <Box textAlign="left">
           <Text>Name: {title}</Text>
-          <Text>Price: ₹{price}</Text>
+          {/* <Text>Price: ₹{price}</Text> */}
           <Text>Des: {description}</Text>
         </Box>
       </Box>
@@ -162,7 +161,7 @@ const GemstonesCart = ({
                 {matchdatafound && matchdatafound.prices.map((item) => (
                   <Box key={item} onChange={handleSort}>
                     <input type="radio" name='order' value={item} />
-                    <label>{item}</label><br />
+                    <label> ₹{item}</label><br />
                   </Box>
                 ))}
               </FormControl>

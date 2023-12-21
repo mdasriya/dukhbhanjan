@@ -24,6 +24,8 @@ import Profile from "./pages/Profile";
 import Oderse from "./pages/Oderse";
 import Cart from "./pages/Cart";
 import Practiescart from "./pages/Practiescart";
+import MultiStepForm from "./pages/MultiStepForm";
+
 AOS.init({
   duration: 1200,
 });
@@ -60,9 +62,9 @@ function App() {
           <Route path="/orders" element={<Oderse />} />
           <Route path="/newcart" element={<Cart />} />
           <Route path="/pra" element={<Practiescart />} />
-          {/* <Route path="/gemstones/:id" element={<SingleProduct />}></Route> */}
+          <Route path="/stepper" element={<MultiStepForm />} />
         </Routes>
-        <Footer />
+        {/* <Footer /> */}
       </Router>
     </>
   );

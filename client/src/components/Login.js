@@ -25,6 +25,7 @@ export default function Login({ }) {
   const [error, setError] = useState('');
   const location = useLocation()
   const [isLoading, setIsLoading] = useState(false);
+  const [paymentLoading, setPaymentLoading] = useState(false)
   const toast = useToast()
 
 

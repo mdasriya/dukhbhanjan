@@ -1,3 +1,4 @@
+const { connection } = require("../config/db")
 const { CartModel } = require("../model/cart.model")
 
 
@@ -23,20 +24,7 @@ const handleCreateCartProduct = async(req,res) => {
        }
       
 
-    //     const userCartData = await CartModel.findOne({productId})
-    //     // console.log("from user doc " , compareId)
-    //     // console.log("from find collection", userAllCartData.compareId)
-    
-    //      if(userCartData){
-    //     console.log("compare found")
-    //     //  res.status(200).json({msg:"Product is already in cart", state:false})
-    //    }else{
-    //      let storedata = {...data, productId:data._id}
-    //      const cart = new CartModel(storedata)
-    //     await cart.save()
-    //     console.log("added in model")
-    //     res.status(200).json({msg:"product added in cart Success!!!",state:true}) 
-    //    }
+
        
     } catch (error) {
       console.log("error")
@@ -77,8 +65,29 @@ const handleDeleteCartProduct = async(req,res) => {
 } 
 
 
+const handleCartOrderDelet = async(req,res) => { 
+    const CartData = req.body
+    let arr = []
+    CartData.forEach(element => {
+       arr.push(element._id) 
+    });
+    try {
+        console.log("try call")
+        const deletionCriteria = { _id: { $in: arr } };
+        const result = await CartModel.deleteMany(deletionCriteria);
+        if (result.deletedCount) {
+            return res.status(200).json({ msg: "cart items deleted successfully", state: true });
+        }
+       
+    } catch (error) {
+        console.error("Error deleting cart data:", error);
+        res.status(500).json({ msg: "Internal Server Error", state: false });   
+    }
+}
+
+
 
 module.exports =  {
-   handleCreateCartProduct,handleGetCartProduct,handleDeleteCartProduct 
+   handleCreateCartProduct,handleGetCartProduct,handleDeleteCartProduct,handleCartOrderDelet
  }
 
