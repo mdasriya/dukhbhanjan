@@ -24,9 +24,9 @@ axios.get("http://localhost:4000/order", {
     <Box borderLeft={"10px solid green"} borderRadius={5} margin={6}> 
     <Heading p={5}> My Order Summary </Heading>
     </Box>
-    <Grid templateColumns='repeat(4, 1fr)' gap={6} border={"1px solid blue"} padding={5} display={"flex"} justifyContent={"center"}>
+    <Grid templateColumns='repeat(4, 1fr)' gap={6}  padding={5} display={"flex"} justifyContent={"center"}>
   {orderData &&  orderData.map((item, index) => {
-  return <GridItem w='100%' h='auto' boxShadow={"rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;"} >
+  return <GridItem w='100%' h='auto' p={5} boxShadow={"rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;"} >
  <Image
     boxSize='200px'
     objectFit='cover'

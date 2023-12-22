@@ -22,6 +22,7 @@ import {
   FormControl,
   FormLabel,
   Input,
+  Spinner,
 } from '@chakra-ui/react';
 import {
   Modal,
@@ -51,7 +52,7 @@ const initialAddress = {
 const Cart = () => {
   const [address, setAddress] = useState(initialAddress)
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const [loading, setLoading] = useState(false)
+  const [isLoading, setLoading] = useState(true)
   const toast = useToast()
   const navigate = useNavigate();
   const [update, setUpdate] = useState(false);
@@ -60,6 +61,7 @@ const Cart = () => {
   const totalPrice = cartData.reduce((acc, item) => acc + item.price * item.quantity, 0);
   const initialRef = React.useRef(null)
   const finalRef = React.useRef(null)
+  const [paymentLoading, setPaymentLoading] = useState(false)
 
 
   const handleQuantity = (id, e) => {
@@ -157,13 +159,14 @@ const Cart = () => {
               duration: 9000,
               isClosable: true,
             })
-            handleMyOrderData(cartData)
-            // handledeleteCartData(cartData)
+            setPaymentLoading(true)
+          await  handleMyOrderData(cartData)
+           await  handledeleteCartData(cartData)
+           setPaymentLoading(false)
           } else {
             setFaild(true)
+            setPaymentLoading(false)
           }
-
-
         } catch (error) {
           console.error(error.message);
         }
@@ -189,13 +192,14 @@ const Cart = () => {
       })
       .then((res) => {
         if (res.data.state) {
-          toast({
-            title: 'Cart Data Deleted After Payment',
-            status: 'success',
-            position: "top-right",
-            duration: 3000,
-            isClosable: true,
-          })
+          // toast({
+          //   title: 'Cart Data Deleted After Payment',
+          //   status: 'success',
+          //   position: "top-right",
+          //   duration: 3000,
+          //   isClosable: true,
+          // })
+          navigate("/")
         } else {
           toast({
             title: 'something went wrong while deleting cartdata',
@@ -221,79 +225,133 @@ const Cart = () => {
     })
   }
 
+
+
   const handleForm = (e) => {
     e.preventDefault();
-    axios.post("http://localhost:4000/address/create", address, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
+    setLoading(true)
+if(address.address1.length==0 && address.address2.length==0 && address.city.length==0 && address.country.length==0 && address.phone.length==0 && address.postalCode.length==0){
+ 
+ toast({
+    title: 'missing input feild fill first',
+    status: 'error',
+    position: "top-right",
+    duration: 3000,
+    isClosable: true,
+  })
+}else{
+  axios.post("http://localhost:4000/address/create", address, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  })
+    .then((res) => {
+      if (res.data.state=="create") {
+        // toast({
+        //   title: res.data.msg,
+        //   status: 'success',
+        //   position: "top-right",
+        //   duration: 3000,
+        //   isClosable: true,
+        // })
+        setLoading(false)
+        setAddress(initialAddress)
+        onClose()
+        handlePayment()
+      }else{
+        setLoading(false)
+        onClose()
+        handlePayment()
+      }
     })
-      .then((res) => {
-        if (res.data.state) {
-          toast({
-            title: res.data.msg,
-            status: 'success',
-            position: "top-right",
-            duration: 3000,
-            isClosable: true,
-          })
-          setAddress(initialAddress)
-          onClose()
-          handlePayment()
-        }else{
-          handlePayment()
-        }
-      })
+}
+    
   }
 
 
   const handleMyOrderData = async (datatoAdd) => {
  
     try {
-      const response = await axios.post("http://localhost:4000/order/create", datatoAdd, {
+      const response = await axios.post("http://localhost:4000/order/create",datatoAdd, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
-
-      if (response.data.state) {
-        toast({
-          title: response.data.msg,
-          status: 'success',
-          position: "top-right",
-          duration: 3000,
-          isClosable: true,
-        });
+  console.log(response)
  
-      await handledeleteCartData(datatoAdd);
-      } else {
-        toast({
-          title: 'Something went wrong while deleting cart data',
-          status: 'error',
-          position: "top-right",
-          duration: 3000,
-          isClosable: true,
-        });
-      }
+      // if (response.data.state) {
+      //   toast({
+      //     title: response.data.msg,
+      //     status: 'success',
+      //     position: "top-right",
+      //     duration: 3000,
+      //     isClosable: true,
+      //   });
+ 
+      // await handledeleteCartData(datatoAdd);
+      // } else {
+      //   toast({
+      //     title: 'Something went wrong while deleting cart data',
+      //     status: 'error',
+      //     position: "top-right",
+      //     duration: 3000,
+      //     isClosable: true,
+      //   });
+      // }
     } catch (error) {
       console.error(error);
     }
   };
 
-  // const conditionallyPaymentForm = () => {
-  //  handleForm()
-  // }
+  const conditionallyPaymentForm = async () => {
 
+    try {
+      const response = await axios.post("http://localhost:4000/address/create", address, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+    if(response.data.state=="onOpen"){
+     onOpen()
+    }else if(response.data.state=="handlePayment"){ 
+handlePayment()
+    }else{
+      handlePayment()
+    }
+      
+    } catch (error) {
+      // Handle any errors that occurred during the request
+      console.error("Error creating address:", error);
+      // You might want to handle errors appropriately, such as displaying an error message
+    }
+  };
+  
 
+  const handleClose = () => {
+    setAddress(initialAddress)
+    onClose()
+  }
+  
   useEffect(() => {
     getCartProduct();
   }, [update]);
 
   return (
     <>
-
+{paymentLoading ? <Box position={"relative"}>
+  <Box position={"absolute"} top={"50vh"} left={"50%"}>
+    <Spinner
+  thickness='4px'
+  speed='0.65s'
+  emptyColor='gray.200'
+  color='blue.500'
+  size='xl'
+/>
+</Box>
+</Box>:<>
       <Modal
         initialFocusRef={initialRef}
         finalFocusRef={finalRef}
@@ -303,7 +361,7 @@ const Cart = () => {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader borderLeft={"4px solid blue"} bg={"#E8E8E8"} margin={"10px"} p={"2px"}>Shipping Address</ModalHeader>
-          <ModalCloseButton />
+          <ModalCloseButton  onClick={()=> handleClose()}/>
           <ModalBody pb={6}>
             <Box display={"flex"} gap={5}>
               <FormControl isRequired>
@@ -340,10 +398,13 @@ const Cart = () => {
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme='green' mr={3} onClick={handleForm}>
+       <Button colorScheme='green' mr={3} onClick={handleForm}>
               SUBMIT
             </Button>
-            <Button onClick={onClose}>Cancel</Button>
+            
+
+
+            <Button onClick={() => handleClose()}>Cancel</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
@@ -465,8 +526,8 @@ const Cart = () => {
 
                 <Button
                   // onClick={handlePayment}
-                  onClick={onOpen}
-                  // onClick={conditionallyPaymentForm}
+                  // onClick={onOpen}
+                  onClick={conditionallyPaymentForm}
                   colorScheme="yellow" color="white" size="lg" fontSize="md" rightIcon={<FaArrowRight />}>
                   Checkout
                 </Button>
@@ -500,11 +561,10 @@ const Cart = () => {
 
           </Center>
           {/* purchase form model start */}
-
-
         </Box>
       }
 
+</>}
 
     </>
   );
