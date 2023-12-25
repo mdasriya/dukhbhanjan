@@ -3,21 +3,36 @@ const { addressModel } = require("../model/address.model")
  const handleCreateUserAddress = async(req,res) =>{
     const data = req.body
     const {UserId} = req.body
- 
-    try {
-        const reqdata = await addressModel.find({ UserId }) 
-        if(reqdata.length>0){
-        res.status(200).json({ msg: "Address Already Present", state:false })  
-        }else{
-            const address = new addressModel(data)
+
+   try {
+    const match = await addressModel.find({ UserId })
+ if(match.length>0){
+    res.status(200).json({msg:"user address present", state:"handlePayment"})
+ }else if(data.address1.length>0){
+         const address = new addressModel(data)
             await address.save()
-            res.status(200).json({ msg: "address added successfully" , state:true})
-        }
-       
-       
-    } catch (error) {
-        res.status(500).json({msg:"Something Went Wrong", error:error.message, state:false})
-    }
+             res.status(200).json({ msg: "address added successfully" , state:"created"})
+ }else{
+    res.status(200).json({msg:"user address present", state:"onOpen"}) 
+ }
+   } catch (error) {
+    console.log(error.message)
+    res.status(500).json({msg:"Something Went Wrong", error:error.message, state:false})
+   }
+    // try {
+    //     const reqdata = await addressModel.find({ UserId }) 
+    //     console.log(reqdata)
+    //     if(reqdata.length>0){
+    //         console.log("if caal")
+    //     res.status(200).json({ msg: "Address Already Present", state:"already" })  
+    //     }else{
+    //          const address = new addressModel(data)
+    //         await address.save()
+    //          res.status(200).json({ msg: "address added successfully" , state:"create"})
+    //     }
+    // } catch (error) {
+    //     res.status(500).json({msg:"Something Went Wrong", error:error.message, state:false})
+    // }
     
  }
  const handleGetUserAddress = async(req,res) =>{

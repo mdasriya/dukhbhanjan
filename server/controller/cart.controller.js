@@ -1,16 +1,15 @@
-const { connection } = require("../config/db")
+
 const { CartModel } = require("../model/cart.model")
 
 
 const handleCreateCartProduct = async(req,res) => {
     const data = req.body
-
-
+console.log("call")
     try {
 
        const foundCart =  await CartModel.findOne({productId:data._id+"UID"+data.UserId}) 
        if(foundCart){
-        console.log(foundCart)
+        // console.log(foundCart)
         res.status(200).json({msg:"Product Already in cart"})
        }else{
         let storedata = {...data, productId:data._id+"UID"+data.UserId}
@@ -18,7 +17,7 @@ const handleCreateCartProduct = async(req,res) => {
             const cart = new CartModel(storedata)
       
              await cart.save()
-             console.log("product added in cart model")
+            //  console.log("product added in cart model")
             res.status(200).json({msg:"product added in cart Success!!!",state:true})
   
        }
@@ -27,7 +26,7 @@ const handleCreateCartProduct = async(req,res) => {
 
        
     } catch (error) {
-      console.log("error")
+    //   console.log("error")
       console.log(error.message)
      res.status(400).json({msg:"unable to add product in cart ", state:false})
     }
@@ -52,7 +51,7 @@ const handleDeleteCartProduct = async(req,res) => {
         const userIDinClientDoc = cart.UserId
 
         if (userIdinUserDoc === userIDinClientDoc) {
-            console.log("user id in user Doc",userIdinUserDoc ,"user id in client doc", userIDinClientDoc);
+            // console.log("user id in user Doc",userIdinUserDoc ,"user id in client doc", userIDinClientDoc);
            await CartModel.findByIdAndDelete({_id:productId}, req.body)
            res.json({msg:`${cart.title} has been deleted success`})
         } else {
@@ -72,7 +71,7 @@ const handleCartOrderDelet = async(req,res) => {
        arr.push(element._id) 
     });
     try {
-        console.log("try call")
+        // console.log("try call")
         const deletionCriteria = { _id: { $in: arr } };
         const result = await CartModel.deleteMany(deletionCriteria);
         if (result.deletedCount) {

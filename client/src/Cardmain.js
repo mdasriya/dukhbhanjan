@@ -12,13 +12,6 @@ import {
   Fade,
 } from "@chakra-ui/react";
 import { motion } from "framer-motion"; // Import motion from framer-motion
-import {
-  FaGithub,
-  FaDev,
-  FaLinkedin,
-  FaQuora,
-  FaTwitter,
-} from "react-icons/fa";
 
 const SocialMediaLink = ({ url, label, type, icon }) => (
   <IconButton

@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { GiShoppingCart } from "react-icons/gi";
 import {
   Box,
   Flex,
@@ -17,26 +18,26 @@ import {
   AlertTitle,
   AlertDescription,
   Alert,
-  Skeleton,
   useDisclosure,
-  FormControl,
-  FormLabel,
-  Input,
-  Spinner,
-} from '@chakra-ui/react';
-import {
   Modal,
+  Spinner,
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
-  ModalBody,
   ModalCloseButton,
-} from '@chakra-ui/react'
+  ModalBody,
+  FormControl,
+  Input,
+  FormLabel,
+  ModalFooter,
+} from '@chakra-ui/react';
+
 import { FaArrowRight } from 'react-icons/fa';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { CloseIcon } from '@chakra-ui/icons';
+import ThemeContext from '../components/ThemeContext';
+import styled from '@emotion/styled';
 
 
 const initialAddress = {
@@ -50,19 +51,19 @@ const initialAddress = {
 
 
 const Cart = () => {
-  const [address, setAddress] = useState(initialAddress)
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const [isLoading, setLoading] = useState(true)
-  const toast = useToast()
-  const navigate = useNavigate();
+  const [isLoading, setLoading] = useState(false)
+  const [failed, setFaild] = useState(false)
   const [update, setUpdate] = useState(false);
   const [cartData, setData] = useState([]);
-  const [failed, setFaild] = useState(false)
   const totalPrice = cartData.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const [paymentLoading, setPaymentLoading] = useState(false)
+  const toast = useToast()
+  const [address, setAddress] = useState(initialAddress)
+  const navigate = useNavigate();
+  const { theme, toggleTheme } = useContext(ThemeContext);
   const initialRef = React.useRef(null)
   const finalRef = React.useRef(null)
-  const [paymentLoading, setPaymentLoading] = useState(false)
-
 
   const handleQuantity = (id, e) => {
     let quantity = e.target.value;
@@ -91,9 +92,13 @@ const Cart = () => {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
-      setLoading(false)
-      console.log(response)
-      setUpdate((prev) => !prev);
+      if (response) {
+        setLoading(false)
+        setUpdate((prev) => !prev);
+        toggleTheme()
+      }
+
+
     } catch (error) {
       func();
     }
@@ -156,13 +161,13 @@ const Cart = () => {
               description: "Your Order Done Success",
               status: 'success',
               position: "top-right",
-              duration: 9000,
+              duration: 3000,
               isClosable: true,
             })
             setPaymentLoading(true)
-          await  handleMyOrderData(cartData)
-           await  handledeleteCartData(cartData)
-           setPaymentLoading(false)
+            await handleMyOrderData(cartData)
+            await handledeleteCartData(cartData)
+            setPaymentLoading(false)
           } else {
             setFaild(true)
             setPaymentLoading(false)
@@ -192,14 +197,8 @@ const Cart = () => {
       })
       .then((res) => {
         if (res.data.state) {
-          // toast({
-          //   title: 'Cart Data Deleted After Payment',
-          //   status: 'success',
-          //   position: "top-right",
-          //   duration: 3000,
-          //   isClosable: true,
-          // })
-          navigate("/")
+          toggleTheme()
+          navigate("/success")
         } else {
           toast({
             title: 'something went wrong while deleting cartdata',
@@ -225,62 +224,54 @@ const Cart = () => {
     })
   }
 
-
-
   const handleForm = (e) => {
     e.preventDefault();
     setLoading(true)
-if(address.address1.length==0 && address.address2.length==0 && address.city.length==0 && address.country.length==0 && address.phone.length==0 && address.postalCode.length==0){
- 
- toast({
-    title: 'missing input feild fill first',
-    status: 'error',
-    position: "top-right",
-    duration: 3000,
-    isClosable: true,
-  })
-}else{
-  axios.post("http://localhost:4000/address/create", address, {
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    },
-  })
-    .then((res) => {
-      if (res.data.state=="create") {
-        // toast({
-        //   title: res.data.msg,
-        //   status: 'success',
-        //   position: "top-right",
-        //   duration: 3000,
-        //   isClosable: true,
-        // })
-        setLoading(false)
-        setAddress(initialAddress)
-        onClose()
-        handlePayment()
-      }else{
-        setLoading(false)
-        onClose()
-        handlePayment()
-      }
-    })
-}
-    
+    if (address.address1.length == 0 && address.address2.length == 0 && address.city.length == 0 && address.country.length == 0 && address.phone.length == 0 && address.postalCode.length == 0) {
+
+      toast({
+        title: 'missing input feild fill first',
+        status: 'error',
+        position: "top-right",
+        duration: 3000,
+        isClosable: true,
+      })
+    } else {
+      axios.post("http://localhost:4000/address/create", address, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      })
+        .then((res) => {
+          if (res.data.state == "create") {
+
+            setLoading(false)
+            setAddress(initialAddress)
+            onClose()
+            handlePayment()
+          } else {
+            setLoading(false)
+            onClose()
+            handlePayment()
+          }
+        })
+    }
+
   }
 
 
   const handleMyOrderData = async (datatoAdd) => {
- 
+
     try {
-      const response = await axios.post("http://localhost:4000/order/create",datatoAdd, {
+      const response = await axios.post("http://localhost:4000/order/create", datatoAdd, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
-  console.log(response)
- 
+      console.log(response)
+
       // if (response.data.state) {
       //   toast({
       //     title: response.data.msg,
@@ -289,7 +280,7 @@ if(address.address1.length==0 && address.address2.length==0 && address.city.leng
       //     duration: 3000,
       //     isClosable: true,
       //   });
- 
+
       // await handledeleteCartData(datatoAdd);
       // } else {
       //   toast({
@@ -314,264 +305,341 @@ if(address.address1.length==0 && address.address2.length==0 && address.city.leng
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
-    if(response.data.state=="onOpen"){
-     onOpen()
-    }else if(response.data.state=="handlePayment"){ 
-handlePayment()
-    }else{
-      handlePayment()
-    }
-      
+      if (response.data.state == "onOpen") {
+        onOpen()
+      } else if (response.data.state == "handlePayment") {
+        handlePayment()
+      } else {
+        handlePayment()
+      }
+
     } catch (error) {
       // Handle any errors that occurred during the request
       console.error("Error creating address:", error);
       // You might want to handle errors appropriately, such as displaying an error message
     }
   };
-  
+
 
   const handleClose = () => {
     setAddress(initialAddress)
     onClose()
   }
-  
+
   useEffect(() => {
     getCartProduct();
-  }, [update]);
+  }, [update, theme]);
+
+
 
   return (
     <>
-{paymentLoading ? <Box position={"relative"}>
-  <Box position={"absolute"} top={"50vh"} left={"50%"}>
-    <Spinner
-  thickness='4px'
-  speed='0.65s'
-  emptyColor='gray.200'
-  color='blue.500'
-  size='xl'
-/>
-</Box>
-</Box>:<>
-      <Modal
-        initialFocusRef={initialRef}
-        finalFocusRef={finalRef}
-        isOpen={isOpen}
-        onClose={onClose}
-      >
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader borderLeft={"4px solid blue"} bg={"#E8E8E8"} margin={"10px"} p={"2px"}>Shipping Address</ModalHeader>
-          <ModalCloseButton  onClick={()=> handleClose()}/>
-          <ModalBody pb={6}>
-            <Box display={"flex"} gap={5}>
-              <FormControl isRequired>
-                <FormLabel>Address Line 1</FormLabel>
-                <Input placeholder='Address Line 1' name='address1' value={address.address1} onChange={handleSubmitForm} />
-              </FormControl>
-              <FormControl isRequired>
-                <FormLabel>Address Line 2</FormLabel>
-                <Input placeholder='Address Line 2' name='address2' value={address.address2} onChange={handleSubmitForm} />
-              </FormControl>
-            </Box>
-
-            <Box mt={5} display={"flex"} gap={5}>
-              <FormControl isRequired>
-                <FormLabel>Country</FormLabel>
-                <Input placeholder='country' name='country' value={address.country} onChange={handleSubmitForm} />
-              </FormControl>
-              <FormControl isRequired>
-                <FormLabel>City</FormLabel>
-                <Input placeholder='city' name='city' value={address.city} onChange={handleSubmitForm} />
-              </FormControl>
-              <FormControl isRequired>
-                <FormLabel>Postal code</FormLabel>
-                <Input placeholder='postal code' name='postalCode' value={address.postalCode} onChange={handleSubmitForm} />
-              </FormControl>
-            </Box>
-
-            <Box mt={5}>
-              <FormControl isRequired>
-                <FormLabel>Phone No.</FormLabel>
-                <Input placeholder='phone Number' name='phone' value={address.phone} onChange={handleSubmitForm} />
-              </FormControl>
-            </Box>
-          </ModalBody>
-
-          <ModalFooter>
-       <Button colorScheme='green' mr={3} onClick={handleForm}>
-              SUBMIT
-            </Button>
-            
-
-
-            <Button onClick={() => handleClose()}>Cancel</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-      {/* purchase form model end */}
-
-      {
-        cartData.length > 0 ? <>  <Heading mt={5} fontSize="2xl" fontWeight="extrabold">
-          Shopping Cart ({cartData.length} items)
-        </Heading>
-          <Box
-            width="100%"
-            padding="20px"
-            justifyContent="space-between"
-            display="flex"
-            flexDirection={['column', 'column', 'row']}
-          >
-            {/* Left box */}
-            <Box width={['100%', '100%', '65%']} height="100%" mb={['20px', '20px', '0']}>
-
-              {cartData && cartData.map((item) => (
-
-                <Box
-                  key={item._id}
-                  boxShadow="rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;"
-                  flexWrap="wrap"
-                  alignItems={"center"}
-                  mt={10}
-                  justifyContent="space-between"
-                  display="flex"
-                  height="30%"
-                >
-                  {/* Image */}
-                  <Box width="25%" height="100%">
-                    <Image
-                      mt={2}
-                      ml={5}
-                      borderRadius="10px"
-                      width="90%"
-                      height="90%"
-                      objectFit="cover"
-                      src={item.image}
-                      alt={item.title}
-                    />
-                  </Box>
-
-                  {/* Title box */}
-                  <Box width="10%" position="relative" height="100%">
-                    <Text fontSize="17px" position="absolute" top="40%" color="gray.600">
-                      {item.title}
-                    </Text>
-                  </Box>
-
-                  {/* Select quantity box */}
-                  {/* <Text>Select Quantity </Text> */}
-                  <Box width="10%" position="relative" height="100%">
-                    <Select onChange={(e) => handleQuantity(item._id, e)} position="absolute" top="40%">
-                      {[1, 2, 3, 4, 5].map((value) => (
-                        <option key={value} value={value}>
-                          {value}
-                        </option>
-                      ))}
-                    </Select>
-                  </Box>
-                  <Text>{item.quality}</Text>
-                  {/* <Box border={"1px"} padding={5}>
-  <Text>{item.quality}</Text>
-</Box> */}
-                  {/* Price box */}
-                  <Box width="10%" position="relative" height="100%">
-                    <Text fontSize="20px" position="absolute" color="gray.600">
-                      ₹{item.price * (item.quantity || 1)} Per Ratti
-                    </Text>
-                  </Box>
-
-                  {/* Delete icon */}
-                  <Box width="10%" position="relative" height="100%">
-                    <CloseIcon
-                      cursor="pointer"
-                      _hover={{ color: 'red' }}
-                      onClick={() => handleDelete(item._id)}
-                      boxSize={4}
-                      position="absolute"
-                      top="40%"
-                      color="GrayText"
-                    />
-                  </Box>
+      {paymentLoading ? (
+        <Box position={'relative'}>
+          <Box position={'absolute'} top={'20px'} left={'50%'}>
+            <Spinner thickness="4px" speed="0.65s" emptyColor="gray.200" color="blue.500" size="xl" />
+          </Box>
+        </Box>
+      ) : (
+        <DIV>
+          <Modal initialFocusRef={initialRef} finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose}>
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader borderLeft={"4px solid blue"} bg={"#E8E8E8"} margin={"10px"} p={"2px"}>Shipping Address</ModalHeader>
+              <ModalCloseButton onClick={() => handleClose()} />
+              <ModalBody pb={6}>
+                <Box display={"flex"} gap={5}>
+                  <FormControl isRequired>
+                    <FormLabel>Address Line 1</FormLabel>
+                    <Input placeholder='Address Line 1' name='address1' value={address.address1} onChange={handleSubmitForm} />
+                  </FormControl>
+                  <FormControl isRequired>
+                    <FormLabel>Address Line 2</FormLabel>
+                    <Input placeholder='Address Line 2' name='address2' value={address.address2} onChange={handleSubmitForm} />
+                  </FormControl>
                 </Box>
-              ))}
-            </Box>
 
-            {/* Right box */}
-            <Box width={['100%', '100%', '30%']} borderRadius="5px" height="100%">
-              <Stack spacing="8" borderWidth="1px" rounded="lg" padding="8" width="full">
-                <Heading size="md">Order Summary</Heading>
+                <Box mt={5} display={"flex"} gap={5}>
+                  <FormControl isRequired>
+                    <FormLabel>Country</FormLabel>
+                    <Input placeholder='country' name='country' value={address.country} onChange={handleSubmitForm} />
+                  </FormControl>
+                  <FormControl isRequired>
+                    <FormLabel>City</FormLabel>
+                    <Input placeholder='city' name='city' value={address.city} onChange={handleSubmitForm} />
+                  </FormControl>
+                  <FormControl isRequired>
+                    <FormLabel>Postal code</FormLabel>
+                    <Input placeholder='postal code' name='postalCode' value={address.postalCode} onChange={handleSubmitForm} />
+                  </FormControl>
+                </Box>
 
-                <Stack spacing="6">
-                  <Box display="flex" justifyContent="space-between">
-                    <Text fontSize="17px" color="gray.700" fontWeight={500}>
-                      Subtotal
-                    </Text>
-                    <Text>₹{(totalPrice)}</Text>
-                  </Box>
-                  {/* <Box display="flex" justifyContent="space-between">
-          <Text fontSize="17px" color="gray.700" fontWeight={500}>
-            Shipping + Tax
-          </Text>
-          <Text>40</Text>
-        </Box> */}
+                <Box mt={5}>
+                  <FormControl isRequired>
+                    <FormLabel>Phone No.</FormLabel>
+                    <Input placeholder='phone Number' name='phone' value={address.phone} onChange={handleSubmitForm} />
+                  </FormControl>
+                </Box>
+              </ModalBody>
 
-                  <Flex justify="space-between">
-                    <Text fontSize="21px" fontWeight="semibold">
-                      Total
-                    </Text>
-                    <Text fontSize="xl" fontWeight="extrabold">
-                      ₹ {totalPrice}
-                    </Text>
-                  </Flex>
-                </Stack>
-
-                <Button
-                  // onClick={handlePayment}
-                  // onClick={onOpen}
-                  onClick={conditionallyPaymentForm}
-                  colorScheme="yellow" color="white" size="lg" fontSize="md" rightIcon={<FaArrowRight />}>
-                  Checkout
+              <ModalFooter>
+                <Button colorScheme='green' mr={3} onClick={handleForm}>
+                  SUBMIT
                 </Button>
 
-                <Center>
-                  <HStack textAlign="center" mt="6" fontWeight="semibold">
-                    <p>or</p>
-                    <Link color={mode('blue.500', 'blue.200')} onClick={() => navigate('/gemstones')}>
-                      Continue shopping
-                    </Link>
-                  </HStack>
-                  {
-                    failed && <Alert status='error'>
-                      <AlertIcon />
-                      <AlertTitle>Payment Failed</AlertTitle>
-                      <AlertDescription>Your Payment is failed try Again</AlertDescription>
-                    </Alert>
-                  }
-                </Center>
-              </Stack>
-            </Box>
-          </Box>
-
-        </> : <Box width={"100%"} height={"40vh"}>
-          <Image width={"250px"} position={"relative"} top={"30%"} left={"40%"} src="https://media.istockphoto.com/id/1206806317/vector/shopping-cart-icon-isolated-on-white-background.jpg?s=612x612&w=0&k=20&c=1RRQJs5NDhcB67necQn1WCpJX2YMfWZ4rYi1DFKlkNA=" />
-          <Center display={"flex"} flexDirection={"column"}>
-            <Text zIndex={"1"} ml={"-30px"} mt={"50px"}>Your Cart Empty</Text>
-
-            <Text position={"relative"} _hover={{ as: "i" }} zIndex={"9999"} >Continue Shopping</Text>
 
 
-          </Center>
-          {/* purchase form model start */}
-        </Box>
-      }
+                <Button onClick={() => handleClose()}>Cancel</Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
 
-</>}
+          {cartData.length > 0 ? (
+            <>
+              <Heading ml={5} color={"gray.500"} mt={5} fontSize="1.5vw" fontWeight="bold">
+                Shopping Cart ({cartData.length} items)
+              </Heading>
+              <Box
+                width="100%"
+                padding="20px"
+                justifyContent="space-between"
+                display="flex"
+                flexDirection={['column', 'column', 'row']}
+              >
+                {/* Left box */}
+                <Box width={['100%', '100%', '65%']} height="100%" mb={['20px', '20px', '0']}>
+                  {cartData && cartData.map((item) => (
+                    <Box
+                      className='cart_Main'
+                      border={"1px solid red"}
+                      key={item._id}
+                      boxShadow="rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;"
+                      flexWrap="wrap"
+                      alignItems={"center"}
+                      mt={10}
+                      justifyContent="space-between"
+                      display="flex"
+                      height="30%"
+                    // border={"1px solid red"}
+                    >
+                      {/* Image */}
+                      <Box className='image_outer' width="25%" height="100%">
+                        <Image
+                          className='cart_image'
+                          mt={2}
+                          ml={5}
+                          borderRadius="10px"
+                          width="90%"
+                          height="90%"
+                          objectFit="cover"
+                          src={item.image}
+                          alt={item.title}
+                        />
+                      </Box>
 
+                      {/* Title box */}
+                      <Box className='cart_title' width="10%" position="relative" height="100%">
+                        <Text className='title' fontSize="17px" position="absolute" top="40%" color="gray.600">
+                         {item.title}
+                        </Text>
+                      </Box>
+
+                      {/* Select quantity box */}
+                      <Box className='cart_quality' width="10%" position="relative" height="100%">
+                        <Select onChange={(e) => handleQuantity(item._id, e)} position="absolute" top="40%">
+                          {[1, 2, 3, 4, 5].map((value) => (
+                            <option key={value} value={value}>
+                              {value}
+                            </option>
+                          ))}
+                        </Select>
+                      </Box>
+                      <Text className='product_quality'>{item.quality}</Text>
+
+                      {/* Price box */}
+                      <Box className='product_price' width="10%" position="relative" height="100%">
+                        <Text className='product_title' fontSize="20px" position="absolute" color="gray.600">
+                          ₹{item.price * (item.quantity || 1)} Per Ratti
+                        </Text>
+                      </Box>
+
+                      {/* Delete icon */}
+                      <Box className='cart_delete' width="10%" position="relative" height="100%">
+                        <CloseIcon
+                          className='delete'
+                          cursor="pointer"
+                          _hover={{ color: 'red' }}
+                          onClick={() => handleDelete(item._id)}
+                          boxSize={4}
+                          position="absolute"
+                          top="40%"
+                          color="GrayText"
+                        />
+                      </Box>
+                    </Box>
+
+
+                  ))}
+                </Box>
+
+                {/* Right box */}
+                <Box width={['100%', '100%', '30%']} borderRadius="5px" height="100%" mt={['20px', '20px', '0']}>
+                  <Stack spacing="8" borderWidth="1px" rounded="lg" padding="8" width="full">
+                    <Heading size="md">Order Summary</Heading>
+
+                    <Stack spacing="6">
+                      <Box display="flex" justifyContent="space-between">
+                        <Text fontSize="17px" color="gray.700" fontWeight={500}>
+                          Subtotal
+                        </Text>
+                        <Text>₹{(totalPrice)}</Text>
+                      </Box>
+
+                      <Flex justify="space-between">
+                        <Text fontSize="21px" fontWeight="semibold">
+                          Total
+                        </Text>
+                        <Text fontSize="xl" fontWeight="extrabold">
+                          ₹ {totalPrice}
+                        </Text>
+                      </Flex>
+                    </Stack>
+
+                    <Button
+                      onClick={conditionallyPaymentForm}
+                      colorScheme="yellow"
+                      color="white"
+                      size="lg"
+                      fontSize="md"
+                      rightIcon={<FaArrowRight />}
+                    >
+                      Checkout
+                    </Button>
+
+                    <Center>
+                      <HStack textAlign="center" mt="6" fontWeight="semibold">
+                        <p>or</p>
+                        <Link color={mode('blue.500', 'blue.200')} onClick={() => navigate('/gemstones')}>
+                          Continue shopping
+                        </Link>
+                      </HStack>
+                      {failed && (
+                        <Alert status="error">
+                          <AlertIcon />
+                          <AlertTitle>Payment Failed</AlertTitle>
+                          <AlertDescription>Your Payment is failed try Again</AlertDescription>
+                        </Alert>
+                      )}
+                    </Center>
+                  </Stack>
+                </Box>
+              </Box>
+            </>
+          ) : (
+            <Center height={'40vh'} display={'flex'} flexDirection={'column'} alignItems={'center'}>
+
+              <Box mt={"200px"} mb={3}><GiShoppingCart size={"150px"} /></Box>
+              <Box mb={'70px'}>
+                <Text fontSize="lg" fontWeight="bold">
+                  Your Cart is Empty
+                </Text>
+                <Button mt={4} onClick={() => navigate("/gemstones")} _hover={{ textDecoration: 'none', cursor: 'pointer' }} color={"white"} colorScheme='yellow'>Continue Shopping</Button>
+
+              </Box>
+            </Center>
+          )}
+        </DIV>
+      )}
     </>
   );
 };
 
 export default Cart;
 
+
+const DIV = styled.div`
+
+/* Responsive styles for small devices (phones) */
+@media only screen and (max-width: 600px) {
+ 
+  .cart_Main{
+    border: 1px solid blue;
+  /* height: 100px; */
+    display: flex;
+    flex-direction: column;
+  }
+  .image_outer{
+    width: 100%;
+  }
+  .cart_image{
+    width: 500px;
+    border: 1px solid cyan;
+   margin-top: 0px;
+   margin-left: 0px;
+  }
+  .cart_title{
+    border: 1px solid red;
+    width: 100%;
+  }
+  .title{
+    font-size: 25px;
+  }
+  .cart_quality{
+    width: 100%;
+    margin-top: 50px;
+  }
+  .product_quality{
+    width: 100%;
+    margin-top: 50px;
+    font-size: 20px;
+  }
+  .product_price{
+    width: 100%;
+    border: 1px solid black;
+  }
+  .product_title{
+    width: 100%;
+    margin-top: 10px;
+    border: 1px solid black;
+  }
+  .cart_delete{
+    border: 1px solid green;
+    width: 100%;
+    margin-top: 30px;
+    justify-content: center;
+    text-align: center; 
+  }
+  .delete{
+    border: 1px solid #f56262;
+    width: 70%;
+    background-color: #f56262;
+    /* box-sizing: 50px; */
+    color: #000000;
+    /* border: 1px solid red; */
+  font-size: 50px;
+  margin-top: 20px;
+  margin-left: -130px;
+   font-size: 70px;
+   /* padding: 10px; */
+  }
+
+  /* Additional styles for small devices */
+}
+
+/* Responsive styles for medium devices (tablets) */
+@media only screen and (min-width: 601px) and (max-width: 1024px) {
+ 
+
+  /* Additional styles for medium devices */
+}
+
+/* Responsive styles for large devices (desktops) */
+@media only screen and (min-width: 1025px) {
+  body {
+    font-size: 18px;
+  }
+}
+`
 
 
 

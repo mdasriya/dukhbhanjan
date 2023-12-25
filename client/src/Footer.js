@@ -22,7 +22,7 @@ const Footer = () => {
   var currentYear = currentDate.getFullYear();
 
   return (
-    <div data-aos="fade-down">
+    <div data-aos="fade-down" style={{ marginTop: "20px" }}>
       <Box p={{ base: 5, md: 8 }} maxW="5xl" marginInline="auto">
         <Stack
           spacing={{ base: 8, md: 0 }}
@@ -62,9 +62,9 @@ const Footer = () => {
           spacing={3}
           justifyContent="space-between"
         >
-          <Text fontSize="md">
+          <Text fontSize="md" color={"gray.500"}>
             Give Us Call :-
-            <Link>+91 7276301985 || +91 7276531955</Link>
+            <Link style={{color:"#bcbcf5"}}>+91 7276301985 || +91 7276531955</Link>
           </Text>
           <Stack spacing={2} direction={{ base: "column", md: "row" }}>
             <Button

@@ -1,5 +1,5 @@
 // App.js
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./components/Home";
 import Services from "./components/Services";
@@ -25,49 +25,72 @@ import Oderse from "./pages/Oderse";
 import Cart from "./pages/Cart";
 import Practiescart from "./pages/Practiescart";
 import MultiStepForm from "./pages/MultiStepForm";
+import Mantra from "./pages/Mantra";
+import Loading from "./components/Loading";
+import styled from "@emotion/styled";
 
 AOS.init({
   duration: 1200,
 });
 
-function App() {
-  // const [user, setUser] = useState(null);
+const App = () => {
+  const [loader, setLoader] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoader(false);
+    }, 3000);
+  }, []);
 
   return (
-    <>
-      <Router>
-        <Nav />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="services" element={<Services />} />
-          <Route path="gemstones" element={<Gemstones />} />
-          <Route path="contact" element={<Contact />} />
-          <Route path="about" element={<AboutUs />} />
-          <Route
-            path="signup"
-            element={<SignUp />} // Pass setUser to SignUp
-          />
-          <Route
-            path="login"
-            element={<Login />} // Pass setUser to Login
-          />
-          {/* <Route path="cart" element={<PrivateRoutes><Cart /></PrivateRoutes>} /> */}
-          <Route path="kundali" element={<PrivateRoutes><Kundali /></PrivateRoutes>} />
-          <Route path="readmore" element={<ReadMore />} />
-          <Route path="workshipitems" element={<WorkshipItems />} />
-          <Route path="yantra" element={<Yantra />} />
-          <Route path="success" element={<Success />} />
-          <Route path="cancel" element={<Cancel />} />
-          <Route path="/profile" element={<PrivateRoutes><Profile /></PrivateRoutes>} />
-          <Route path="/orders" element={<Oderse />} />
-          <Route path="/newcart" element={<Cart />} />
-          <Route path="/pra" element={<Practiescart />} />
-          <Route path="/stepper" element={<MultiStepForm />} />
-        </Routes>
-        {/* <Footer /> */}
-      </Router>
-    </>
+    <StyledApp>
+      {/* <div className={`main ${loader ? "loading" : ""}`}> */}
+        {loader ? (
+          <Loading />
+        ) : (
+          <Router>
+            <Nav />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="services" element={<Services />} />
+              <Route path="gemstones" element={<Gemstones />} />
+              <Route path="contact" element={<Contact />} />
+              <Route path="about" element={<AboutUs />} />
+              <Route path="signup" element={<SignUp />} />
+              <Route path="login" element={<Login />} />
+              <Route
+                path="kundali"
+                element={<PrivateRoutes><Kundali /></PrivateRoutes>}
+              />
+              <Route path="readmore" element={<ReadMore />} />
+              <Route path="workshipitems" element={<WorkshipItems />} />
+              <Route path="yantra" element={<Yantra />} />
+              <Route path="success" element={<Success />} />
+              <Route path="/profile" element={<PrivateRoutes><Profile /></PrivateRoutes>} />
+              <Route path="/orders" element={<Oderse />} />
+              <Route path="/newcart" element={<Cart />} />
+              <Route path="/pra" element={<Practiescart />} />
+              <Route path="/stepper" element={<MultiStepForm />} />
+              <Route path="/success" element={<Success />} />
+              <Route path="/mantra" element={<Mantra />} />
+            </Routes>
+            <Footer />
+          </Router>
+        )}
+      {/* </div> */}
+    </StyledApp>
   );
-}
+};
+
+const StyledApp = styled.div`
+  .main {
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+  }
+
+  .loading {
+    opacity: 0;
+  }
+`;
 
 export default App;

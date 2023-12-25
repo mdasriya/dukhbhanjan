@@ -53,7 +53,7 @@ const handleUserLogin = async (req, res) => {
 
 const handleProfileData = async(req,res,) => {
 const {UserId} = req.body 
-// console.log(UserId)
+
 try {
     const userData = await UserModel.findOne({_id:UserId}) 
     if(userData){
@@ -74,7 +74,7 @@ const handleForgotPass =  async(req,res) => {
 try {
     const user = await UserModel.findOne({email})
     if (user) {
-        console.log(email)
+        // console.log(email)
         const verificationCode = uuidv4();
        // Store the verification code in memory
 

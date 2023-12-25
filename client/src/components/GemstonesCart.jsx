@@ -20,8 +20,9 @@ import {
   AlertTitle,
 } from '@chakra-ui/react';
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useToast } from '@chakra-ui/react';
+import ThemeContext from './ThemeContext';
 
 const GemstonesCart = ({
   _id,
@@ -35,10 +36,14 @@ const GemstonesCart = ({
   const [selectedQuality, setSelectedQuality] = useState("");
   const [radioItem, setRadioItem] = useState(0);
   const [emptyRadio, setEmptyRadio] = useState(false);
+const [isLoading, setLoading] = useState(false)
+const {toggleTheme } = useContext(ThemeContext);
+
 
   let matchdatafound = qualities.find((el) => el.type === selectedQuality);
 
   const handleCartData = async () => {
+    setLoading(true)
     if (!radioItem) {
       setEmptyRadio(true);
       return;
@@ -70,7 +75,9 @@ const GemstonesCart = ({
           isClosable: true,
           position: 'top-right',
         });
+        setLoading(false)
         onClose();
+        toggleTheme()
       } else {
         toast({
           title: "product is Already in your cart",
@@ -104,14 +111,15 @@ const GemstonesCart = ({
   const handleQualityChange = () => {
     setRadioItem(0);
   };
-
+// console.log(theme)
   return (
-    <Box>
+    <Box mt={"10px"}>
       <Box
         onClick={onOpen}
         border="1px solid #ececec"
         padding="10px"
-        width={['100%', '250px']}
+        width={['85%', '250px']}
+        // border={"1px solid red"}
         margin="auto"
         textAlign="center"
         cursor="pointer"
@@ -122,8 +130,8 @@ const GemstonesCart = ({
           borderRadius: '3px',
         }}
       >
-        <Image src={image} alt={title} width="100%" height={['150px', '200px']} />
-        <Box textAlign="left">
+        <Image src={image} borderRadius={"10px"} alt={title} width="100%" height={['150px', '200px']} />
+        <Box textAlign="left" mt={2}>
           <Text>Name: {title}</Text>
           {/* <Text>Price: ₹{price}</Text> */}
           <Text>Des: {description}</Text>
@@ -156,19 +164,20 @@ const GemstonesCart = ({
                   <AlertIcon />
                   <AlertTitle>Select Price As per Ratti</AlertTitle>
                 </Alert>}
-
                 {selectedQuality && <FormLabel>Quality Per Ratti Price</FormLabel>}
                 {matchdatafound && matchdatafound.prices.map((item) => (
-                  <Box key={item} onChange={handleSort}>
-                    <input type="radio" name='order' value={item} />
-                    <label> ₹{item}</label><br />
-                  </Box>
+                 <Box key={item} onChange={handleSort} style={{ marginBottom: '8px' }}>
+                 <input type="radio" name='order' value={item} style={{ marginRight: '10px' }}/>
+                 {/* <label style={{ textDecoration: 'line-through', color: 'teal' }}>₹{(item * 10) / 100 + item}</label> */}
+
+                 <label style={{ marginLeft: '8px' }}>₹{item}</label><br />
+               </Box>
                 ))}
               </FormControl>
             </Box>
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="yellow" mr={3} onClick={handleCartData}>
+            <Button isLoading={isLoading} colorScheme="yellow" mr={3} onClick={handleCartData}>
               ADD TO CART
             </Button>
           </ModalFooter>

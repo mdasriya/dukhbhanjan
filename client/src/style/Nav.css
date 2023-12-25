@@ -1,5 +1,15 @@
 
+.nav-link {
+  font-weight: 600;
+  color: gray.900;
+  text-decoration: none;
+  transition: color 0.3s ease-in-out; /* Add a smooth transition effect */
+}
 
+/* Add hover effect */
+.nav-link:hover {
+  color: #fff44f; /* Change the color on hover */
+}
 
 /* nav log css rortae start */
 .container{

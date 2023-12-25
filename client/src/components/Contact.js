@@ -230,7 +230,7 @@ isClosable: true,
             </VStack>
             <VStack w="100%">
               <Button
-              padding={"50px"}
+              padding={"25px"}
               onClick={handleSend}
                 colorScheme="yellow"
                 color="white"
@@ -241,12 +241,12 @@ isClosable: true,
                 w={{ base: "100%", md: "max-content" }}
               >
                 Send Message
-                 <div className="wrapper">
+                 {/* <div className="wrapper">
   <div className="arrow">
     <div className="arrow-head"></div>
     <div className="arrow-body"></div>
   </div>   
-</div>
+</div> */}
               </Button>
               
               

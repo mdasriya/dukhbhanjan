@@ -1,7 +1,7 @@
 
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
-
+var nodemailer = require('nodemailer');
 
 const PaymentRouter = require("express").Router();
 const razorpay = new Razorpay({
@@ -31,6 +31,32 @@ PaymentRouter.post("/orders", async (req, res) => {
 });
 
 PaymentRouter.post("/verify", async (req, res) => {
+  var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'mukeshd4797@gmail.com',
+      pass: 'pgwotikfugwbrgvt'
+    }
+  });
+ 
+  var mailOptions = {
+    from: 'mukeshd4797@gmail.com',
+    to: 'dasriyamukesh87@gmail.com',
+    subject: 'Order by Dukhbhanjan ',
+    text: `Hi Mukesh, thank you for your Order in dukhbhanjan.
+            I will donate 50$ for this course. Please send me payment options.`
+    // html: '<h1>Hi Smartherd</h1><p>Your Messsage</p>'        
+  };
+  transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+    }
+  });
+
+
+
   try {
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
 

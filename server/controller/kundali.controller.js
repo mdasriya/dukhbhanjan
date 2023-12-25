@@ -7,7 +7,7 @@ const { KundaliModel } = require("../model/kundali.model")
 const handlekundaliCreate = async (req, res) => {
 
     const data = req.body
-    // console.log(data)
+   
     try {
         const kundali = new KundaliModel(data)
         await kundali.save()

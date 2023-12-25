@@ -72,7 +72,7 @@ export default function Services() {
       </Heading>
 
       <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={10}>
-        {data.map(({ id, title, img }) => (
+        {data && data.map(({ id, title, img }) => (
           <ServicesCard key={id} title={title} img={img} />
         ))}
       </SimpleGrid>

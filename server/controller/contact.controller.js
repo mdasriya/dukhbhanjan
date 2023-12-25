@@ -9,7 +9,7 @@ const { ContactModel } = require("../model/contact.model")
 const handleContactCreate = async (req, res) => {
 
     const data = req.body
-    // console.log(data)
+   
     try {
         const contact = new ContactModel(data)
         await contact.save()

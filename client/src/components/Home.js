@@ -1,6 +1,7 @@
 "use client";
 import ReactTyped from "react-typed";
 import {
+  Badge,
   Button,
   Flex,
   Heading,
@@ -12,9 +13,33 @@ import {
 import Testimonials from "./Testimonials";
 import Img from "../imgs/devi2.jpeg";
 import { Link } from "react-router-dom";
+import { useLocation } from 'react-router-dom';
 export default function Home() {
+  const location = useLocation();
   return (
     <>
+<Badge
+        colorScheme="yellow"
+        position={"sticky"}
+        top={"30%"}
+        p={2}
+        zIndex={99}
+        transition={"ease-in 2s"}
+        animation="scale 2s infinite ease-in"
+        cursor={"pointer"}
+        _hover={{ animation: "paused" }}
+        as={Link}
+        to="/mantra"
+        width={"fit-content"}
+        boxShadow={
+          "0 4px 6px rgba(255, 165, 0, 0.1), 0 6px 12px rgba(255, 165, 0, 0.2), 0 4px 6px rgba(255, 255, 0, 0.1), 0 6px 12px rgba(255, 255, 0, 0.2)"
+        }
+        display={location.pathname == "/mantra" ? "none" : "block"}
+      >
+        Click here for Mantras
+      </Badge> 
+
+
       <Stack minH={"100vh"} direction={{ base: "column", md: "row" }}>
         <Flex p={8} flex={1} align={"center"} justify={"center"}>
           <Stack spacing={6} w={"full"} maxW={"lg"}>

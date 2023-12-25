@@ -15,7 +15,7 @@ const Gemstones = () => {
   }, [location.search]);
 
   return (
-    <Box display={['block', 'grid']} gridTemplateColumns="auto auto auto auto" gap="20px">
+    <Box  mt={5} display={['block', 'grid']} gridTemplateColumns="auto auto auto auto" gap="20px">
       {products.length > 0 &&
         products.map((el) => (
           <div key={el._id} style={{ marginBottom: '20px' }}>
