@@ -25,7 +25,10 @@ body {
     position: relative;
     right: 2rem;
   }
-
+.css-14zggts{
+  position: relative !important;
+  right: 1rem !important;
+}
   .css-1id8hns {
     display: flex !important;
     align-items: center !important;
@@ -33,6 +36,17 @@ body {
     flex-direction: column !important;
     position: relative !important;
     left: 2rem !important;
+  }
+  .css-1ujdirh {
+    position: relative !important;
+    right: 5px !important;
+    font-size: 12px !important;
+  }
+  .css-18mdml0 {
+    font-size: 12px !important;
+  }
+  .css-drbcjm {
+    font-size: 15px !important;
   }
   .css-vtnsu5 {
     position: relative !important;

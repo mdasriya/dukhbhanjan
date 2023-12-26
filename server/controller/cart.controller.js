@@ -4,7 +4,7 @@ const { CartModel } = require("../model/cart.model")
 
 const handleCreateCartProduct = async(req,res) => {
     const data = req.body
-console.log("call")
+
     try {
 
        const foundCart =  await CartModel.findOne({productId:data._id+"UID"+data.UserId}) 

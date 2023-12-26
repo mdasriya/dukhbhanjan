@@ -1,16 +1,20 @@
 import styled from '@emotion/styled'
 import React from 'react'
-
+import { Box, Image, Text } from '@chakra-ui/react'
 const Loading = () => {
   return (
     <DIV>
-   <div class="loading">
-  <span></span>
-  <span></span>
-  <span></span>
-  <span></span>
-  <span></span>
-</div>
+      <Box className="rotate-container">
+      <Image
+      className="rotate-image"
+  borderRadius='full'
+  boxSize='150px'
+  src='http://localhost:3000/static/media/sun.121ef67838daba6b63c1.png'
+  alt='Dan Abramov'
+/>
+<Text mt={2} ml={7} fontSize={"23px"}>Loading...</Text>
+      </Box>
+ 
     </DIV>
   )
 }
@@ -18,67 +22,56 @@ const Loading = () => {
 export default Loading
 
 const DIV = styled.div`
-display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
-  body{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh
+ 
+  height: 100vh;
+  /* border: 1px solid red; */
+  /* position: absolute; */
+.rotate-container{
+position: absolute;
+top: 35%;
+left: 45%;
 }
-.loading {
- --speed-of-animation: 0.9s;
- --gap: 6px;
- --first-color: #4c86f9;
- --second-color: #49a84c;
- --third-color: #f6bb02;
- --fourth-color: #f6bb02;
- --fifth-color: #2196f3;
- display: flex;
- justify-content: center;
- align-items: center;
- width: 100px;
- gap: 6px;
- height: 100px;
+/* nav log css rortae start */
+@media only screen and (max-width: 600px) {
+ 
+ 
+  .rotate-container{
+position: absolute;
+top: 35%;
+left: 30%;
+}
+.css-p23alj{
+  margin-left: 20px !important;
+  font-size: 30px !important;
+}
+/* .loading{
+  margin-left: 15px;
+} */
+ 
+ 
+
+
+ /* Additional styles for small devices */
 }
 
-.loading span {
- width: 4px;
- height: 50px;
- background: var(--first-color);
- animation: scale var(--speed-of-animation) ease-in-out infinite;
-}
 
-.loading span:nth-child(2) {
- background: var(--second-color);
- animation-delay: -0.8s;
-}
-
-.loading span:nth-child(3) {
- background: var(--third-color);
- animation-delay: -0.7s;
-}
-
-.loading span:nth-child(4) {
- background: var(--fourth-color);
- animation-delay: -0.6s;
-}
-
-.loading span:nth-child(5) {
- background: var(--fifth-color);
- animation-delay: -0.5s;
-}
-
-@keyframes scale {
- 0%, 40%, 100% {
-  transform: scaleY(0.05);
- }
-
- 20% {
-  transform: scaleY(1);
- }
-}
+/* Define a CSS animation named "rotate" */
+@keyframes rotate {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+  /* Apply the "rotate" animation to the image */
+  .rotate-image {
+  
+    /* Apply the animation */
+    animation: rotate 25s linear infinite; /* Rotate for 5 seconds, linear timing, infinite repetitions */
+  }
+  
+  /* nav log css rortae end */
 
 `

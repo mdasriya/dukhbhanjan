@@ -271,3 +271,5 @@ const MantraData = [
         "Offline पूजा व हवन  आकाश भैरव कल्प के 9 वे अध्याय के 31 पाठ व 3 पाठ के हवन",
     },
   ];
+
+  export default MantraData;

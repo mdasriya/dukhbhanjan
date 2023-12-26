@@ -8,7 +8,6 @@ import Nav from "./Nav";
 import Footer from "./Footer";
 import AboutUs from "./components/AboutUs";
 import SignUp from "./components/SignUp";
-
 import "aos/dist/aos.css";
 import AOS from "aos";
 import Login from "./components/Login";
@@ -18,7 +17,7 @@ import ReadMore from "./components/ReadMore";
 import WorkshipItems from "./components/WorkshipItems";
 import Yantra from "./components/Yantra";
 import Success from "./pages/Success";
-import Cancel from "./pages/Cancel";
+// import Cancel from "./pages/Cancel";
 import PrivateRoutes from "./components/privateRoutes";
 import Profile from "./pages/Profile";
 import Oderse from "./pages/Oderse";

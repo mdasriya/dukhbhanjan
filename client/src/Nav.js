@@ -1,8 +1,6 @@
-// Nav.js
-import React, { useContext, useEffect, useState } from "react";
-// import Sun from "./imgs/sun.png";
-import { IoCart } from "react-icons/io5";
 
+import React, { useContext, useEffect, useState } from "react";
+import { IoCart } from "react-icons/io5";
 import "./style/Nav.css"
 import {
   Button,
@@ -19,7 +17,7 @@ import {
   MenuList,
   MenuItem,
   Avatar,
-  Badge,
+
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -27,13 +25,13 @@ import { useToast } from '@chakra-ui/react'
 import axios from "axios";
 import ThemeContext from "./components/ThemeContext";
 export default function Nav() {
-  const [cartItems, setCartItems] = useState("");
+  const [cartItems, setCartItems] = useState(0);
   const location = useLocation()
   const toast = useToast()
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [username, setUsername] = useState("")
   const navigate = useNavigate();
-  const { theme, toggleTheme } = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
 
 
   const handleLogout = () => {
@@ -56,41 +54,37 @@ export default function Nav() {
 
   };
 
- 
+
 
 
   useEffect(() => {
     setUsername(localStorage.getItem("firstname"))
   }, [username, location])
 
-useEffect(()=> {
-  const getCartProduct = () => {
-  
-    return axios
-      .get('http://localhost:4000/cart', {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      })
-      .then((res) => {
-       setCartItems(res.data.length)
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-getCartProduct()
-},[theme, cartItems])
+  useEffect(() => {
+    const getCartProduct = () => {
+      return axios
+        .get('http://localhost:4000/cart', {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        })
+        .then((res) => {
+          setCartItems(res.data.length)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+    getCartProduct()
+  }, [theme, cartItems])
 
 
-// useEffect(()=> {
 
-// },[theme,toggleTheme])
-// console.log(theme)
   return (
     <>
-       <Box bg={"gray.100"} px={4} >
+      <Box bg={"gray.100"} px={4} >
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
           <IconButton
             size={"md"}
@@ -99,11 +93,11 @@ getCartProduct()
             display={{ md: "none" }}
             onClick={isOpen ? onClose : onOpen}
           />
-           <HStack spacing={8} alignItems={"center"}>
-          <Box className="rotate-container">
+          <HStack spacing={8} alignItems={"center"}>
+            <Box className="rotate-container">
               <Image src="http://localhost:3000/static/media/sun.121ef67838daba6b63c1.png" className="rotate-image" height={"60px"} width={"60px"} />
             </Box>
-            <Text fontWeight="bold" fontSize={{ base: "20px", md: "30px" }}>
+            <Text fontWeight="bold" fontSize={{ base: "23px", md: "30px" }} ml={{base:"-30px 0px"}}>
               Dukha Bhanjan
             </Text>
 
@@ -113,12 +107,12 @@ getCartProduct()
               display={{ base: "none", md: "flex" }}
               alignContent={"center"}
               position={"relative"}
-            left={"22rem"}
+              left={"22rem"}
             >
               <Link to="/" style={{ fontWeight: "600", color: "gray.900" }}>HOME</Link>
               <Link to="/contact" style={{ fontWeight: "600", color: "gray.900" }} >CONTACT US</Link>
               <Menu>
-                <MenuButton  bg="transparent" fontWeight={"600"} color={"gray.900"} >
+                <MenuButton bg="transparent" fontWeight={"600"} color={"gray.900"} >
                   SHOP
                 </MenuButton>
                 <MenuList>
@@ -134,7 +128,7 @@ getCartProduct()
                 </MenuList>
               </Menu>
               <Menu>
-                <MenuButton  bg="transparent" fontWeight={"600"} color={"gray.900"}>
+                <MenuButton bg="transparent" fontWeight={"600"} color={"gray.900"}>
                   SERVICES
                 </MenuButton>
                 <MenuList>
@@ -150,24 +144,24 @@ getCartProduct()
               <Link to="/about" style={{ fontWeight: "600", color: "gray.900" }}>ABOUT US</Link>
               {/* <Link to="/newcart" style={{ fontWeight: "600", color: "gray.900" }}>CART</Link> */}
               <Link to="/newcart">
-        <IoCart  size={24} style={{ marginRight: '5px' }} />
-        {cartItems > 0 && (
-          <span
-            style={{
-              backgroundColor: 'red',
-              color: 'white',
-              borderRadius: '50%',
-              padding: '3px 7px',
-              fontSize: '11px',
-              position: 'absolute',
-              top: '-10px',
-              right: '-10px',
-            }}
-          >
-            {cartItems}
-          </span>
-        )}
-      </Link>
+                <IoCart size={24} style={{ marginRight: '5px' }} />
+                {cartItems > 0 && (
+                  <span
+                    style={{
+                      backgroundColor: 'red',
+                      color: 'white',
+                      borderRadius: '50%',
+                      padding: '3px 7px',
+                      fontSize: '11px',
+                      position: 'absolute',
+                      top: '-10px',
+                      right: '-10px',
+                    }}
+                  >
+                    {cartItems}
+                  </span>
+                )}
+              </Link>
               {/* <FaCartShopping size={"23px"}/> */}
 
             </HStack>
@@ -175,7 +169,7 @@ getCartProduct()
           </HStack>
 
           <Flex alignItems={"center"} gap={"10px"}>
-         {username && <Text fontSize={"18px"}>{username.toUpperCase()}</Text>}   
+            {/* {username && <Text fontSize={"18px"}>{username.toUpperCase()}</Text>} */}
             <Menu>
               <MenuButton
                 as={Button}
@@ -203,7 +197,7 @@ getCartProduct()
         </Flex>
 
 
-        
+
 
         {isOpen ? (
           <Box pb={4} display={{ md: "none" }}>
@@ -230,8 +224,8 @@ getCartProduct()
                 </MenuList>
               </Menu>
               <Menu>
-                <MenuButton  bg="transparent" fontWeight={"400"}>
-                  <Box className="sbtn">Services</Box>
+                <MenuButton bg="transparent" fontWeight={"400"}>
+                  <Box className="sbtn" textAlign={"start"}>Services</Box>
                 </MenuButton>
                 <MenuList>
                   <MenuItem>

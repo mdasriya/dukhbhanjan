@@ -7,6 +7,7 @@ import axios from 'axios';
 const Profile = () => {
   const [profiledata, setProfileData] = useState({});
   const [isloading, setIsloading] = useState(true)
+ 
   useEffect(() => {
     setIsloading(true)
     axios
@@ -17,7 +18,7 @@ const Profile = () => {
         }
       })
       .then((res) => {
-        //   console.log(res.data)
+          console.log(res.data)
         setProfileData(res.data);
         setIsloading(false)
       });
@@ -45,7 +46,7 @@ const Profile = () => {
       
       </Box> :  <Box width="100%" maxW="800px" mx="auto" mt={10}>
       {profiledata && (
-        <Box p={4} borderWidth="1px" borderRadius="lg" boxShadow={"rgba(0, 0, 0, 0.24) 0px 3px 8px"}>
+        <Box p={4} m={{base:"10px"}} borderWidth="1px" borderRadius="lg" boxShadow={"rgba(0, 0, 0, 0.24) 0px 3px 8px"}>
           <Center>
             <Avatar size="xl" name={`${profiledata.firstName} ${profiledata.lastName}`} src="https://bit.ly/broken-link" />
           </Center>

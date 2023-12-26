@@ -13,10 +13,9 @@ import {
 import { FaFacebook } from "react-icons/fa";
 import { FaWhatsapp } from "react-icons/fa";
 import { FaInstagram } from "react-icons/fa";
+import { IoLogoYoutube } from "react-icons/io5";
 import Sun from "./imgs/sun.png";
 const Footer = () => {
-
-
   var currentDate = new Date();
   // Get the current year
   var currentYear = currentDate.getFullYear();
@@ -42,14 +41,11 @@ const Footer = () => {
             justifyContent={{ sm: "space-between", md: "normal" }}
           >
             <VStack spacing={4} alignItems="center" textAlign={"center"}>
-              <Text fontSize="md" fontWeight="bold">
+              <Text fontSize="md" ml={{base:"30px"}} fontWeight="bold">
                 Address
               </Text>
               <VStack spacing={2} alignItems="flex-start" color="gray.500">
-                <Text>
-                  Gupta Palace 2nd Floor 208, <br />
-                  Rajouri Garden Near Metro Gate No. 8, West, Delhi, 110027
-                </Text>
+                <Text ml={{base:"50px"}}>L1603 Sashtri Nagar Meerut-25004</Text>
               </VStack>
             </VStack>
           </HStack>
@@ -64,7 +60,9 @@ const Footer = () => {
         >
           <Text fontSize="md" color={"gray.500"}>
             Give Us Call :-
-            <Link style={{color:"#bcbcf5"}}>+91 7276301985 || +91 7276531955</Link>
+            <Link style={{ color: "#bcbcf5" }}>
+              +91 7276301985 || +91 7060308055
+            </Link>
           </Text>
           <Stack spacing={2} direction={{ base: "column", md: "row" }}>
             <Button
@@ -77,18 +75,18 @@ const Footer = () => {
               _hover={{ bg: "blue.600" }}
             ></Button>
             <Button
-              leftIcon={<FaWhatsapp />}
+              leftIcon={<IoLogoYoutube />}
               as={Link}
-              href="#"
+              href="https://youtube.com/@Dhukhbhanjan?si=9As3OXYEDouEzcvh"
               rounded="md"
               color="white"
-              bg="green.500"
-              _hover={{ bg: "green.600" }}
+              bg="red.500"
+              _hover={{ bg: "red.600" }}
             ></Button>
             <Button
               leftIcon={<FaInstagram />}
               as={Link}
-              href="#"
+              href="https://instagram.com/dhukhbhanjan2023?igshid=YTQwZjQ0NmI0OA=="
               rounded="md"
               color="white"
               bg="pink.500"
@@ -97,25 +95,36 @@ const Footer = () => {
           </Stack>
         </Stack>
       </Box>
-      <Box w='100%' p={4} >
+      <Box w="100%" p={4}>
         <Center>
-          <Text color={'gray'} fontWeight={"600"} fontSize={'lg'}>
+          <Text color={"gray"} fontWeight={"600"} fontSize={"lg"}>
             Designed and Developed by &copy;
           </Text>
-          <Link href="http://royalswebtechpvtltd.com" isExternal target="_blank">
-            <Text color={'gray'} _hover={{ color: "black" }} fontWeight={"600"} fontSize={'lg'}>
+          <Link
+            href="http://royalswebtechpvtltd.com"
+            isExternal
+            target="_blank"
+          >
+            <Text
+              color={"gray"}
+              _hover={{ color: "black" }}
+              fontWeight={"600"}
+              fontSize={"lg"}
+            >
               Royal's WebTech
             </Text>
           </Link>
-          <Text color={'gray'} fontWeight={"600"} fontSize={'lg'} href="http://royalswebtechpvtltd.com/">
+          <Text
+            ml={3}
+            color={"gray"}
+            fontWeight={"600"}
+            fontSize={"lg"}
+            href="http://royalswebtechpvtltd.com/"
+          >
             &nbsp;{currentYear}
           </Text>
         </Center>
       </Box>
-
-
-
-
     </div>
   );
 };

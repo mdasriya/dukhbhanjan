@@ -5,21 +5,41 @@ import {
   Tbody,
   Tr,
   Th,
+  Text,
   Td,
   TableCaption,
   TableContainer,
   Center,
   Heading,
   Box,
+  Button,
 } from "@chakra-ui/react";
-
-
+import MantraData from "./MantraData";
+import { FaArrowDownLong } from "react-icons/fa6";
+import pdf from "../../src/mantra.pdf";
 const Mantra = () => {
   return (
     <>
       <Box>
         <Center>
-          <Heading as="h3">Mantras for your Problems</Heading>
+          <Heading as="h3" fontSize={{base:"20px"}}>Mantras for your Problems</Heading>
+        </Center>
+        <Center>
+          <a href={pdf} download="mantra" target="_blank">
+            <Button
+            colorScheme="yellow"
+            textAlign={"right"}
+            color={"white"}
+              position="relative"
+              top={"15px"}
+              fontWeight={"600"}
+              
+              // onClick={handleDownload}
+            >
+              Downlaod Mantra
+              <FaArrowDownLong ml={20} fontSize={"15px"} />
+            </Button>
+          </a>
         </Center>
         <TableContainer>
           <Table
@@ -30,6 +50,7 @@ const Mantra = () => {
             overflowX="auto"
             position={"relative"}
             top={"3rem"}
+            display={{ base: "none", md: "table" }}
           >
             <TableCaption>Mantras and their purposes</TableCaption>
             <Thead>
@@ -49,14 +70,14 @@ const Mantra = () => {
               </Tr>
             </Thead>
             <Tbody>
-              {/* {MantraData.map((mantra) => (
+              {MantraData.map((mantra) => (
                 <Tr key={mantra.id}>
                   <Td>{mantra.SrNo}</Td>
                   <Td>{mantra.mantra}</Td>
                   <Td>{mantra.purpose}</Td>
                   <Td>{mantra.ritual}</Td>
                 </Tr>
-              ))} */}
+              ))}
             </Tbody>
           </Table>
         </TableContainer>
