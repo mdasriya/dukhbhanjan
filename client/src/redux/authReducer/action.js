@@ -4,7 +4,7 @@ import {CART_PRODUCT_FAILURE, CART_DELETE_PRODUCT_SUCCESS, CART_PRODUCT_REQUEST,
 export const addCartProduct = (product) => (dispatch) => {
    console.log("action", product)
    dispatch({ type: CART_PRODUCT_REQUEST })
-  return  axios.post("http://localhost:4000/cart/create", product,{
+  return  axios.post("https://wicked-cowboy-hat-pike.cyclic.app/cart/create", product,{
    headers: {
       "Content-Type": "application/json",
       "Authorization": `Bearer ${localStorage.getItem("token")}`
@@ -22,7 +22,7 @@ export const addCartProduct = (product) => (dispatch) => {
 export const getCartProduct = () => (dispatch) => {
 
    dispatch({ type: CART_PRODUCT_REQUEST })
-  return axios.get("http://localhost:4000/cart",{
+  return axios.get("https://wicked-cowboy-hat-pike.cyclic.app/cart",{
       headers: {
          "Content-Type": "application/json",
          "Authorization": `Bearer ${localStorage.getItem("token")}`
@@ -40,7 +40,7 @@ export const getCartProduct = () => (dispatch) => {
 
 // export const editProduct = (dataobj, id) => (dispatch) => {
 //    dispatch({ type: PRODUCT_REQUEST })
-//   return axios.patch(`http://localhost:4000/product/${id}`, dataobj)
+//   return axios.patch(`https://wicked-cowboy-hat-pike.cyclic.app/product/${id}`, dataobj)
 //       .then((res) => {
 //          dispatch({ Type: EDIT_PRODUCT_SUCCESS, payload: res.data })
 //       })
@@ -51,7 +51,7 @@ export const getCartProduct = () => (dispatch) => {
  
  export const handleCartDelete = (id) => (dispatch) => {
    dispatch({type:CART_PRODUCT_REQUEST})
-  return  axios.delete(`http://localhost:4000/cart/delete${id}`)
+  return  axios.delete(`https://wicked-cowboy-hat-pike.cyclic.app/cart/delete${id}`)
    .then((res) => {
       dispatch({type:CART_DELETE_PRODUCT_SUCCESS})
    })

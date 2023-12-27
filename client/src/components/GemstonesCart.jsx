@@ -41,8 +41,20 @@ const {toggleTheme } = useContext(ThemeContext);
 
 
   let matchdatafound = qualities.find((el) => el.type === selectedQuality);
+  const token = localStorage.getItem("token")
+ 
 
   const handleCartData = async () => {
+   if(!token){
+    toast({
+      title: "Login first",
+      status: 'error',
+      duration: 2000,
+      isClosable: true,
+      position: 'top-right',
+    });
+    return
+   }
     setLoading(true)
     if (!radioItem) {
       setEmptyRadio(true);
@@ -57,7 +69,7 @@ const {toggleTheme } = useContext(ThemeContext);
     };
     try {
       const response = await axios.post(
-        'http://localhost:4000/cart/create',
+        'https://wicked-cowboy-hat-pike.cyclic.app/cart/create',
         finalData,
         {
           headers: {
@@ -73,7 +85,7 @@ const {toggleTheme } = useContext(ThemeContext);
           status: 'success',
           duration: 3000,
           isClosable: true,
-          position: 'top-right',
+          
         });
         setLoading(false)
         onClose();
@@ -111,7 +123,7 @@ const {toggleTheme } = useContext(ThemeContext);
   const handleQualityChange = () => {
     setRadioItem(0);
   };
-// console.log(theme)
+
   return (
     <Box mt={"10px"}>
       <Box
@@ -133,7 +145,6 @@ const {toggleTheme } = useContext(ThemeContext);
         <Image src={image} borderRadius={"10px"} alt={title} width="100%" height={['150px', '200px']} />
         <Box textAlign="left" mt={2}>
           <Text>Name: {title}</Text>
-          {/* <Text>Price: ₹{price}</Text> */}
           <Text>Des: {description}</Text>
         </Box>
       </Box>

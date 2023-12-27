@@ -11,7 +11,7 @@ const Profile = () => {
   useEffect(() => {
     setIsloading(true)
     axios
-      .get("http://localhost:4000/user/profile", {
+      .get("https://wicked-cowboy-hat-pike.cyclic.app/user/profile", {
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${localStorage.getItem("token")}`
@@ -21,7 +21,10 @@ const Profile = () => {
           console.log(res.data)
         setProfileData(res.data);
         setIsloading(false)
-      });
+      })
+      .catch((error)=> {
+        console.log(error.message)
+      })
   }, []);
 
   return (

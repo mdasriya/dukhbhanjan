@@ -86,7 +86,7 @@ const Cart = () => {
   const handleDelete = async (id) => {
     setLoading(true)
     try {
-      const response = await axios.delete(`http://localhost:4000/cart/delete/${id}`, {
+      const response = await axios.delete(`https://wicked-cowboy-hat-pike.cyclic.app/cart/delete/${id}`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -107,7 +107,7 @@ const Cart = () => {
   const getCartProduct = () => {
     setLoading(true)
     return axios
-      .get('http://localhost:4000/cart', {
+      .get('https://wicked-cowboy-hat-pike.cyclic.app/cart', {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -124,7 +124,7 @@ const Cart = () => {
   };
   const handlePayment = async () => {
     try {
-      const orderUrl = "http://localhost:4000/api/payment/orders";
+      const orderUrl = "https://wicked-cowboy-hat-pike.cyclic.app/api/payment/orders";
       const { data } = await axios.post(orderUrl, { amount: totalPrice });
       console.log(data);
 
@@ -152,7 +152,7 @@ const Cart = () => {
       handler: async (response) => {
         try {
           console.log("Data to be sent for verification:", response);
-          const verifyUrl = "http://localhost:4000/api/payment/verify";
+          const verifyUrl = "https://wicked-cowboy-hat-pike.cyclic.app/api/payment/verify";
           await axios.post(verifyUrl, response);
 
           if (response.razorpay_signature) {
@@ -189,7 +189,7 @@ const Cart = () => {
 
   const handledeleteCartData = async (data) => {
     return axios
-      .post('http://localhost:4000/cart/order/delete', data, {
+      .post('https://wicked-cowboy-hat-pike.cyclic.app/cart/order/delete', data, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -237,7 +237,7 @@ const Cart = () => {
         isClosable: true,
       })
     } else {
-      axios.post("http://localhost:4000/address/create", address, {
+      axios.post("https://wicked-cowboy-hat-pike.cyclic.app/address/create", address, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -264,7 +264,7 @@ const Cart = () => {
   const handleMyOrderData = async (datatoAdd) => {
 
     try {
-      const response = await axios.post("http://localhost:4000/order/create", datatoAdd, {
+      const response = await axios.post("https://wicked-cowboy-hat-pike.cyclic.app/order/create", datatoAdd, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -299,7 +299,7 @@ const Cart = () => {
   const conditionallyPaymentForm = async () => {
 
     try {
-      const response = await axios.post("http://localhost:4000/address/create", address, {
+      const response = await axios.post("https://wicked-cowboy-hat-pike.cyclic.app/address/create", address, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -336,7 +336,7 @@ const Cart = () => {
     <>
       {paymentLoading ? (
         <Box position={'relative'}>
-          <Box position={'absolute'} top={'20px'} left={'50%'}>
+          <Box position={'absolute'} top={'20%'} left={'50%'}>
             <Spinner thickness="4px" speed="0.65s" emptyColor="gray.200" color="blue.500" size="xl" />
           </Box>
         </Box>

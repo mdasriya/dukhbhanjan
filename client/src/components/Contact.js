@@ -52,6 +52,7 @@ const initialState = {
 
 const Contact = () => {
 const [data, setData] = useState(initialState)
+const [isLoading, setIsLoading] = useState(false)
 const toast = useToast()
 const handleChangeData = (e) => {
    const {name,value} = e.target
@@ -59,43 +60,28 @@ const handleChangeData = (e) => {
     return {...prev, [name]:value}
    })
 }
-// const handleSend = () => {
-// if(data.name && data.email && data.PhoneNo && data.message && data.subject){
 
-
-// }else{
-
-//     toast({
-//       title: 'Input Filed is required',
-//     position:"top-right",
-//       status: 'error',
-//       duration: 3000,
-//       isClosable: true,
-//     })
-// }
-// }
 const handleSend = async() => {
+  setIsLoading(true)
 if(data.name && data.email && data.PhoneNo && data.message && data.subject){
   try {
-    // Make the HTTP request and wait for the response
-    const response = await axios.post("http://localhost:4000/contact/create", data, {
+    const response = await axios.post("https://wicked-cowboy-hat-pike.cyclic.app/contact/create", data, {
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${localStorage.getItem("token")}`
       }
     });
-    // Log the response data
-// Show a success toast
+
 if(response.data){
 toast({
-title: "query submitted successfully",
+title: "Kundli send successfully",
 status: "success",
 duration: 5000,
 isClosable: true,
 position:"top-right"
 })
 setData(initialState)
-
+setIsLoading(false)
 }else{
 toast({
 title: "input fiels is required",
@@ -117,7 +103,7 @@ isClosable: true,
     position:"top-right"
   });
 }
-
+setIsLoading(false)
 }else{
 
       toast({
@@ -127,6 +113,7 @@ isClosable: true,
         duration: 3000,
         isClosable: true,
       })
+      setIsLoading(false)
   }
   
 
@@ -230,6 +217,7 @@ isClosable: true,
             </VStack>
             <VStack w="100%">
               <Button
+              isLoading={isLoading}
               padding={"25px"}
               onClick={handleSend}
                 colorScheme="yellow"
@@ -241,12 +229,6 @@ isClosable: true,
                 w={{ base: "100%", md: "max-content" }}
               >
                 Send Message
-                 {/* <div className="wrapper">
-  <div className="arrow">
-    <div className="arrow-head"></div>
-    <div className="arrow-body"></div>
-  </div>   
-</div> */}
               </Button>
               
               

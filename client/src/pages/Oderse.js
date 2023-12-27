@@ -8,7 +8,7 @@ const Oderse = () => {
 
   useEffect(() => {
     axios
-      .get('http://localhost:4000/order', {
+      .get('https://wicked-cowboy-hat-pike.cyclic.app/order', {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -20,16 +20,22 @@ const Oderse = () => {
       })
       .catch((error)=> {
         console.log("Network issue")
-        setError(error.response.data.msg)
+        // setError(error.response.data.msg)
         
       })
   }, []);
 
   return (
     <>
+
+
     {error ? <Heading color={"white"} width={"40%"} m={"auto"} mt={10} bg={"red.600"} fontSize={"22px"} textAlign={"center"}>Network issue Check your Internet </Heading> : <> <Box borderLeft="10px solid green" borderRadius={5} margin={6}>
         <Heading p={5}> My Order Summary </Heading>
       </Box>
+
+  {!orderData  && <Box position={"relative"} top={"50%"} left={"50%"}>
+ <Text as={"b"}>No Order Placed Yet</Text>
+</Box>}    
       <Grid
         templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)', 'repeat(3, 1fr)', 'repeat(4, 1fr)']}
         gap={6}

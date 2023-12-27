@@ -40,17 +40,16 @@ export default function Login({ }) {
     e.preventDefault()
     setIsLoading(true);
     const data = { email, pass }
-    axios.post("http://localhost:4000/user/login", data)
+    axios.post("https://wicked-cowboy-hat-pike.cyclic.app/user/login", data)
       .then(res => {
    setIsLoading(true)
         localStorage.setItem("token", res.data.token)
-
         toast({
           title: res.data.msg,
-          // description: "redirectig to home page",
           status: 'success',
           duration: 3000,
           isClosable: true,
+          position:"top-right"
         })
         if(res.data.token){
           localStorage.setItem("firstname", res.data.username)
@@ -124,12 +123,6 @@ export default function Login({ }) {
                     <Checkbox>Remember me</Checkbox>
                     <Text color={"yellow.400"}>Forgot password?</Text>
                   </Stack>
-                 
-                 
-                 
-
-
-
                   {
                   isLoading ? <Button
                   isLoading
@@ -137,8 +130,7 @@ export default function Login({ }) {
                      color={"white"}
                      _hover={{
                        bg: "yellow.500",
-                     }}
-                     
+                     }} 
                      onClick={loginSubmit}
                    >
                      Login
@@ -147,8 +139,7 @@ export default function Login({ }) {
                      color={"white"}
                      _hover={{
                        bg: "yellow.500",
-                     }}
-                     
+                     }} 
                      onClick={loginSubmit}
                    >
                      Login

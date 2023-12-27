@@ -64,7 +64,7 @@ export default function Nav() {
   useEffect(() => {
     const getCartProduct = () => {
       return axios
-        .get('http://localhost:4000/cart', {
+        .get('https://wicked-cowboy-hat-pike.cyclic.app/cart', {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -107,7 +107,7 @@ export default function Nav() {
               display={{ base: "none", md: "flex" }}
               alignContent={"center"}
               position={"relative"}
-              left={"22rem"}
+              left={"25rem"}
             >
               <Link to="/" style={{ fontWeight: "600", color: "gray.900" }}>HOME</Link>
               <Link to="/contact" style={{ fontWeight: "600", color: "gray.900" }} >CONTACT US</Link>
@@ -145,7 +145,7 @@ export default function Nav() {
               {/* <Link to="/newcart" style={{ fontWeight: "600", color: "gray.900" }}>CART</Link> */}
               <Link to="/newcart">
                 <IoCart size={24} style={{ marginRight: '5px' }} />
-                {cartItems > 0 && (
+                {cartItems >= 0 && (
                   <span
                     style={{
                       backgroundColor: 'red',

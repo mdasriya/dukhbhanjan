@@ -33,6 +33,7 @@ const initialdata = {
 
 const Kundali = () => {
   const [date, setDate] = useState(new Date());
+  const [isLoading, setIsLoading] = useState(false)
   const [selectedTime, setSelectedTime] = useState(null);
   const [formData, setFormData] = useState(initialdata);
 const toast = useToast()
@@ -54,10 +55,10 @@ const toast = useToast()
   };
 
   const handleSubmit = async() => {
-
+setIsLoading(true)
     try {
         // Make the HTTP request and wait for the response
-        const response = await axios.post("http://localhost:4000/kundali/create", formData, {
+        const response = await axios.post("https://wicked-cowboy-hat-pike.cyclic.app/kundali/create", formData, {
           headers: {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${localStorage.getItem("token")}`
@@ -76,6 +77,7 @@ if(response.data){
   setFormData(initialdata)
   setDate(new Date());
   setSelectedTime(null);
+  setIsLoading(false)
 }else{
   toast({
     title: response.data.error,
@@ -83,10 +85,11 @@ if(response.data){
     duration: 3000,
     isClosable: true,
   });
- 
+  setIsLoading(false)
 }
 
     } catch (error) {
+      setIsLoading(false)
       // Log and show an error toast
       console.error("Error submitting form:", error.response.data.error);
       toast({
@@ -231,6 +234,7 @@ if(response.data){
                 </VStack>
                 <VStack w="100%">
                   <Button
+                  
                     bg="yellow.300"
                     color="white"
                     _hover={{
@@ -240,7 +244,7 @@ if(response.data){
                     w="100%"
                     onClick={handleSubmit}
                   >
-                    Send
+                 {isLoading ? "Please wait...": "Send"}   
                   </Button>
                 </VStack>
               </VStack>
