@@ -106,7 +106,7 @@ app.use("/kundali", KundaliRouter)
 app.use("/products", ProductRouter)
 app.use("/cart", CartRouter)
 app.use("/contact", ContactRouter)
-app.use("/api/payment", PaymentRouter)
+app.use("/api/payment", auth, PaymentRouter)
 app.use("/order", OrderRouter)
 app.use("/address", AddressRouter)
 

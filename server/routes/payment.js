@@ -2,6 +2,7 @@
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
 var nodemailer = require('nodemailer');
+const { UserModel } = require("../model/user.model");
 
 const PaymentRouter = require("express").Router();
 const razorpay = new Razorpay({
@@ -9,7 +10,10 @@ const razorpay = new Razorpay({
   key_secret: "oOx40LBFhDdweDdbBHa4hLis", // Replace with your actual secret
 }); 
 
+
+let total = "" 
 PaymentRouter.post("/orders", async (req, res) => {
+  total = req.body.amount
   try {
     const options = {
       amount: req.body.amount * 100,
@@ -31,6 +35,9 @@ PaymentRouter.post("/orders", async (req, res) => {
 });
 
 PaymentRouter.post("/verify", async (req, res) => {
+  console.log("verify", req.body)
+  const {UserId} = req.body
+  const user = await UserModel.findOne({_id:UserId})
   var transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -41,11 +48,15 @@ PaymentRouter.post("/verify", async (req, res) => {
  
   var mailOptions = {
     from: 'mukeshd4797@gmail.com',
-    to: 'dasriyamukesh87@gmail.com',
-    subject: 'Order by Dukhbhanjan ',
-    text: `Hi Mukesh, thank you for your Order in dukhbhanjan.
-            I will donate 50$ for this course. Please send me payment options.`
-    // html: '<h1>Hi Smartherd</h1><p>Your Messsage</p>'        
+    to: user.email,
+    subject: `Order Confirmation for Dukha Bhanjan `,
+      text: `Hi ${user.firstName} ${user.lastName}, thank you for your order in dukhbhanjan.
+            You have purchased product for ${total} INR.
+            Please find the payment details below:
+            Order ID: ${req.body.razorpay_order_id}
+            Payment ID: ${req.body.razorpay_payment_id}
+            Payment Status: Success
+            If you have any questions, feel free to contact us.`,
   };
   transporter.sendMail(mailOptions, function(error, info){
     if (error) {
