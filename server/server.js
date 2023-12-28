@@ -97,21 +97,10 @@ const razorpay = new Razorpay({
   key_secret: "oOx40LBFhDdweDdbBHa4hLis", // Replace with your actual secret
 });
 
-// middleware section import
-// Configure proxy middleware
-const corsOptions = {
-  origin: 'https://thedemodukhabhanjan.netlify.app',
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true, // enable set cookie
-  optionsSuccessStatus: 204,
-};
-
-
-
 
 const app = express();
-app.use(cors(corsOptions));
 app.use(express.static("public"));
+app.use(cors());
 app.use(express.json());
 app.use("/user", UserRouter)
 app.use("/kundali", KundaliRouter)
