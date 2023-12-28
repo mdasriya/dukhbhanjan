@@ -88,6 +88,7 @@ const { OrderRouter } = require("./routes/order.router");
 const { auth } = require("./middleware/auth");
 const { AddressRouter } = require("./routes/address.router");
 require("dotenv").config()
+
 // const stripe = require("stripe")(
 //   "sk_test_51OFC6TSB2DdCLQ7Hqs6jm6WtNJ5rhjsX0j76NN9igxtm9oWSBBtoRWMInvkWdWnqgR6fZ4w11SuSxUFQThWpfxKS00AQaN85Is"
 // );
@@ -97,8 +98,19 @@ const razorpay = new Razorpay({
 });
 
 // middleware section import
+// Configure proxy middleware
+const corsOptions = {
+  origin: 'https://thedemodukhabhanjan.netlify.app',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true, // enable set cookie
+  optionsSuccessStatus: 204,
+};
+
+
+
+
 const app = express();
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.static("public"));
 app.use(express.json());
 app.use("/user", UserRouter)
