@@ -30,6 +30,8 @@ import {
   Input,
   FormLabel,
   ModalFooter,
+  SkeletonCircle,
+  SkeletonText,
 } from '@chakra-ui/react';
 
 import { FaArrowRight } from 'react-icons/fa';
@@ -52,7 +54,7 @@ const initialAddress = {
 
 const Cart = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const [isLoading, setLoading] = useState(false)
+  const [deleteloading, setDeleteloading] = useState(false)
   const [failed, setFaild] = useState(false)
   const [update, setUpdate] = useState(false);
   const [cartData, setData] = useState([]);
@@ -84,30 +86,29 @@ const Cart = () => {
   };
 
   const handleDelete = async (id) => {
-    setLoading(true)
+  setDeleteloading(true)
     try {
-      const response = await axios.delete(`https://wicked-cowboy-hat-pike.cyclic.app/cart/delete/${id}`, {
+      const response = await axios.delete(`http://localhost:4000/cart/delete/${id}`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
       if (response) {
-        setLoading(false)
         setUpdate((prev) => !prev);
-        toggleTheme()
+       await toggleTheme()
+        setDeleteloading(false)
       }
-
 
     } catch (error) {
       func();
+      setDeleteloading(false)
     }
   };
 
   const getCartProduct = () => {
-    setLoading(true)
     return axios
-      .get('https://wicked-cowboy-hat-pike.cyclic.app/cart', {
+      .get('http://localhost:4000/cart', {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -116,7 +117,7 @@ const Cart = () => {
       .then((res) => {
         const cartData = res.data.map(item => ({ ...item, quantity: 1 }));
         setData(cartData);
-        setLoading(false)
+      
       })
       .catch((err) => {
         console.log(err);
@@ -124,10 +125,13 @@ const Cart = () => {
   };
   const handlePayment = async () => {
     try {
-      const orderUrl = "https://wicked-cowboy-hat-pike.cyclic.app/api/payment/orders";
-      const { data } = await axios.post(orderUrl, { amount: totalPrice });
-      console.log(data);
-
+      const { data } = await axios.post("http://localhost:4000/api/payment/orders", { amount: totalPrice }, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      // console.log(data);
       // Call the function to initialize payment with Razorpay
       initPayment(data.data);
     } catch (error) {
@@ -151,9 +155,12 @@ const Cart = () => {
       order_id: data.id,
       handler: async (response) => {
         try {
-          console.log("Data to be sent for verification:", response);
-          const verifyUrl = "https://wicked-cowboy-hat-pike.cyclic.app/api/payment/verify";
-          await axios.post(verifyUrl, response);
+          await axios.post("http://localhost:4000/api/payment/verify",response,{
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${localStorage.getItem('token')}`,
+            }
+          });
 
           if (response.razorpay_signature) {
             toast({
@@ -189,7 +196,7 @@ const Cart = () => {
 
   const handledeleteCartData = async (data) => {
     return axios
-      .post('https://wicked-cowboy-hat-pike.cyclic.app/cart/order/delete', data, {
+      .post('http://localhost:4000/cart/order/delete', data, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -226,7 +233,6 @@ const Cart = () => {
 
   const handleForm = (e) => {
     e.preventDefault();
-    setLoading(true)
     if (address.address1.length == 0 && address.address2.length == 0 && address.city.length == 0 && address.country.length == 0 && address.phone.length == 0 && address.postalCode.length == 0) {
 
       toast({
@@ -237,7 +243,7 @@ const Cart = () => {
         isClosable: true,
       })
     } else {
-      axios.post("https://wicked-cowboy-hat-pike.cyclic.app/address/create", address, {
+      axios.post("http://localhost:4000/address/create", address, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -245,13 +251,10 @@ const Cart = () => {
       })
         .then((res) => {
           if (res.data.state == "create") {
-
-            setLoading(false)
             setAddress(initialAddress)
             onClose()
             handlePayment()
           } else {
-            setLoading(false)
             onClose()
             handlePayment()
           }
@@ -264,42 +267,23 @@ const Cart = () => {
   const handleMyOrderData = async (datatoAdd) => {
 
     try {
-      const response = await axios.post("https://wicked-cowboy-hat-pike.cyclic.app/order/create", datatoAdd, {
+      const response = await axios.post("http://localhost:4000/order/create", datatoAdd, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
-      console.log(response)
 
-      // if (response.data.state) {
-      //   toast({
-      //     title: response.data.msg,
-      //     status: 'success',
-      //     position: "top-right",
-      //     duration: 3000,
-      //     isClosable: true,
-      //   });
-
-      // await handledeleteCartData(datatoAdd);
-      // } else {
-      //   toast({
-      //     title: 'Something went wrong while deleting cart data',
-      //     status: 'error',
-      //     position: "top-right",
-      //     duration: 3000,
-      //     isClosable: true,
-      //   });
-      // }
     } catch (error) {
-      console.error(error);
+      // console.error(error);
+      console.log(error.message)
     }
   };
 
   const conditionallyPaymentForm = async () => {
 
     try {
-      const response = await axios.post("https://wicked-cowboy-hat-pike.cyclic.app/address/create", address, {
+      const response = await axios.post("http://localhost:4000/address/create", address, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -314,8 +298,8 @@ const Cart = () => {
       }
 
     } catch (error) {
+      console.log(error.message)
       // Handle any errors that occurred during the request
-      console.error("Error creating address:", error);
       // You might want to handle errors appropriately, such as displaying an error message
     }
   };
@@ -336,7 +320,7 @@ const Cart = () => {
     <>
       {paymentLoading ? (
         <Box position={'relative'}>
-          <Box position={'absolute'} top={'20%'} left={'50%'}>
+          <Box  position={'absolute'} mt={"30px"} left={'50%'}>
             <Spinner thickness="4px" speed="0.65s" emptyColor="gray.200" color="blue.500" size="xl" />
           </Box>
         </Box>
@@ -406,8 +390,19 @@ const Cart = () => {
                 display="flex"
                 flexDirection={['column', 'column', 'row']}
               >
-                {/* Left box */}
-                <Box width={['100%', '100%', '65%']} height="100%" mb={['20px', '20px', '0']}>
+                {deleteloading ? <Box gap={"20px"}  display={"flex"} flexDirection={"column"} width={['100%', '100%', '65%']} height="100%" mb={['20px', '20px', '0']}> <Box padding='6' boxShadow='lg' bg='white'>
+              <SkeletonCircle size='10' />
+              <SkeletonText mt='4' noOfLines={4} spacing='4' skeletonHeight='2' />
+            </Box>
+            <Box padding='6' boxShadow='lg' bg='white'>
+              <SkeletonCircle size='10' />
+              <SkeletonText mt='4' noOfLines={4} spacing='4' skeletonHeight='2' />
+            </Box>
+            <Box padding='6' boxShadow='lg' bg='white'>
+              <SkeletonCircle size='10' />
+              <SkeletonText mt='4' noOfLines={4} spacing='4' skeletonHeight='2' />
+            </Box></Box> : 
+                 <Box width={['100%', '100%', '65%']} height="100%" mb={['20px', '20px', '0']}>
                   {cartData && cartData.map((item) => (
                     <Box
                       className='cart_Main'
@@ -480,7 +475,11 @@ const Cart = () => {
 
 
                   ))}
-                </Box>
+                </Box>}
+                {/* Left box */}
+               
+
+
 
                 {/* Right box */}
                 <Box width={['100%', '100%', '30%']} borderRadius="5px" height="100%" mt={['20px', '20px', '0']}>

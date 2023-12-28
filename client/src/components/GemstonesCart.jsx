@@ -58,6 +58,7 @@ const {toggleTheme } = useContext(ThemeContext);
     setLoading(true)
     if (!radioItem) {
       setEmptyRadio(true);
+      setLoading(false)
       return;
     }
     let finalData = {
@@ -69,7 +70,7 @@ const {toggleTheme } = useContext(ThemeContext);
     };
     try {
       const response = await axios.post(
-        'https://wicked-cowboy-hat-pike.cyclic.app/cart/create',
+        'http://localhost:4000/cart/create',
         finalData,
         {
           headers: {
@@ -97,15 +98,17 @@ const {toggleTheme } = useContext(ThemeContext);
           duration: 3000,
           isClosable: true,
         });
+        setLoading(false)
       }
     } catch (error) {
-      console.error('Error submitting form:', error);
+      // console.error('Error submitting form:', error);
       toast({
         title: error.response.data.msg,
         status: 'error',
         duration: 5000,
         isClosable: true,
       });
+      setLoading(false)
     }
   };
 

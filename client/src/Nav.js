@@ -64,7 +64,7 @@ export default function Nav() {
   useEffect(() => {
     const getCartProduct = () => {
       return axios
-        .get('https://wicked-cowboy-hat-pike.cyclic.app/cart', {
+        .get('http://localhost:4000/cart', {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -208,7 +208,7 @@ export default function Nav() {
               <Link to="/newcart">My Cart</Link>
 
               <Menu>
-                <MenuButton as={Button} bg="transparent" fontWeight={"400"}>
+                <MenuButton textAlign={"start"} bg="transparent" fontWeight={"400"}>
                   Shop
                 </MenuButton>
                 <MenuList>

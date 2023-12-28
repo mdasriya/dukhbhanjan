@@ -21,7 +21,7 @@ const Footer = () => {
   var currentYear = currentDate.getFullYear();
 
   return (
-    <div data-aos="fade-down" style={{ marginTop: "20px" }}>
+    <div  style={{ marginTop: "40px" }}>
       <Box p={{ base: 5, md: 8 }} maxW="5xl" marginInline="auto">
         <Stack
           spacing={{ base: 8, md: 0 }}

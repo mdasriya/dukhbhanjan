@@ -7,11 +7,15 @@ import axios from 'axios';
 const Profile = () => {
   const [profiledata, setProfileData] = useState({});
   const [isloading, setIsloading] = useState(true)
+
+  
  
+
+
   useEffect(() => {
     setIsloading(true)
     axios
-      .get("https://wicked-cowboy-hat-pike.cyclic.app/user/profile", {
+      .get("http://localhost:4000/user/profile", {
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${localStorage.getItem("token")}`
@@ -27,8 +31,14 @@ const Profile = () => {
       })
   }, []);
 
+
+ 
+
+
   return (
     <>
+
+
     {
       isloading ? <Box padding='6' width="100%" maxW="800px" mx="auto" mt={10}  boxShadow='lg' bg='white'>
       <Center>

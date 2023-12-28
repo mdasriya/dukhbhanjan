@@ -2,7 +2,6 @@ import React from "react";
 import {
   Container,
   Box,
-  HStack,
   useColorModeValue,
   Center,
 } from "@chakra-ui/react";
@@ -12,7 +11,7 @@ const Author = () => {
   const bg = useColorModeValue("white", "#2f3244");
 
   const author = {
-    name: "Rahul Singh",
+    name: "श्री स्वामी  ब्रिजेशवरानंदजी महाराज",
     accounts: [
       {
         label: "Instagram Account",
@@ -48,6 +47,7 @@ const Author = () => {
           _hover={{ boxShadow: "lg" }}
           bg={bg}
           role="group"
+          zIndex={9999}
         >
           <Cardmain author={author} />
         </Box>

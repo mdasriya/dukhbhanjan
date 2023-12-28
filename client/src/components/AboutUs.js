@@ -6,18 +6,26 @@ import {
   Flex,
   Heading,
   Text,
-  Center,
+  Link,
   Stack,
   StackDivider,
   Icon,
   useColorModeValue,
+  VStack,
+  Box,
+  Avatar,
+  Divider,
+  Fade,
+  IconButton,
 } from "@chakra-ui/react";
 import astro from "../imgs/astro.jpg";
 import { RiGuideFill } from "react-icons/ri";
 import { FaShoppingCart } from "react-icons/fa";
 import { CgCommunity } from "react-icons/cg";
-import Author from "./Author";
+import { motion } from "framer-motion";
+import image from "../imgs/baba1.jpeg"
 const Feature = ({ text, icon, iconBg }) => {
+
   return (
     <Stack direction={"row"} align={"center"}>
       <Flex
@@ -35,7 +43,35 @@ const Feature = ({ text, icon, iconBg }) => {
   );
 };
 
+
 const AboutUs = () => {
+  const author = [{
+    name: "श्री स्वामी  ब्रिजेशवरानंदजी महाराज",
+    image:`${image}`,
+  },
+  {
+    name: "Rahul Deo",
+    image:"https://avatars2.githubusercontent.com/u/37842853?v=4",
+    accounts: [
+      {
+        label: "Instagram Account",
+        type: "pink",   
+      },
+      {
+        label: "Twitter Account",
+        type: "twitter",
+      },
+      {
+        label: "Facebook Account",
+        type: "blue",
+      },
+      // Add more social media accounts as needed
+    ],
+  }];
+
+  
+
+
   return (
     <div data-aos="flip-left">
       <Container maxW={"5xl"} py={12}>
@@ -115,11 +151,37 @@ const AboutUs = () => {
               borderRadius={"50px"}
             />
           </Flex>
+{author.map((author)=>(
+          <VStack boxShadow="lg" spacing={5}>
+          <motion.div whileHover={{ y: -5, scale: 1.1 }}>
+            {/* Use motion.div here */}
+            <Box _hover={{ boxShadow: "lg" }} >
+            <Avatar size='2xl' name='Segun Adebayo' 
+            src= {author.image}
+             />
+            </Box>
+          </motion.div>
+          <Heading
+          mt={"10px"}
+            fontSize="xl"
+            fontFamily="body"
+            textTransform="capitalize"
+            noOfLines={2}
+          >
+            {author.name}
+          </Heading>
+         
+          <Fade in>
+          </Fade>
+          <Divider />
+          <Flex alignItems="center" justify="center" w="100%">
+          
+          </Flex>
+        </VStack>
+          ))}
+         <Box>
 
-          <Author />
-          <Author />
-          <Author />
-          <Author />
+         </Box>
         </SimpleGrid>
       </Container>
     </div>

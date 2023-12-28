@@ -1,7 +1,6 @@
 import React from "react";
 import {
   Box,
-  Text,
   Heading,
   Flex,
   Avatar,
@@ -12,7 +11,7 @@ import {
   Fade,
 } from "@chakra-ui/react";
 import { motion } from "framer-motion"; // Import motion from framer-motion
-
+import image from "../src/imgs/baba1.jpeg"
 const SocialMediaLink = ({ url, label, type, icon }) => (
   <IconButton
     as={Link}
@@ -33,15 +32,13 @@ const Cardmain = ({ author }) => {
     <VStack spacing={5}>
       <motion.div whileHover={{ y: -5, scale: 1.1 }}>
         {/* Use motion.div here */}
-        <Box boxShadow="xl" _hover={{ boxShadow: "lg" }} borderRadius="full">
-          <Avatar
-            _groupHover={{ width: "5rem", height: "5rem" }}
-            size="xl"
-            src="https://avatars2.githubusercontent.com/u/37842853?v=4"
-          />
+        <Box  _hover={{ boxShadow: "lg" }} >
+        <Avatar size='2xl' name='Segun Adebayo' src={image} 
+         />
         </Box>
       </motion.div>
       <Heading
+      mt={"10px"}
         fontSize="xl"
         fontFamily="body"
         textTransform="capitalize"
@@ -49,17 +46,9 @@ const Cardmain = ({ author }) => {
       >
         {author.name}
       </Heading>
-      <Text
-        color="gray.500"
-        fontSize="lg"
-        noOfLines={{ base: 3, md: 4 }}
-        _groupHover={{ display: "none" }}
-        display="block"
-      >
-        Founder
-      </Text>
+     
       <Fade in>
-        <Text
+        {/* <Text
           color="gray.500"
           fontSize="lg"
           noOfLines={{ base: 3, md: 4 }}
@@ -67,7 +56,7 @@ const Cardmain = ({ author }) => {
           display="none"
         >
           I'm a Founder of Dukh Bhanjan
-        </Text>
+        </Text> */}
       </Fade>
       <Divider />
       <Flex alignItems="center" justify="center" w="100%">
