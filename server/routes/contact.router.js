@@ -5,9 +5,9 @@ const { handleContactCreate, handleContactGet } = require("../controller/contact
 
 
  const ContactRouter = express.Router()
- ContactRouter.use(auth)
+//  ContactRouter.use(auth)
 
- ContactRouter.post("/create", handleContactCreate)
+ ContactRouter.post("/create",auth, handleContactCreate)
  ContactRouter.get("/", handleContactGet)
 
 module.exports = {

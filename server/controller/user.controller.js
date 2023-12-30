@@ -51,6 +51,22 @@ const handleUserLogin = async (req, res) => {
     }
 }
 
+const getAllUser = async(req,res) => {
+    // const {UserId} = req.body 
+    try {
+        const userData = await UserModel.find() 
+        if(userData){
+            res.status(200).json({msg:"All user get success", users:userData, state:true})
+        }else{
+            res.status(400).json({msg:"User Not Found"}) 
+        }
+    } catch (error) {
+        console.log(error);
+}
+
+
+}
+
 const handleProfileData = async(req,res,) => {
 const {UserId} = req.body 
 
@@ -163,5 +179,5 @@ try {
 
 
 module.exports = {
-    handleUserRegister, handleUserLogin,handleProfileData,handleForgotPass
+    handleUserRegister, handleUserLogin,handleProfileData,handleForgotPass,getAllUser
 }

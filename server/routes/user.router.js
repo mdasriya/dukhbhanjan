@@ -8,7 +8,7 @@ const nodemailer = require("nodemailer");
 
   UserRouter.post("/register", handleUserRegister)
   UserRouter.post("/login", handleUserLogin)
-  // UserRouter.get("/", getAllUser)
+  UserRouter.get("/", getAllUser)
 
   UserRouter.get("/profile",auth, handleProfileData)
   UserRouter.post("/forgot-password", handleForgotPass)

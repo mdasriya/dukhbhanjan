@@ -36,6 +36,7 @@ const { addressModel } = require("../model/address.model")
     
  }
  const handleGetUserAddress = async(req,res) =>{
+   const {UserId} = req.body
     try {
         const address = await addressModel.find({_id:UserId}) 
         res.status(200).send(address)
@@ -44,6 +45,17 @@ const { addressModel } = require("../model/address.model")
        }
 
  }
+
+const handleGetAllAddress = async(req,res) => {
+   try {
+      const address = await addressModel.find() 
+      res.status(200).send(address)
+     } catch (error) {
+       res.status(500).json({msg:"Something Went Wrong", error:error.message})
+     }
+}
+
+
  const handleUpdateUserAddress = async(req,res) =>{
    
         const addressIdinUserDoc = req.body.AddressId
@@ -57,7 +69,7 @@ const { addressModel } = require("../model/address.model")
             if (addressIdinUserDoc === userIDinAddressDoc) {
               
                await addressModel.findByIdAndUpdate({_id:addressId}, req.body)
-               res.json({msg:`Address has been updated`})
+               res.json({msg:`Address update success!!`})
             } else {
                 res.json({ msg: "you are not Authorized" })
             }
@@ -70,5 +82,5 @@ const { addressModel } = require("../model/address.model")
  }
 
  module.exports = {
-    handleCreateUserAddress,handleGetUserAddress,handleUpdateUserAddress
+    handleCreateUserAddress,handleGetUserAddress,handleUpdateUserAddress,handleGetAllAddress
  }
