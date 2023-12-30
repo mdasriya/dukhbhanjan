@@ -9,7 +9,6 @@ const initState = {
 
 export const reducer = (state = initState, { type, payload }) => {
     switch (type) {
-
         case PRODUCT_REQUEST:
             return { ...state, isLoading: true }
       

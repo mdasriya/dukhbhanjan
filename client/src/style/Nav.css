@@ -10,6 +10,10 @@
 .nav-link:hover {
   color: #fff44f; /* Change the color on hover */
 }
+.chakra-text{
+  margin-left: -19px;
+} 
+
 
 /* nav log css rortae start */
 .container{

@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Flex,
   Box,
@@ -88,7 +86,7 @@ export default function SignUp() {
       return;
     } else {
       let data = { firstName, lastName, email, pass }
-      axios.post("http://localhost:4000/user/register", data)
+      axios.post("https://vast-teal-abalone-wrap.cyclic.app/user/register", data)
         .then(res => {
           setError(false)
           if(res.data.msg){
@@ -98,11 +96,11 @@ export default function SignUp() {
               title: 'Account created.',
               description: `Welcome ${firstName}`,
               status: 'success',
-              duration: 5000,
+              duration: 3000,
               isClosable: true,
               position:"top-right"
             })
-            navigate("/")
+            navigate("/login")
           }
         })
         .catch((error) => {

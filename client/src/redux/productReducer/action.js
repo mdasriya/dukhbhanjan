@@ -3,7 +3,7 @@ import { GET_PRODUCT_SUCCESS, PRODUCT_FAILURE, PRODUCT_REQUEST } from "./actionT
 
 export const getProduct = () =>  (dispatch) => {
    dispatch({ type: PRODUCT_REQUEST })
-   axios.get("http://localhost:4000/products")
+   axios.get("https://vast-teal-abalone-wrap.cyclic.app/products")
       .then((res) => {
          dispatch({ type: GET_PRODUCT_SUCCESS, payload: res.data })
       })

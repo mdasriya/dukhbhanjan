@@ -23,7 +23,7 @@ import Profile from "./pages/Profile";
 import Oderse from "./pages/Oderse";
 import Cart from "./pages/Cart";
 import Practiescart from "./pages/Practiescart";
-import MultiStepForm from "./pages/MultiStepForm";
+// import MultiStepForm from "./pages/MultiStepForm";
 import Mantra from "./pages/Mantra";
 import Loading from "./components/Loading";
 import styled from "@emotion/styled";
@@ -65,12 +65,12 @@ const App = () => {
               <Route path="workshipitems" element={<WorkshipItems />} />
               <Route path="yantra" element={<Yantra />} />
               <Route path="success" element={<Success />} />
-              <Route path="/profile" element={<PrivateRoutes><Profile /></PrivateRoutes>} />
-              <Route path="/orders" element={<Oderse />} />
+              <Route path="/profile" element={<PrivateRoutes><Profile /></PrivateRoutes> } />
+              <Route path="/orders" element={<PrivateRoutes><Oderse /></PrivateRoutes>} />
               <Route path="/newcart" element={<Cart />} />
               <Route path="/pra" element={<Practiescart />} />
-              <Route path="/stepper" element={<MultiStepForm />} />
-              <Route path="/success" element={<Success />} />
+              {/* <Route path="/stepper" element={<MultiStepForm />} /> */}
+              <Route path="/success" element={<PrivateRoutes><Success /></PrivateRoutes>} />
               <Route path="/mantra" element={<Mantra />} />
             </Routes>
             <Footer />

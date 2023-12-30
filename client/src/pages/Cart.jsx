@@ -32,6 +32,7 @@ import {
   ModalFooter,
   SkeletonCircle,
   SkeletonText,
+  IconButton,
 } from '@chakra-ui/react';
 
 import { FaArrowRight } from 'react-icons/fa';
@@ -88,7 +89,7 @@ const Cart = () => {
   const handleDelete = async (id) => {
   setDeleteloading(true)
     try {
-      const response = await axios.delete(`http://localhost:4000/cart/delete/${id}`, {
+      const response = await axios.delete(`https://vast-teal-abalone-wrap.cyclic.app/cart/delete/${id}`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -108,7 +109,7 @@ const Cart = () => {
 
   const getCartProduct = () => {
     return axios
-      .get('http://localhost:4000/cart', {
+      .get('https://vast-teal-abalone-wrap.cyclic.app/cart', {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -125,7 +126,7 @@ const Cart = () => {
   };
   const handlePayment = async () => {
     try {
-      const { data } = await axios.post("http://localhost:4000/api/payment/orders", { amount: totalPrice }, {
+      const { data } = await axios.post("https://vast-teal-abalone-wrap.cyclic.app/api/payment/orders", { amount: totalPrice }, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -155,7 +156,7 @@ const Cart = () => {
       order_id: data.id,
       handler: async (response) => {
         try {
-          await axios.post("http://localhost:4000/api/payment/verify",response,{
+          await axios.post("https://vast-teal-abalone-wrap.cyclic.app/api/payment/verify",response,{
             headers: {
               'Content-Type': 'application/json',
               Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -196,7 +197,7 @@ const Cart = () => {
 
   const handledeleteCartData = async (data) => {
     return axios
-      .post('http://localhost:4000/cart/order/delete', data, {
+      .post('https://vast-teal-abalone-wrap.cyclic.app/cart/order/delete', data, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -243,7 +244,7 @@ const Cart = () => {
         isClosable: true,
       })
     } else {
-      axios.post("http://localhost:4000/address/create", address, {
+      axios.post("https://vast-teal-abalone-wrap.cyclic.app/address/create", address, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -267,7 +268,7 @@ const Cart = () => {
   const handleMyOrderData = async (datatoAdd) => {
 
     try {
-      const response = await axios.post("http://localhost:4000/order/create", datatoAdd, {
+      const response = await axios.post("https://vast-teal-abalone-wrap.cyclic.app/order/create", datatoAdd, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -283,7 +284,7 @@ const Cart = () => {
   const conditionallyPaymentForm = async () => {
 
     try {
-      const response = await axios.post("http://localhost:4000/address/create", address, {
+      const response = await axios.post("https://vast-teal-abalone-wrap.cyclic.app/address/create", address, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -380,7 +381,7 @@ const Cart = () => {
 
           {cartData.length > 0 ? (
             <>
-              <Heading ml={5} color={"gray.500"} mt={5} fontSize="1.5vw" fontWeight="bold">
+              <Heading ml={5} color={"gray.500"} mt={5} fontSize={{base:"20px", md:'25px'}} fontWeight="bold">
                 Shopping Cart ({cartData.length} items)
               </Heading>
               <Box
@@ -406,42 +407,40 @@ const Cart = () => {
                   {cartData && cartData.map((item) => (
                     <Box
                       className='cart_Main'
-                   
+                  
                       key={item._id}
                       boxShadow="rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;"
                       flexWrap="wrap"
                       alignItems={"center"}
-                      mt={10}
                       justifyContent="space-between"
                       display="flex"
+                
                       height="30%"
                     // border={"1px solid red"}
                     >
                       {/* Image */}
-                      <Box className='image_outer' width="25%" height="100%">
+                      <Box className='image_outer'  width="25%"   height={{base:"50%",md:'100%'}}>
                         <Image
                           className='cart_image'
-                          mt={2}
-                          ml={5}
                           borderRadius="10px"
-                          width="90%"
-                          height="90%"
+                         
                           objectFit="cover"
                           src={item.image}
                           alt={item.title}
                         />
+                
                       </Box>
 
                       {/* Title box */}
-                      <Box className='cart_title' width="10%" position="relative" height="100%">
-                        <Text className='title' fontSize="17px" position="absolute" top="40%" color="gray.600">
+                      <Box className='cart_title' width="10%"  height="100%">
+                        <Text className='title' fontSize="17px"  color="gray.600">
                          {item.title}
                         </Text>
                       </Box>
 
                       {/* Select quantity box */}
-                      <Box className='cart_quality' width="10%" position="relative" height="100%">
-                        <Select onChange={(e) => handleQuantity(item._id, e)} position="absolute" top="40%">
+                      <Box className='cart_quality' width="10%"  height="100%">
+                        <Select onChange={(e) => handleQuantity(item._id, e)} >
                           {[1, 2, 3, 4, 5].map((value) => (
                             <option key={value} value={value}>
                               {value}
@@ -452,24 +451,24 @@ const Cart = () => {
                       <Text className='product_quality'>{item.quality}</Text>
 
                       {/* Price box */}
-                      <Box className='product_price' width="10%" position="relative" height="100%">
-                        <Text className='product_title' fontSize="20px" position="absolute" color="gray.600">
+                      <Box className='product_price' width="10%"  height="100%">
+                        <Text className='price'  fontSize={{base:"20px", md:"20px"}} color="gray.600">
                           ₹{item.price * (item.quantity || 1)} Per Ratti
                         </Text>
                       </Box>
 
                       {/* Delete icon */}
-                      <Box className='cart_delete' width="10%" position="relative" height="100%">
-                        <CloseIcon
-                          className='delete'
-                          cursor="pointer"
-                          _hover={{ color: 'red' }}
-                          onClick={() => handleDelete(item._id)}
-                          boxSize={4}
-                          position="absolute"
-                          top="40%"
-                          color="GrayText"
+
+                      <Box onClick={()=>handleDelete(item._id)} className='cart_delete' width="10%" position="relative" height="100%" p={4}>
+                        <IconButton
+                        
+                          icon={<CloseIcon />}
+                          colorScheme='red'
+                          variant={"outline"}
+                          isRound
                         />
+
+                      
                       </Box>
                     </Box>
 
@@ -537,12 +536,12 @@ const Cart = () => {
           ) : (
             <Center height={'40vh'} display={'flex'} flexDirection={'column'} alignItems={'center'}>
 
-              <Box mt={"200px"} mb={3}><GiShoppingCart size={"150px"} /></Box>
+              <Box  mt={{base:"100px", md:"170px"}} mb={3}><GiShoppingCart size={"150px"} /></Box>
               <Box mb={'70px'}>
-                <Text fontSize="lg" fontWeight="bold">
+                <Text fontSize="lg" marginLeft={5} fontWeight="bold">
                   Your Cart is Empty
                 </Text>
-                <Button mt={4} onClick={() => navigate("/gemstones")} _hover={{ textDecoration: 'none', cursor: 'pointer' }} color={"white"} colorScheme='yellow'>Continue Shopping</Button>
+                <Button mt={4} ml={4} onClick={() => navigate("/gemstones")} _hover={{ textDecoration: 'none', cursor: 'pointer' }} color={"white"} colorScheme='yellow'>Continue Shopping</Button>
 
               </Box>
             </Center>
@@ -562,67 +561,75 @@ const DIV = styled.div`
 @media only screen and (max-width: 600px) {
  
   .cart_Main{
-    border: 1px solid blue;
-  /* height: 100px; */
+  
     display: flex;
     flex-direction: column;
   }
   .image_outer{
-    width: 100%;
+    margin-left:-30px;
+    width: 90%;
   }
   .cart_image{
     width: 500px;
-    border: 1px solid cyan;
-   margin-top: 0px;
-   margin-left: 0px;
+  
   }
   .cart_title{
-    border: 1px solid red;
+   
     width: 100%;
   }
   .title{
     font-size: 25px;
+    margin-top: 10px;
+    margin-left: 15px;
   }
   .cart_quality{
-    width: 100%;
-    margin-top: 50px;
+    width: 95%;
+    margin-top: 10px;
+    margin-left: -10px;
   }
   .product_quality{
     width: 100%;
-    margin-top: 50px;
-    font-size: 20px;
+    margin-left: 25px;
+    margin-top: 10px;
+    /* margin-left: 10px; */
+    font-size: 25px;
+    color: #686666;
   }
   .product_price{
     width: 100%;
-    border: 1px solid black;
+    margin-top: 10px;
+    margin-left: 25px;
+  }
+  .price{
+    margin-left: 5px; 
   }
   .product_title{
     width: 100%;
     margin-top: 10px;
-    border: 1px solid black;
+    
   }
   .cart_delete{
-    border: 1px solid green;
+    
     width: 100%;
-    margin-top: 30px;
+    margin-top: 10px;
     justify-content: center;
     text-align: center; 
   }
   .delete{
-    border: 1px solid #f56262;
+    
     width: 70%;
     background-color: #f56262;
-    /* box-sizing: 50px; */
+    
     color: #000000;
-    /* border: 1px solid red; */
+
   font-size: 50px;
   margin-top: 20px;
   margin-left: -130px;
    font-size: 70px;
-   /* padding: 10px; */
+   
   }
 
-  /* Additional styles for small devices */
+  
 }
 
 /* Responsive styles for medium devices (tablets) */

@@ -37,7 +37,7 @@ export default function Login({ }) {
     e.preventDefault()
     setIsLoading(true);
     const data = { email, pass }
-    axios.post("http://localhost:4000/user/login", data)
+    axios.post("https://vast-teal-abalone-wrap.cyclic.app/user/login", data)
       .then(res => {
    setIsLoading(true)
         localStorage.setItem("token", res.data.token)

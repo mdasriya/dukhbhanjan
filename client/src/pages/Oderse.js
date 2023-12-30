@@ -11,7 +11,7 @@ const Oderse = () => {
   useEffect(() => {
     setLoading(true)
     axios
-      .get('http://localhost:4000/order', {
+      .get('https://vast-teal-abalone-wrap.cyclic.app/order', {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,

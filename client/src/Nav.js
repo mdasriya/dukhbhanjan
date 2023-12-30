@@ -17,8 +17,9 @@ import {
   MenuList,
   MenuItem,
   Avatar,
-
+  
 } from "@chakra-ui/react";
+import sun from "../src/imgs/sun.png"
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useToast } from '@chakra-ui/react'
@@ -32,7 +33,6 @@ export default function Nav() {
   const [username, setUsername] = useState("")
   const navigate = useNavigate();
   const { theme } = useContext(ThemeContext);
-
 
   const handleLogout = () => {
     // Perform logout logic (clear user session, etc.)
@@ -50,10 +50,12 @@ export default function Nav() {
       })
       navigate("/")
     }
-
-
   };
 
+
+  const handleCloseNav = () => {
+    onClose()
+  }
 
 
 
@@ -64,7 +66,7 @@ export default function Nav() {
   useEffect(() => {
     const getCartProduct = () => {
       return axios
-        .get('http://localhost:4000/cart', {
+        .get('https://vast-teal-abalone-wrap.cyclic.app/cart', {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -84,7 +86,7 @@ export default function Nav() {
 
   return (
     <>
-      <Box bg={"gray.100"} px={4} >
+      <Box bg={"yellow.200"} px={4} >
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
           <IconButton
             size={"md"}
@@ -94,10 +96,10 @@ export default function Nav() {
             onClick={isOpen ? onClose : onOpen}
           />
           <HStack spacing={8} alignItems={"center"}>
-            <Box className="rotate-container">
-              <Image src="http://localhost:3000/static/media/sun.121ef67838daba6b63c1.png" className="rotate-image" height={"60px"} width={"60px"} />
+            <Box onClick={()=> navigate("/")} className="rotate-container" _hover={{cursor:"pointer"}}>
+              <Image src={sun} className="rotate-image" height={"60px"} width={"60px"} />
             </Box>
-            <Text fontWeight="bold" fontSize={{ base: "23px", md: "30px" }} ml={{base:"-30px 0px"}}>
+            <Text fontWeight="bold" fontSize={{ base: "20px", md: "30px" }} ml={{base:"-60px 0px"}}>
               Dukha Bhanjan
             </Text>
 
@@ -109,10 +111,10 @@ export default function Nav() {
               position={"relative"}
               left={"25rem"}
             >
-              <Link to="/" style={{ fontWeight: "600", color: "gray.900" }}>HOME</Link>
-              <Link to="/contact" style={{ fontWeight: "600", color: "gray.900" }} >CONTACT US</Link>
+              <Link to="/" style={{ fontWeight: "600", color: "gray" }}>HOME</Link>
+              <Link to="/contact" style={{ fontWeight: "600", color: "gray" }} >CONTACT US</Link>
               <Menu>
-                <MenuButton bg="transparent" fontWeight={"600"} color={"gray.900"} >
+                <MenuButton bg="transparent" fontWeight={"600"} color={"gray"} >
                   SHOP
                 </MenuButton>
                 <MenuList>
@@ -128,7 +130,7 @@ export default function Nav() {
                 </MenuList>
               </Menu>
               <Menu>
-                <MenuButton bg="transparent" fontWeight={"600"} color={"gray.900"}>
+                <MenuButton bg="transparent" fontWeight={"600"} color={"gray"}>
                   SERVICES
                 </MenuButton>
                 <MenuList>
@@ -141,7 +143,7 @@ export default function Nav() {
                 </MenuList>
               </Menu>
 
-              <Link to="/about" style={{ fontWeight: "600", color: "gray.900" }}>ABOUT US</Link>
+              <Link to="/about" style={{ fontWeight: "600", color: "gray" }}>ABOUT US</Link>
               {/* <Link to="/newcart" style={{ fontWeight: "600", color: "gray.900" }}>CART</Link> */}
               <Link to="/newcart">
                 <IoCart size={24} style={{ marginRight: '5px' }} />
@@ -202,37 +204,37 @@ export default function Nav() {
         {isOpen ? (
           <Box pb={4} display={{ md: "none" }}>
             <Stack as={"nav"} spacing={4}>
-              <Link to="/">Home</Link>
-              <Link to="/contact">Contact Us</Link>
-              <Link to="/about">About Us</Link>
-              <Link to="/newcart">My Cart</Link>
+              <Link to="/" onClick={handleCloseNav}>Home</Link>
+              <Link to="/contact" onClick={handleCloseNav}>Contact Us</Link>
+              <Link to="/about" onClick={handleCloseNav}>About Us</Link>
+              <Link to="/newcart" onClick={handleCloseNav}>My Cart</Link>
 
               <Menu>
-                <MenuButton textAlign={"start"} bg="transparent" fontWeight={"400"}>
+                <MenuButton  textAlign={"start"} bg="transparent" fontWeight={"400"}>
                   Shop
                 </MenuButton>
                 <MenuList>
                   <MenuItem>
-                    <Link to="/yantra">Yantra</Link>
+                    <Link to="/yantra" onClick={handleCloseNav}>Yantra</Link>
                   </MenuItem>
                   <MenuItem>
-                    <Link to="/workshipitems">WorkShip Items</Link>
+                    <Link to="/workshipitems" onClick={handleCloseNav}>WorkShip Items</Link>
                   </MenuItem>
                   <MenuItem>
-                    <Link to="/gemstones">Gemstones</Link>
+                    <Link to="/gemstones" onClick={handleCloseNav}>Gemstones</Link>
                   </MenuItem>
                 </MenuList>
               </Menu>
               <Menu>
                 <MenuButton bg="transparent" fontWeight={"400"}>
-                  <Box className="sbtn" textAlign={"start"}>Services</Box>
+                  <Box className="sbtn" ml={{base:"-10px", md:"0px"}} textAlign={"start"}>Services</Box>
                 </MenuButton>
                 <MenuList>
                   <MenuItem>
-                    <Link to="kundali"> Send Your Kundali</Link>
+                    <Link to="kundali" onClick={handleCloseNav}> Send Your Kundali</Link>
                   </MenuItem>
                   <MenuItem>
-                    <Link to="services">Remedies</Link>
+                    <Link to="services" onClick={handleCloseNav}>Remedies</Link>
                   </MenuItem>
 
                   {/* Add more options as needed */}

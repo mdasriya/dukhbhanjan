@@ -70,7 +70,7 @@ const {toggleTheme } = useContext(ThemeContext);
     };
     try {
       const response = await axios.post(
-        'http://localhost:4000/cart/create',
+        'https://vast-teal-abalone-wrap.cyclic.app/cart/create',
         finalData,
         {
           headers: {
@@ -145,8 +145,8 @@ const {toggleTheme } = useContext(ThemeContext);
           borderRadius: '3px',
         }}
       >
-        <Image src={image} borderRadius={"10px"} alt={title} width="100%" height={['150px', '200px']} />
-        <Box textAlign="left" mt={2}>
+        <Image src={image} borderRadius={"10px"} alt={title} width="100%" height={['190px', '200px']} />
+        <Box textAlign="left" ml={5} mt={2}>
           <Text>Name: {title}</Text>
           <Text>Des: {description}</Text>
         </Box>

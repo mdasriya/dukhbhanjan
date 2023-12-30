@@ -1,6 +1,8 @@
 import styled from '@emotion/styled'
 import React from 'react'
 import { Box, Image, Text } from '@chakra-ui/react'
+import sun from "../imgs/sun.png"
+
 const Loading = () => {
   return (
     <DIV>
@@ -9,7 +11,7 @@ const Loading = () => {
       className="rotate-image"
   borderRadius='full'
   boxSize='150px'
-  src='http://localhost:3000/static/media/sun.121ef67838daba6b63c1.png'
+  src={sun}
   alt='Dan Abramov'
 />
 <Text mt={2} ml={7} fontSize={"23px"}>Loading...</Text>

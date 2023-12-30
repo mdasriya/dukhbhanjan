@@ -5,13 +5,15 @@ const { handlekundaliCreate, handlekundaliGet } = require("../controller/kundali
 
 
  const KundaliRouter = express.Router()
- KundaliRouter.use(auth)
 
- KundaliRouter.post("/create", handlekundaliCreate)
+
+ KundaliRouter.post("/create", auth, handlekundaliCreate)
  KundaliRouter.get("/", handlekundaliGet)
 
 module.exports = {
     KundaliRouter
 }
   
+// 7825874774
+// ask@axio.co.in
 

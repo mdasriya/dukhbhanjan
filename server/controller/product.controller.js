@@ -35,7 +35,6 @@ const { ProductModel } = require("../model/product.model")
       //     console.log(error);
       //  }
   
-
  //}
 
 //  const handleDeleteProduct = async(req,res) => {
