@@ -100,7 +100,10 @@ const razorpay = new Razorpay({
 
 const app = express();
 app.use(express.static("public"));
-app.use(cors());
+app.use(app.use(cors({
+  origin: 'https://dukhbhanjan.vercel.app',
+  credentials: true,  // You may need to set this depending on your use case
+})));
 app.use(express.json());
 app.use("/user", UserRouter)
 app.use("/kundali", KundaliRouter)
