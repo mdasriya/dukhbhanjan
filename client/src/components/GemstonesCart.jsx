@@ -70,7 +70,7 @@ const {toggleTheme } = useContext(ThemeContext);
     };
     try {
       const response = await axios.post(
-        'https://vast-teal-abalone-wrap.cyclic.app/cart/create',
+        'https://dull-gray-jackrabbit-shoe.cyclic.app/cart/create',
         finalData,
         {
           headers: {

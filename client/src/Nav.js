@@ -66,7 +66,7 @@ export default function Nav() {
   useEffect(() => {
     const getCartProduct = () => {
       return axios
-        .get('https://vast-teal-abalone-wrap.cyclic.app/cart', {
+        .get('https://dull-gray-jackrabbit-shoe.cyclic.app/cart', {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${localStorage.getItem('token')}`,

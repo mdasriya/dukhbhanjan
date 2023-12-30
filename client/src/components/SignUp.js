@@ -86,7 +86,7 @@ export default function SignUp() {
       return;
     } else {
       let data = { firstName, lastName, email, pass }
-      axios.post("https://vast-teal-abalone-wrap.cyclic.app/user/register", data)
+      axios.post("https://dull-gray-jackrabbit-shoe.cyclic.app/user/register", data)
         .then(res => {
           setError(false)
           if(res.data.msg){

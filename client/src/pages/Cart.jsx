@@ -89,7 +89,7 @@ const Cart = () => {
   const handleDelete = async (id) => {
   setDeleteloading(true)
     try {
-      const response = await axios.delete(`https://vast-teal-abalone-wrap.cyclic.app/cart/delete/${id}`, {
+      const response = await axios.delete(`https://dull-gray-jackrabbit-shoe.cyclic.app/cart/delete/${id}`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -109,7 +109,7 @@ const Cart = () => {
 
   const getCartProduct = () => {
     return axios
-      .get('https://vast-teal-abalone-wrap.cyclic.app/cart', {
+      .get('https://dull-gray-jackrabbit-shoe.cyclic.app/cart', {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -126,7 +126,7 @@ const Cart = () => {
   };
   const handlePayment = async () => {
     try {
-      const { data } = await axios.post("https://vast-teal-abalone-wrap.cyclic.app/api/payment/orders", { amount: totalPrice }, {
+      const { data } = await axios.post("https://dull-gray-jackrabbit-shoe.cyclic.app/api/payment/orders", { amount: totalPrice }, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -156,7 +156,7 @@ const Cart = () => {
       order_id: data.id,
       handler: async (response) => {
         try {
-          await axios.post("https://vast-teal-abalone-wrap.cyclic.app/api/payment/verify",response,{
+          await axios.post("https://dull-gray-jackrabbit-shoe.cyclic.app/api/payment/verify",response,{
             headers: {
               'Content-Type': 'application/json',
               Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -197,7 +197,7 @@ const Cart = () => {
 
   const handledeleteCartData = async (data) => {
     return axios
-      .post('https://vast-teal-abalone-wrap.cyclic.app/cart/order/delete', data, {
+      .post('https://dull-gray-jackrabbit-shoe.cyclic.app/cart/order/delete', data, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -244,7 +244,7 @@ const Cart = () => {
         isClosable: true,
       })
     } else {
-      axios.post("https://vast-teal-abalone-wrap.cyclic.app/address/create", address, {
+      axios.post("https://dull-gray-jackrabbit-shoe.cyclic.app/address/create", address, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -268,7 +268,7 @@ const Cart = () => {
   const handleMyOrderData = async (datatoAdd) => {
 
     try {
-      const response = await axios.post("https://vast-teal-abalone-wrap.cyclic.app/order/create", datatoAdd, {
+      const response = await axios.post("https://dull-gray-jackrabbit-shoe.cyclic.app/order/create", datatoAdd, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -284,7 +284,7 @@ const Cart = () => {
   const conditionallyPaymentForm = async () => {
 
     try {
-      const response = await axios.post("https://vast-teal-abalone-wrap.cyclic.app/address/create", address, {
+      const response = await axios.post("https://dull-gray-jackrabbit-shoe.cyclic.app/address/create", address, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -414,16 +414,17 @@ const Cart = () => {
                       alignItems={"center"}
                       justifyContent="space-between"
                       display="flex"
-                
+                mt={"15px"}
                       height="30%"
                     // border={"1px solid red"}
                     >
                       {/* Image */}
-                      <Box className='image_outer'  width="25%"   height={{base:"50%",md:'100%'}}>
+                      <Box className='image_outer'  width="25%"   height={{base:"50%",md:'150px'}}>
                         <Image
                           className='cart_image'
                           borderRadius="10px"
-                         
+                          width={"100%"}
+                         height={"100%"}
                           objectFit="cover"
                           src={item.image}
                           alt={item.title}
@@ -432,7 +433,7 @@ const Cart = () => {
                       </Box>
 
                       {/* Title box */}
-                      <Box className='cart_title' width="10%"  height="100%">
+                      <Box className='cart_title' width="auto"  height="100%">
                         <Text className='title' fontSize="17px"  color="gray.600">
                          {item.title}
                         </Text>
@@ -448,12 +449,12 @@ const Cart = () => {
                           ))}
                         </Select>
                       </Box>
-                      <Text className='product_quality'>{item.quality}</Text>
+                      <Text className='product_quality' fontSize="17px"  color="gray.600">{item.quality}</Text>
 
                       {/* Price box */}
-                      <Box className='product_price' width="10%"  height="100%">
-                        <Text className='price'  fontSize={{base:"20px", md:"20px"}} color="gray.600">
-                          ₹{item.price * (item.quantity || 1)} Per Ratti
+                      <Box className='product_price' width="14%"  height="100%">
+                        <Text className='price'  fontSize={{base:"20px", md:"17px"}} color="gray.600">
+                          ₹ {item.price * (item.quantity || 1)} Per Ratti
                         </Text>
                       </Box>
 

@@ -37,7 +37,7 @@ export default function Login({ }) {
     e.preventDefault()
     setIsLoading(true);
     const data = { email, pass }
-    axios.post("https://vast-teal-abalone-wrap.cyclic.app/user/login", data)
+    axios.post("https://dull-gray-jackrabbit-shoe.cyclic.app/user/login", data)
       .then(res => {
    setIsLoading(true)
         localStorage.setItem("token", res.data.token)
@@ -147,7 +147,7 @@ export default function Login({ }) {
                 <Center>
                 <Flex>
                 <Text align={"center"} >
-                  New User ? <Text color={"blue"} as={"u"} _hover={{cursor:"pointer"}} onClick={()=>navigate("/signup")}>Register Here</Text>
+                  New User ? <Text ml={1} color={"blue"} as={"u"} _hover={{cursor:"pointer"}} onClick={()=>navigate("/signup")}>Register Here</Text>
                 </Text>
                 </Flex>
                 </Center>

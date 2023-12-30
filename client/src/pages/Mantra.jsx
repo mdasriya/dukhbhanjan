@@ -17,6 +17,8 @@ import {
 import MantraData from "./MantraData";
 import { FaArrowDownLong } from "react-icons/fa6";
 import pdf from "../../src/mantra.pdf";
+
+
 const Mantra = () => {
   return (
     <>
@@ -37,9 +39,11 @@ const Mantra = () => {
               // onClick={handleDownload}
             >
               Downlaod Mantra
-              <FaArrowDownLong ml={20} fontSize={"15px"} />
+              <FaArrowDownLong ml={24} fontSize={"15px"} />
             </Button>
           </a>
+
+          
         </Center>
         <TableContainer>
           <Table

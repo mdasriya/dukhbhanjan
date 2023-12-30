@@ -65,7 +65,7 @@ const handleSend = async() => {
   setIsLoading(true)
 if(data.name && data.email && data.PhoneNo && data.message && data.subject){
   try {
-    const response = await axios.post("https://vast-teal-abalone-wrap.cyclic.app/contact/create", data, {
+    const response = await axios.post("https://dull-gray-jackrabbit-shoe.cyclic.app/contact/create", data, {
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${localStorage.getItem("token")}`
@@ -74,7 +74,7 @@ if(data.name && data.email && data.PhoneNo && data.message && data.subject){
 
 if(response.data){
 toast({
-title: "Kundli send successfully",
+title: "Your Query send successfully",
 status: "success",
 duration: 5000,
 isClosable: true,
