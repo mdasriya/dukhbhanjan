@@ -6,6 +6,8 @@ const userSchema = mongoose.Schema({
  lastName:{type:"string", required:true},
  email:{type:"string", required:true},
  pass:{type:"string", required:true},
+ resetPin: { type: String, default: null }, 
+ resetPinExpiration: { type: Date, default: null },
 
 },{
    versionKey:false

@@ -1,5 +1,5 @@
 
-const brypt = require("bcrypt")
+const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken")
 const { UserModel } = require("../model/user.model")
 const nodemailer = require("nodemailer")
@@ -12,7 +12,7 @@ const handleUserRegister = async (req, res) => {
         if (reqdata.length > 0) {
             res.status(200).json({ msg: "you are Alerady Register" })
         } else {
-            brypt.hash(pass, 5, async (err, hash) => {
+            bcrypt.hash(pass, 5, async (err, hash) => {
                 if (err) {
                     res.status(400).json({ msg: err.message })
                 } else {
@@ -33,7 +33,7 @@ const handleUserLogin = async (req, res) => {
     try {
         const findData = await UserModel.findOne({ email })
         if (findData) {
-            brypt.compare(pass, findData.pass, (err, result) => {
+            bcrypt.compare(pass, findData.pass, (err, result) => {
                 if (result) {
                     const token = jwt.sign({ UserId: findData._id, user: findData.firstName }, "masai")
                     res.status(200).json({ msg: "User Login Success!!!", token: token, username: findData.firstName})
@@ -86,98 +86,139 @@ try {
 
 
 const handleForgotPass =  async(req,res) => {
-    const { email } = req.body;
-try {
-    const user = await UserModel.findOne({email})
-    if (user) {
-        // console.log(email)
-        const verificationCode = uuidv4();
-       // Store the verification code in memory
+    const {changeEmail} = req.body
+   
+    try {
+      const user = await UserModel.findOne({email:changeEmail})
+     if(user){
+         
+         const randomPin = Math.random().toString(36).substr(2, 6).toUpperCase();
+         const expirationTime = new Date();
+         expirationTime.setSeconds(expirationTime.getSeconds() + 90);
+         
+          // Update the user with the new pin and expiration time
+          await UserModel.updateOne(
+            { email: changeEmail },
+            { $set: { resetPin: randomPin, resetPinExpiration: expirationTime } }
+        );
 
-       const transporter = nodemailer.createTransport({
-        host: 'smtp.forwardemail.net',
-        port: 465,
-        secure: true,
-        auth: {
-            user: 'edward.cruickshank@ethereal.email',
-            pass: '6AYYJQAJgepx7zSQh9'
-        },
-        tls: {
-          rejectUnauthorized: false,
-        },
-      });
+        var transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+              user: 'mukeshd4797@gmail.com',
+              pass: 'pgwotikfugwbrgvt'
+            }
+          });
+          var mailOptions = {
+            from: 'mukeshd4797@gmail.com',
+            to: user.email,
+            subject: `Dukha bhanjan Password Change pin request`,
+              text: `Welcome to Dukha bhanjab `,
+              html: `
+              <p>This pin is only valid for 60 seconds.</p>
+              <p style="color: black; font-size: 18px;"> Pin code ${randomPin}</p>
+          `,
+          };
+          transporter.sendMail(mailOptions, function(error, info){
+            if (error) {
+                res.status(200).json({msg:'Unable to send email try  after sometime',state:false}) 
+            } else if(info.response) {
+              console.log('Email sent: ' + info.response);
+            //   res.status(200).json({msg:'Email send Successfully',state:true, pincode:randomPin})  
+            }
+          });
+        res.status(200).json({msg:'Email send Successfully',state:true, pincode:randomPin})
+     }else{
+        res.status(200).json({msg:'User not found',state:false}) 
+     }
+         
+    } catch (error) {
+        console.log(error.message)
+        res.status(200).json({msg:'something went wrong in password change',state:false}) 
 
-
-
- // Send the verification code via email
- const mailOptions = {
-    from: 'mukeshdasriya87@gmail.com',
-    to: email,
-    subject: 'Password Reset Verification Code',
-    text: `Your verification code is: ${verificationCode}`,
-  };
-  transporter.sendMail(mailOptions, (error) => {
-    if (error) {
-      console.error(error);
-      return res.status(500).json({ error: 'Error sending email' });
     }
+}
 
-    res.status(200).json({ message: 'Verification code sent to your email' });
-  });
-
-
+const handleVerifyPass = async(req,res) => {
+const {pin} = req.params
+const data = req.body
+const {email,pass} = req.body
+console.log(req.body)
+try {
+    const user = await UserModel.findOne({ email })
+    if(user){
+        bcrypt.hash(pass, 5, async (err, hash) => {
+            if (err) {
+                console.log(err.message)
+                res.status(400).json({ msg:"unable to hash password", state:false })
+            } else {
+                await UserModel.findByIdAndUpdate({_id:user._id},{...data, pass:hash})
+                res.status(200).json({ msg:`${user.name} password has been updated`, state:true})
+            }
+        })  
     }else{
-          return res.status(404).json({ error: 'User not found' });
-      }
-
+        res.status(400).json({ msg:"User Not Found", state:false })  
+    }
+  
 } catch (error) {
-   console.log(error) 
+   console.log(error.message) 
+    res.status(400).json({msg:"unable to change password try after sometime!!!", state:false})
 }
-    // Check if the email exists
- 
-    
+      
 }
 
-    //  // Update user record with verification code and expiration time
-    //  await UserModel.findOneAndUpdate({ email }, { verificationCode, verificationCodeExpires });
-    //  console.log("this try call")
-    //  const transporter = nodemailer.createTransport({
-    //     service: "gmail",
-    //     host: "smtp.gmail.com",
-    //     port: 465,
-    //     secure: true,
-    //     auth: {
-    //         user: 'mukeshd4797@gmail.com',
-    //         pass: 'pgwo tikf ugwb rgvt'
-    //     },
-    //   }); 
+// {
+//     const { email } = req.body;
+//     console.log(email)
+// try {
+//     const user = await UserModel.findOne({email})
+//     if (user) {
+//         // console.log(email)
+//         const verificationCode = uuidv4();
+//        // Store the verification code in memory
 
-    //   const mailOptions = {
-    //     from: {
-    //         name : "Mukesh Dasriya",
-    //         address:"mukeshd4797@gmail.com"
-    //     },
-    //     to: email,
-    //     subject: 'Password Reset Verification Code',
-    //     text: `Your verification code is from mukesh: ${verificationCode}`,
-    //     html:"Welcome to our Dukhbhanjan App"
-    //   };
+//        const transporter = nodemailer.createTransport({
+//         host: 'smtp.forwardemail.net',
+//         port: 465,
+//         secure: true,
+//         auth: {
+//             user: 'edward.cruickshank@ethereal.email',
+//             pass: '6AYYJQAJgepx7zSQh9'
+//         },
+//         tls: {
+//           rejectUnauthorized: false,
+//         },
+//       });
 
-    //   transporter.sendMail(mailOptions, (error, info) => {
-    //     if (error) {
-    //       return res.status(500).send('Error sending email');
-    //     }
-    //     res.status(200).send('Verification code sent to your email');
-    //   });
-    // } catch (err) {
-    //   console.error(err);
-    //   res.status(500).send('Internal Server Error');
-    // }
+
+
+//  // Send the verification code via email
+//  const mailOptions = {
+//     from: 'mukeshdasriya87@gmail.com',
+//     to: email,
+//     subject: 'Password Reset Verification Code',
+//     text: `Your verification code is: ${verificationCode}`,
+//   };
+//   transporter.sendMail(mailOptions, (error) => {
+//     if (error) {
+//       console.error(error);
+//       return res.status(500).json({ error: 'Error sending email' });
+//     }
+
+//     res.status(200).json({ message: 'Verification code sent to your email' });
+//   });
+
+
+//     }else{
+//           return res.status(404).json({ error: 'User not found' });
+//       }
+//  }  
+  
 
 
 
 
 
 module.exports = {
-    handleUserRegister, handleUserLogin,handleProfileData,handleForgotPass,getAllUser
+    handleUserRegister, handleUserLogin,handleProfileData,handleForgotPass,getAllUser,handleVerifyPass
 }

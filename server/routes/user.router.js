@@ -1,9 +1,8 @@
 
 const express = require("express")
-const { handleUserRegister, handleUserLogin, handleProfileData, handleForgotPass, getAllUser,  } = require("../controller/user.controller")
+const { handleUserRegister, handleUserLogin, handleProfileData, handleForgotPass,handleVerifyPass, getAllUser,  } = require("../controller/user.controller")
 const { auth } = require("../middleware/auth")
 
-const nodemailer = require("nodemailer");
   const UserRouter = express.Router()
 
   UserRouter.post("/register", handleUserRegister)
@@ -11,7 +10,8 @@ const nodemailer = require("nodemailer");
   UserRouter.get("/", getAllUser)
 
   UserRouter.get("/profile",auth, handleProfileData)
-  UserRouter.post("/forgot-password", handleForgotPass)
+  UserRouter.patch("/forgot-password", handleForgotPass)
+  UserRouter.patch("/verify-password/:pin", handleVerifyPass)
   module.exports = {
     UserRouter
   }

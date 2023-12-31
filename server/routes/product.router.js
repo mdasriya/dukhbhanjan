@@ -1,5 +1,5 @@
 const express = require("express")
-const { handleCreateProduct, handleGetProduct } = require("../controller/product.controller")
+const { handleCreateProduct, handleGetProduct, handleUpadteProduct, handleDeleteProduct } = require("../controller/product.controller")
 
 
 
@@ -8,8 +8,8 @@ const { handleCreateProduct, handleGetProduct } = require("../controller/product
 
  ProductRouter.post("/create", handleCreateProduct)
  ProductRouter.get("/", handleGetProduct)
-//  ProductRouter.get("/update/:productId", handleUpadteProduct)
-//  ProductRouter.get("/delete/:productId", handleDeleteProduct)
+ ProductRouter.patch("/update/:productId", handleUpadteProduct)
+ ProductRouter.delete("/delete/:productId", handleDeleteProduct)
 
 module.exports = {
     ProductRouter

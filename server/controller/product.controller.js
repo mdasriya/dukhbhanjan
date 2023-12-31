@@ -20,28 +20,32 @@ const { ProductModel } = require("../model/product.model")
   }
  }
 
-// const handleUpadteProduct = async(req,res) => {
-      // const { productId } = req.params
+const handleUpadteProduct = async(req,res) => {
+   const { productId } = req.params
+  console.log(productId)
+   try {
+           await ProductModel.findByIdAndDelete({_id:productId}, req.body)
+          res.json({msg:`product has been updated`})
+      
+   } catch (error) {
+       console.log(error);
+    }
   
-      // try {
-      //     const product = await ProductModel.findOne({ _id: productId })
-      //     if (userIdinUserDoc === userIDinClientDoc) {  
-      //        await productModel.findByIdAndUpdate({_id:clientId}, req.body)
-      //        res.json({msg:`${client.name} has been updated`})
-      //     } else {
-      //         res.json({ msg: "you are not Authorized" })
-      //     }
-      // } catch (error) {
-      //     console.log(error);
-      //  }
+ }
+
+  const handleDeleteProduct = async(req,res) => {
+   const { productId } = req.params
   
- //}
-
-//  const handleDeleteProduct = async(req,res) => {
-
-//  }
+   try {
+           await ProductModel.findByIdAndUpdate({_id:productId}, req.body)
+          res.json({msg:`product has been updated`})
+      
+   } catch (error) {
+       console.log(error);
+    }
+  }
 
  module.exports =  {
     handleCreateProduct,
-    handleGetProduct,  
+    handleGetProduct, handleUpadteProduct, handleDeleteProduct 
  }
