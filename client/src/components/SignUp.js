@@ -86,15 +86,15 @@ export default function SignUp() {
       return;
     } else {
       let data = { firstName, lastName, email, pass }
-      axios.post("https://dull-gray-jackrabbit-shoe.cyclic.app/user/register", data)
+      axios.post("http://localhost:4000/user/register", data)
         .then(res => {
           setError(false)
           if(res.data.msg){
             // alert(res.data.msg)
             localStorage.setItem("firstname", firstName)
             toast({
-              title: 'Account created.',
-              description: `Welcome ${firstName}`,
+              title: 'Account created successfully.',
+             
               status: 'success',
               duration: 3000,
               isClosable: true,

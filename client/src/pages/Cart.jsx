@@ -89,7 +89,7 @@ const Cart = () => {
   const handleDelete = async (id) => {
   setDeleteloading(true)
     try {
-      const response = await axios.delete(`https://dull-gray-jackrabbit-shoe.cyclic.app/cart/delete/${id}`, {
+      const response = await axios.delete(`https://vivacious-gilet-duck.cyclic.app//cart/delete/${id}`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -109,7 +109,7 @@ const Cart = () => {
 
   const getCartProduct = () => {
     return axios
-      .get('https://dull-gray-jackrabbit-shoe.cyclic.app/cart', {
+      .get('https://vivacious-gilet-duck.cyclic.app//cart', {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -126,7 +126,7 @@ const Cart = () => {
   };
   const handlePayment = async () => {
     try {
-      const { data } = await axios.post("https://dull-gray-jackrabbit-shoe.cyclic.app/api/payment/orders", { amount: totalPrice }, {
+      const { data } = await axios.post("https://vivacious-gilet-duck.cyclic.app//api/payment/orders", { amount: totalPrice }, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -156,7 +156,7 @@ const Cart = () => {
       order_id: data.id,
       handler: async (response) => {
         try {
-          await axios.post("https://dull-gray-jackrabbit-shoe.cyclic.app/api/payment/verify",response,{
+          await axios.post("https://vivacious-gilet-duck.cyclic.app//api/payment/verify",response,{
             headers: {
               'Content-Type': 'application/json',
               Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -197,7 +197,7 @@ const Cart = () => {
 
   const handledeleteCartData = async (data) => {
     return axios
-      .post('https://dull-gray-jackrabbit-shoe.cyclic.app/cart/order/delete', data, {
+      .post('https://vivacious-gilet-duck.cyclic.app//cart/order/delete', data, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -244,7 +244,7 @@ const Cart = () => {
         isClosable: true,
       })
     } else {
-      axios.post("https://dull-gray-jackrabbit-shoe.cyclic.app/address/create", address, {
+      axios.post("https://vivacious-gilet-duck.cyclic.app//address/create", address, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -268,7 +268,7 @@ const Cart = () => {
   const handleMyOrderData = async (datatoAdd) => {
 
     try {
-      const response = await axios.post("https://dull-gray-jackrabbit-shoe.cyclic.app/order/create", datatoAdd, {
+      const response = await axios.post("https://vivacious-gilet-duck.cyclic.app//order/create", datatoAdd, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -284,7 +284,7 @@ const Cart = () => {
   const conditionallyPaymentForm = async () => {
 
     try {
-      const response = await axios.post("https://dull-gray-jackrabbit-shoe.cyclic.app/address/create", address, {
+      const response = await axios.post("https://vivacious-gilet-duck.cyclic.app//address/create", address, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,

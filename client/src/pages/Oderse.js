@@ -11,7 +11,7 @@ const Oderse = () => {
   useEffect(() => {
     setLoading(true)
     axios
-      .get('https://dull-gray-jackrabbit-shoe.cyclic.app/order', {
+      .get('https://vivacious-gilet-duck.cyclic.app//order', {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,

@@ -2,7 +2,6 @@
 
 const data = [
   {
-    "id": 1,
     "title": "Manik(Ruby)",
     "img": "img1",
     "description": "Diamonds are known for their brilliance and durability.",

@@ -58,7 +58,7 @@ const toast = useToast()
 setIsLoading(true)
     try {
         // Make the HTTP request and wait for the response
-        const response = await axios.post("https://dull-gray-jackrabbit-shoe.cyclic.app/kundali/create", formData, {
+        const response = await axios.post("http://localhost:4000/kundali/create", formData, {
           headers: {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${localStorage.getItem("token")}`

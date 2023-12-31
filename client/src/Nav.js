@@ -2,6 +2,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import { IoCart } from "react-icons/io5";
 import "./style/Nav.css"
+import { CgProfile } from "react-icons/cg";
+import { BsBucket } from "react-icons/bs";
+import { IoLogInOutline } from "react-icons/io5";
+import { MdLogout } from "react-icons/md";
+import { MdGTranslate } from "react-icons/md";
 import {
   Button,
   Box,
@@ -57,6 +62,11 @@ export default function Nav() {
     onClose()
   }
 
+const handleChangeLanguage = () => {
+  alert("we are working on this featues")
+}
+
+
 
 
   useEffect(() => {
@@ -66,7 +76,7 @@ export default function Nav() {
   useEffect(() => {
     const getCartProduct = () => {
       return axios
-        .get('https://dull-gray-jackrabbit-shoe.cyclic.app/cart', {
+        .get('http://localhost:4000/cart', {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -86,7 +96,7 @@ export default function Nav() {
 
   return (
     <>
-      <Box bg={"yellow.200"} px={4} >
+      <Box bg={"gray.100"} px={4} >
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
           <IconButton
             size={"md"}
@@ -109,7 +119,7 @@ export default function Nav() {
               display={{ base: "none", md: "flex" }}
               alignContent={"center"}
               position={"relative"}
-              left={"25rem"}
+              left={"21rem"}
             >
               <Link to="/" style={{ fontWeight: "600", color: "gray" }}>HOME</Link>
               <Link to="/contact" style={{ fontWeight: "600", color: "gray" }} >CONTACT US</Link>
@@ -142,8 +152,17 @@ export default function Nav() {
                   </MenuItem>
                 </MenuList>
               </Menu>
-
+           
               <Link to="/about" style={{ fontWeight: "600", color: "gray" }}>ABOUT US</Link>
+            
+            
+            <Box as="button" onClick={handleChangeLanguage} _hover={{cursor:"pointer"}}>
+
+              <MdGTranslate size={"20px"}/>
+            </Box>
+
+
+
               {/* <Link to="/newcart" style={{ fontWeight: "600", color: "gray.900" }}>CART</Link> */}
               <Link to="/newcart">
                 <IoCart size={24} style={{ marginRight: '5px' }} />
@@ -174,6 +193,7 @@ export default function Nav() {
             {/* {username && <Text fontSize={"18px"}>{username.toUpperCase()}</Text>} */}
             <Menu>
               <MenuButton
+             
                 as={Button}
                 rounded={'full'}
                 variant={'link'}
@@ -184,10 +204,37 @@ export default function Nav() {
               </MenuButton>
 
               <MenuList mt={"13px"}>
-                <MenuItem onClick={() => navigate("/orders")}>My Orders</MenuItem>
-                <MenuItem onClick={() => navigate("/profile")}>Profile</MenuItem>
+
+              <Box p={1} onClick={()=>navigate('/signup')}> 
+                <Box p={1} display={"flex"} justifyContent={"space-between"} > 
+                <Text fontSize={"17px"} mt={"5px"}>New Customer?</Text>
+               <Text  color={"blue"} ml={3} fontSize={"20px"} fontWeight={500} _hover={{cursor:"pointer"}}>Sign Up</Text>
+                </Box>
+              <hr />
+                </Box>
+               
+
+
+                <Flex >
+                <MenuItem onClick={() => navigate("/orders")}> 
+                <BsBucket  size={"20px"}/>
+                <label style={{marginLeft:'10px'}}>Orders</label>
+                </MenuItem>
+                </Flex>
+                
+                <MenuItem  onClick={() => navigate("/profile")}>
+                <CgProfile  size={"20px"}/>
+                <label style={{marginLeft:'10px'}}>My Profile</label>
+                  </MenuItem>
                 {
-                  !username ? <MenuItem onClick={() => navigate("/login")}>Login</MenuItem> : <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                  !username ? <MenuItem onClick={() => navigate("/login")}>
+                    <IoLogInOutline   size={"20px"}/>
+                    <label style={{marginLeft:'10px'}}>Login</label>
+                    </MenuItem> : <MenuItem onClick={handleLogout}>
+                    <MdLogout    size={"20px"}/>
+                    <label style={{marginLeft:'10px'}}>Logout</label>
+                    
+                      </MenuItem>
                 }
 
                 {/* <MenuDivider /> */}
