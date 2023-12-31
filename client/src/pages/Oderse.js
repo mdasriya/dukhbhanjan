@@ -11,7 +11,7 @@ const Oderse = () => {
   useEffect(() => {
     setLoading(true)
     axios
-      .get('https://gentle-foal-waistcoat.cyclic.app/order', {
+      .get('https://outrageous-shoulder-pads-fly.cyclic.app/order', {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,

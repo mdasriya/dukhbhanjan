@@ -70,7 +70,7 @@ const {toggleTheme } = useContext(ThemeContext);
     };
     try {
       const response = await axios.post(
-        'https://gentle-foal-waistcoat.cyclic.app/cart/create',
+        'https://outrageous-shoulder-pads-fly.cyclic.app/cart/create',
         finalData,
         {
           headers: {

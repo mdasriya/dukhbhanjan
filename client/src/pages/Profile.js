@@ -15,7 +15,7 @@ const Profile = () => {
   useEffect(() => {
     setIsloading(true)
     axios
-      .get("https://gentle-foal-waistcoat.cyclic.app/user/profile", {
+      .get("https://outrageous-shoulder-pads-fly.cyclic.app/user/profile", {
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${localStorage.getItem("token")}`

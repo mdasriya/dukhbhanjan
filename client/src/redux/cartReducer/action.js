@@ -4,7 +4,7 @@ import {CART_PRODUCT_FAILURE, CART_DELETE_PRODUCT_SUCCESS, CART_PRODUCT_REQUEST,
 export const addCartProduct = (product) => (dispatch) => {
    console.log("action", product)
    dispatch({ type: CART_PRODUCT_REQUEST })
-  return  axios.post("https://gentle-foal-waistcoat.cyclic.app/cart/create", product,{
+  return  axios.post("https://outrageous-shoulder-pads-fly.cyclic.app/cart/create", product,{
    headers: {
       "Content-Type": "application/json",
       "Authorization": `Bearer ${localStorage.getItem("token")}`
@@ -22,7 +22,7 @@ export const addCartProduct = (product) => (dispatch) => {
 export const getCartProduct = () => (dispatch) => {
 
    dispatch({ type: CART_PRODUCT_REQUEST })
-  return axios.get("https://gentle-foal-waistcoat.cyclic.app/cart",{
+  return axios.get("https://outrageous-shoulder-pads-fly.cyclic.app/cart",{
       headers: {
          "Content-Type": "application/json",
          "Authorization": `Bearer ${localStorage.getItem("token")}`
@@ -40,7 +40,7 @@ export const getCartProduct = () => (dispatch) => {
 
 // export const editProduct = (dataobj, id) => (dispatch) => {
 //    dispatch({ type: PRODUCT_REQUEST })
-//   return axios.patch(`https://gentle-foal-waistcoat.cyclic.app/product/${id}`, dataobj)
+//   return axios.patch(`https://outrageous-shoulder-pads-fly.cyclic.app/product/${id}`, dataobj)
 //       .then((res) => {
 //          dispatch({ Type: EDIT_PRODUCT_SUCCESS, payload: res.data })
 //       })
@@ -51,7 +51,7 @@ export const getCartProduct = () => (dispatch) => {
  
  export const handleCartDelete = (id) => (dispatch) => {
    dispatch({type:CART_PRODUCT_REQUEST})
-  return  axios.delete(`https://gentle-foal-waistcoat.cyclic.app/cart/delete/${id}`)
+  return  axios.delete(`https://outrageous-shoulder-pads-fly.cyclic.app/cart/delete/${id}`)
    .then((res) => {
       dispatch({type:CART_DELETE_PRODUCT_SUCCESS})
    })
