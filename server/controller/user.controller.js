@@ -121,20 +121,22 @@ const handleForgotPass =  async(req,res) => {
           };
           transporter.sendMail(mailOptions, function(error, info){
             if (error) {
-                res.status(200).json({msg:'Unable to send email try  after sometime',state:false}) 
+                console.log(error.message)
+                res.status(400).json({msg:'Unable to send email try  after sometime',state:false}) 
             } else if(info.response) {
               console.log('Email sent: ' + info.response);
-            //   res.status(200).json({msg:'Email send Successfully',state:true, pincode:randomPin})  
+            
+            res.status(200).json({msg:'Email send Successfully',state:true, pincode:randomPin})
             }
           });
-        res.status(200).json({msg:'Email send Successfully',state:true, pincode:randomPin})
+      
      }else{
         res.status(200).json({msg:'User not found',state:false}) 
      }
          
     } catch (error) {
         console.log(error.message)
-        res.status(200).json({msg:'something went wrong in password change',state:false}) 
+        res.status(400).json({msg:'something went wrong in password change',state:false}) 
 
     }
 }
