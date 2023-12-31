@@ -76,7 +76,7 @@ const handleChangeLanguage = () => {
   useEffect(() => {
     const getCartProduct = () => {
       return axios
-        .get('http://localhost:4000/cart', {
+        .get('https://gentle-foal-waistcoat.cyclic.app/cart', {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${localStorage.getItem('token')}`,

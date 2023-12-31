@@ -70,7 +70,7 @@ const {toggleTheme } = useContext(ThemeContext);
     };
     try {
       const response = await axios.post(
-        'http://localhost:4000/cart/create',
+        'https://gentle-foal-waistcoat.cyclic.app/cart/create',
         finalData,
         {
           headers: {

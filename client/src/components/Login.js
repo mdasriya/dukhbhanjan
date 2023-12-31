@@ -67,7 +67,7 @@ export default function Login() {
     e.preventDefault()
     setIsLoading(true);
     const data = { email, pass }
-    axios.post("http://localhost:4000/user/login", data)
+    axios.post("https://gentle-foal-waistcoat.cyclic.app/user/login", data)
       .then(res => {
         setIsLoading(true)
         localStorage.setItem("token", res.data.token)
@@ -113,7 +113,7 @@ export default function Login() {
 setVerifyText("verify")
     } else if (changeEmail.includes("@")) {
       setPinLoading(true)
-      const response = await axios.patch("http://localhost:4000/user/forgot-password", { changeEmail }, {
+      const response = await axios.patch("https://gentle-foal-waistcoat.cyclic.app/user/forgot-password", { changeEmail }, {
        
       })
       if (response.data.state) {
@@ -180,7 +180,7 @@ if(enteredPin.length === pinGenrated.length){
 
 const handleFinalCall = async() => {
    if(password === repassword){
-     const response = await axios.patch(`http://localhost:4000/user/verify-password/${enteredPin}`,{email:changeEmail,pass:password}, {
+     const response = await axios.patch(`https://gentle-foal-waistcoat.cyclic.app/user/verify-password/${enteredPin}`,{email:changeEmail,pass:password}, {
      
      })
 if(response.data.state){

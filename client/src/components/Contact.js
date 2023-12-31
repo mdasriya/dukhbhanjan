@@ -65,7 +65,7 @@ const handleSend = async() => {
   setIsLoading(true)
 if(data.name && data.email && data.PhoneNo && data.message && data.subject){
   try {
-    const response = await axios.post("http://localhost:4000/contact/create", data, {
+    const response = await axios.post("https://gentle-foal-waistcoat.cyclic.app/contact/create", data, {
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${localStorage.getItem("token")}`
