@@ -8,10 +8,10 @@ const PaymentRouter = require("express").Router();
 const razorpay = new Razorpay({
   key_id: "rzp_test_FZa7FJ6Bglhj8Y", // Replace with your actual key
   key_secret: "oOx40LBFhDdweDdbBHa4hLis", // Replace with your actual secret
-}); 
+});
 
 
-let total = "" 
+let total = ""
 PaymentRouter.post("/orders", async (req, res) => {
   total = req.body.amount
   try {
@@ -36,8 +36,8 @@ PaymentRouter.post("/orders", async (req, res) => {
 
 PaymentRouter.post("/verify", async (req, res) => {
   console.log("verify", req.body)
-  const {UserId} = req.body
-  const user = await UserModel.findOne({_id:UserId})
+  const { UserId } = req.body
+  const user = await UserModel.findOne({ _id: UserId })
   var transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -45,12 +45,12 @@ PaymentRouter.post("/verify", async (req, res) => {
       pass: 'pgwotikfugwbrgvt'
     }
   });
- 
+
   var mailOptions = {
     from: 'mukeshd4797@gmail.com',
     to: user.email,
     subject: `Order Confirmation for Dukha Bhanjan `,
-      text: `Hi ${user.firstName} ${user.lastName}, thank you for your order in dukhbhanjan.
+    text: `Hi ${user.firstName} ${user.lastName}, thank you for your order in dukhbhanjan.
             You have purchased product for ${total} INR.
             Please find the payment details below:
             Order ID: ${req.body.razorpay_order_id}
@@ -58,7 +58,7 @@ PaymentRouter.post("/verify", async (req, res) => {
             Payment Status: Success
             If you have any questions, feel free to contact us.`,
   };
-  transporter.sendMail(mailOptions, function(error, info){
+  transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
       console.log(error);
     } else {
