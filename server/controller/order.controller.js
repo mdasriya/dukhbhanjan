@@ -4,7 +4,6 @@ const { OrderModel } = require("../model/order.model")
 const handleCreateOrder = async (req, res) => {
     // logic goes here
     const data = req.body
-
     const newData = data.map((item) => {
         delete item._id
         item.orderDateTime = Date.now();

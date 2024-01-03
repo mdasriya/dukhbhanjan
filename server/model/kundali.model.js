@@ -1,5 +1,4 @@
-
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 
 const kundaliSchema = mongoose.Schema({
     fname: { type: "String", required: true },
@@ -11,13 +10,15 @@ const kundaliSchema = mongoose.Schema({
     pob: { type: "String", required: true },
     selectedTime: { type: "String", required: true },
     UserId: { type: "String", required: true },
-    user: { type: "String", required: true }
+    user: { type: "String", required: true },
+    createdAt: { type: Date, default: Date.now },
+    updatedAt: { type: Date, default: Date.now },
 }, {
     versionKey: false
-})
+});
 
-const KundaliModel = mongoose.model("kundali", kundaliSchema)
+const KundaliModel = mongoose.model("kundali", kundaliSchema);
 
 module.exports = {
     KundaliModel
-}
+};

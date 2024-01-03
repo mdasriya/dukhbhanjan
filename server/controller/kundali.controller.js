@@ -5,17 +5,23 @@ const { KundaliModel } = require("../model/kundali.model")
 
 
 const handlekundaliCreate = async (req, res) => {
-
-    const data = req.body
+    const data = req.body;
 
     try {
-        const kundali = new KundaliModel(data)
-        await kundali.save()
-        res.status(200).json({ msg: "new kundali has been created" })
+        // Add createdAt and updatedAt fields before saving the Kundali
+        const kundaliData = new KundaliModel({
+            ...data,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        });
+
+        await kundaliData.save();
+        res.status(200).json({ msg: "New kundali has been created" });
     } catch (error) {
-        res.status(500).json({ msg: "Something Went Wrong", error: error.message })
+        res.status(500).json({ msg: "Something went wrong", error: error.message });
     }
-}
+};
+
 
 const handlekundaliGet = async (req, res) => {
     try {

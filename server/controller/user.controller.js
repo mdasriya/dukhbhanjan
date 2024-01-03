@@ -6,30 +6,53 @@ const nodemailer = require("nodemailer")
 const { v4: uuidv4 } = require('uuid');
 
 const handleUserRegister = async (req, res) => {
-    const { firstName, lastName, email, pass } = req.body
+    const { firstName, lastName, email, pass } = req.body;
     try {
-        const reqdata = await UserModel.find({ email })
-        if (reqdata.length > 0) {
-            res.status(200).json({ msg: "you are Alerady Register" })
+        const existingUser = await UserModel.findOne({ email });
+
+        if (existingUser) {
+            res.status(200).json({ msg: "You are already registered." });
         } else {
             bcrypt.hash(pass, 5, async (err, hash) => {
                 if (err) {
-                    res.status(400).json({ msg: err.message })
+                    res.status(400).json({ msg: err.message });
                 } else {
-                    const userData = new UserModel({ firstName, lastName, email, pass: hash })
-                    await userData.save()
-                    res.status(200).json({ msg: "User Register success!!!" })
+                    const registrationDate = new Date(); // Capture registration date and time
+
+                    const userData = new UserModel({
+                        firstName,
+                        lastName,
+                        email,
+                        pass: hash,
+                        registrationDate,
+                    });
+                    await userData.save();
+
+                    // Assuming you have additional logic for handling the new address and time
+                    const { address, time } = req.body;
+                    if (address && time) {
+                        // Add logic to handle new address and time, you might have a separate address schema
+                        // For example, assuming you have an address schema:
+                        const newAddress = new AddressModel({
+                            userId: userData._id, // Assuming you store the user ID in the address document
+                            address,
+                            time,
+                        });
+                        await newAddress.save();
+                    }
+
+                    res.status(200).json({ msg: "Registration Done Successfully" });
                 }
-            })
+            });
         }
     } catch (error) {
-        res.status(500).json({ msg: "Something Went Wrong", error: error.message })
+        res.status(500).json({ msg: "Something went wrong while registration", error: error.message });
     }
-}
+};
+
 
 const handleUserLogin = async (req, res) => {
     const { email, pass } = req.body
-
     try {
         const findData = await UserModel.findOne({ email })
         if (findData) {
@@ -50,6 +73,8 @@ const handleUserLogin = async (req, res) => {
         res.status(500).json({ msg: "Something Went Wrong", error: error.message })
     }
 }
+
+
 
 const getAllUser = async (req, res) => {
     // const {UserId} = req.body 
@@ -169,52 +194,10 @@ const handleVerifyPass = async (req, res) => {
 
 }
 
-// {
-//     const { email } = req.body;
-//     console.log(email)
-// try {
-//     const user = await UserModel.findOne({email})
-//     if (user) {
-//         // console.log(email)
-//         const verificationCode = uuidv4();
-//        // Store the verification code in memory
-
-//        const transporter = nodemailer.createTransport({
-//         host: 'smtp.forwardemail.net',
-//         port: 465,
-//         secure: true,
-//         auth: {
-//             user: 'edward.cruickshank@ethereal.email',
-//             pass: '6AYYJQAJgepx7zSQh9'
-//         },
-//         tls: {
-//           rejectUnauthorized: false,
-//         },
-//       });
 
 
 
-//  // Send the verification code via email
-//  const mailOptions = {
-//     from: 'mukeshdasriya87@gmail.com',
-//     to: email,
-//     subject: 'Password Reset Verification Code',
-//     text: `Your verification code is: ${verificationCode}`,
-//   };
-//   transporter.sendMail(mailOptions, (error) => {
-//     if (error) {
-//       console.error(error);
-//       return res.status(500).json({ error: 'Error sending email' });
-//     }
 
-//     res.status(200).json({ message: 'Verification code sent to your email' });
-//   });
-
-
-//     }else{
-//           return res.status(404).json({ error: 'User not found' });
-//       }
-//  }  
 
 
 
