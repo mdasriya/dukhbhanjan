@@ -73,7 +73,6 @@ setLoading(false)
     if (token) {
       initialRender()
     }
-
   }, [render]);
 
   return (

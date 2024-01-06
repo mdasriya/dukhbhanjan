@@ -2,6 +2,7 @@
 import ReactTyped from "react-typed";
 import {
   Badge,
+  Box,
   Button,
   Flex,
   Heading,
@@ -18,9 +19,12 @@ export default function Home() {
   const location = useLocation();
   return (
     <>
+    {/* <Box  width={"100%"}  border={"1px solid red"} display={"flex"} justifyContent={"flex-end"}> */}
       <Badge
+      // border={"1px solid blue"}
         colorScheme="yellow"
         position={"sticky"}
+        left={"85%"}
         top={"30%"}
         p={2}
         zIndex={99}
@@ -38,7 +42,7 @@ export default function Home() {
       >
         Click here for Mantras
       </Badge>
-
+      {/* </Box> */}
 
       <Stack minH={"100vh"} direction={{ base: "column", md: "row" }}>
         <Flex p={8} flex={1} align={"center"} justify={"center"}>
