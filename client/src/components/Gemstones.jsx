@@ -9,7 +9,7 @@ import styled from '@emotion/styled';
 const Gemstones = () => {
   const location = useLocation();
   const dispatch = useDispatch();
-  const { products,isError, isLoading } = useSelector((store) => store.productReducer);
+  const { products, isError, isLoading } = useSelector((store) => store.productReducer);
 
   useEffect(() => {
     dispatch(getProduct());
@@ -17,67 +17,67 @@ const Gemstones = () => {
 
   return (
     <>
-{isError &&  <Heading color={"white"} width={"40%"} m={"auto"} mt={10} bg={"red.600"} fontSize={"22px"} textAlign={"center"}>Network issue Check your Internet Connection</Heading>}
+      {isError && <Heading color={"white"} width={"40%"} m={"auto"} mt={10} bg={"red.600"} fontSize={"22px"} textAlign={"center"}>Unable to Fetch Product</Heading>}
 
-    {isLoading ?   <DIV>
-            <Box padding='6' boxShadow='lg' bg='white'>
-              <SkeletonCircle size='10' />
-              <SkeletonText mt='4' noOfLines={4} spacing='4' skeletonHeight='2' />
-            </Box>
-            <Box padding='6' boxShadow='lg' bg='white'>
-              <SkeletonCircle size='10' />
-              <SkeletonText mt='4' noOfLines={4} spacing='4' skeletonHeight='2' />
-            </Box>
-            <Box padding='6' boxShadow='lg' bg='white'>
-              <SkeletonCircle size='10' />
-              <SkeletonText mt='4' noOfLines={4} spacing='4' skeletonHeight='2' />
-            </Box>
-            <Box padding='6' boxShadow='lg' bg='white'>
-              <SkeletonCircle size='10' />
-              <SkeletonText mt='4' noOfLines={4} spacing='4' skeletonHeight='2' />
-            </Box>
-            <Box padding='6' boxShadow='lg' bg='white'>
-              <SkeletonCircle size='10' />
-              <SkeletonText mt='4' noOfLines={4} spacing='4' skeletonHeight='2' />
-            </Box>
-            <Box padding='6' boxShadow='lg' bg='white'>
-              <SkeletonCircle size='10' />
-              <SkeletonText mt='4' noOfLines={4} spacing='4' skeletonHeight='2' />
-            </Box>
-            <Box padding='6' boxShadow='lg' bg='white'>
-              <SkeletonCircle size='10' />
-              <SkeletonText mt='4' noOfLines={4} spacing='4' skeletonHeight='2' />
-            </Box>
-            <Box padding='6' boxShadow='lg' bg='white'>
-              <SkeletonCircle size='10' />
-              <SkeletonText mt='4' noOfLines={4} spacing='4' skeletonHeight='2' />
-            </Box>
-            <Box padding='6' boxShadow='lg' bg='white'>
-              <SkeletonCircle size='10' />
-              <SkeletonText mt='4' noOfLines={4} spacing='4' skeletonHeight='2' />
-            </Box>
-            <Box padding='6' boxShadow='lg' bg='white'>
-              <SkeletonCircle size='10' />
-              <SkeletonText mt='4' noOfLines={4} spacing='4' skeletonHeight='2' />
-            </Box>
-            <Box padding='6' boxShadow='lg' bg='white'>
-              <SkeletonCircle size='10' />
-              <SkeletonText mt='4' noOfLines={4} spacing='4' skeletonHeight='2' />
-            </Box>
-            <Box padding='6' boxShadow='lg' bg='white'>
-              <SkeletonCircle size='10' />
-              <SkeletonText mt='4' noOfLines={4} spacing='4' skeletonHeight='2' />
-            </Box>
-          </DIV> :  <Box  mt={5} display={['block', 'grid']} gridTemplateColumns="auto auto auto auto" gap="20px">
-      {products.length > 0 &&
-        products.map((el) => (
-          <div key={el._id} style={{ marginBottom: '20px' }}>
-            <GemstonesCart {...el} />
-          </div>
-        ))}
-    </Box>
-          }
-   
+      {isLoading ? <DIV>
+        <Box padding='6' boxShadow='lg' bg='white'>
+          <SkeletonCircle size='10' />
+          <SkeletonText mt='4' noOfLines={4} spacing='4' skeletonHeight='2' />
+        </Box>
+        <Box padding='6' boxShadow='lg' bg='white'>
+          <SkeletonCircle size='10' />
+          <SkeletonText mt='4' noOfLines={4} spacing='4' skeletonHeight='2' />
+        </Box>
+        <Box padding='6' boxShadow='lg' bg='white'>
+          <SkeletonCircle size='10' />
+          <SkeletonText mt='4' noOfLines={4} spacing='4' skeletonHeight='2' />
+        </Box>
+        <Box padding='6' boxShadow='lg' bg='white'>
+          <SkeletonCircle size='10' />
+          <SkeletonText mt='4' noOfLines={4} spacing='4' skeletonHeight='2' />
+        </Box>
+        <Box padding='6' boxShadow='lg' bg='white'>
+          <SkeletonCircle size='10' />
+          <SkeletonText mt='4' noOfLines={4} spacing='4' skeletonHeight='2' />
+        </Box>
+        <Box padding='6' boxShadow='lg' bg='white'>
+          <SkeletonCircle size='10' />
+          <SkeletonText mt='4' noOfLines={4} spacing='4' skeletonHeight='2' />
+        </Box>
+        <Box padding='6' boxShadow='lg' bg='white'>
+          <SkeletonCircle size='10' />
+          <SkeletonText mt='4' noOfLines={4} spacing='4' skeletonHeight='2' />
+        </Box>
+        <Box padding='6' boxShadow='lg' bg='white'>
+          <SkeletonCircle size='10' />
+          <SkeletonText mt='4' noOfLines={4} spacing='4' skeletonHeight='2' />
+        </Box>
+        <Box padding='6' boxShadow='lg' bg='white'>
+          <SkeletonCircle size='10' />
+          <SkeletonText mt='4' noOfLines={4} spacing='4' skeletonHeight='2' />
+        </Box>
+        <Box padding='6' boxShadow='lg' bg='white'>
+          <SkeletonCircle size='10' />
+          <SkeletonText mt='4' noOfLines={4} spacing='4' skeletonHeight='2' />
+        </Box>
+        <Box padding='6' boxShadow='lg' bg='white'>
+          <SkeletonCircle size='10' />
+          <SkeletonText mt='4' noOfLines={4} spacing='4' skeletonHeight='2' />
+        </Box>
+        <Box padding='6' boxShadow='lg' bg='white'>
+          <SkeletonCircle size='10' />
+          <SkeletonText mt='4' noOfLines={4} spacing='4' skeletonHeight='2' />
+        </Box>
+      </DIV> : <Box mt={5} display={['block', 'grid']} gridTemplateColumns="auto auto auto auto" gap="20px">
+        {products.length > 0 &&
+          products.map((el) => (
+            <div key={el._id} style={{ marginBottom: '20px' }}>
+              <GemstonesCart {...el} />
+            </div>
+          ))}
+      </Box>
+      }
+
     </>
   );
 };

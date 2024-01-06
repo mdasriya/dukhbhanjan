@@ -20,6 +20,7 @@ import {
   Alert,
   useDisclosure,
   Modal,
+  Skeleton,
   Spinner,
   ModalOverlay,
   ModalContent,
@@ -54,8 +55,10 @@ const initialAddress = {
 
 
 const Cart = () => {
+  const [checkoutLoading, setCheckoutLoading] = useState(false)
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [deleteloading, setDeleteloading] = useState(false)
+  const [initLoading, setInitLoading] = useState(false)
   const [failed, setFaild] = useState(false)
   const [update, setUpdate] = useState(false);
   const [cartData, setData] = useState([]);
@@ -96,8 +99,8 @@ const Cart = () => {
         },
       });
       if (response) {
-        setUpdate((prev) => !prev);
-       await toggleTheme()
+         setUpdate((prev) => !prev);
+        await toggleTheme() 
         setDeleteloading(false)
       }
 
@@ -108,6 +111,7 @@ const Cart = () => {
   };
 
   const getCartProduct = () => {
+    setInitLoading(true)
     return axios
       .get('https://outrageous-shoulder-pads-fly.cyclic.app/cart', {
         headers: {
@@ -118,13 +122,16 @@ const Cart = () => {
       .then((res) => {
         const cartData = res.data.map(item => ({ ...item, quantity: 1 }));
         setData(cartData);
-      
+        setInitLoading(false)
+
       })
       .catch((err) => {
         console.log(err);
+        setInitLoading(false)
       });
   };
   const handlePayment = async () => {
+    setCheckoutLoading(true)
     try {
       const { data } = await axios.post("https://outrageous-shoulder-pads-fly.cyclic.app/api/payment/orders", { amount: totalPrice }, {
         headers: {
@@ -136,6 +143,7 @@ const Cart = () => {
       // Call the function to initialize payment with Razorpay
       initPayment(data.data);
     } catch (error) {
+      setCheckoutLoading(false)
       console.error(error);
       toast({
         title: "Error during payment initiation",
@@ -155,8 +163,9 @@ const Cart = () => {
       description: "Test Transaction",
       order_id: data.id,
       handler: async (response) => {
+       
         try {
-          await axios.post("https://outrageous-shoulder-pads-fly.cyclic.app/api/payment/verify",response,{
+          await axios.post("https://outrageous-shoulder-pads-fly.cyclic.app/api/payment/verify", response, {
             headers: {
               'Content-Type': 'application/json',
               Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -164,6 +173,7 @@ const Cart = () => {
           });
 
           if (response.razorpay_signature) {
+            setPaymentLoading(true)
             toast({
               title: 'Paymeny Done Successfully.',
               description: "Your Order Done Success",
@@ -172,7 +182,6 @@ const Cart = () => {
               duration: 3000,
               isClosable: true,
             })
-            setPaymentLoading(true)
             await handleMyOrderData(cartData)
             await handledeleteCartData(cartData)
             setPaymentLoading(false)
@@ -282,7 +291,8 @@ const Cart = () => {
   };
 
   const conditionallyPaymentForm = async () => {
-
+    // console.log(address)
+       setCheckoutLoading(true)
     try {
       const response = await axios.post("https://outrageous-shoulder-pads-fly.cyclic.app/address/create", address, {
         headers: {
@@ -292,17 +302,26 @@ const Cart = () => {
       });
       if (response.data.state == "onOpen") {
         onOpen()
+        setCheckoutLoading(true)
       } else if (response.data.state == "handlePayment") {
+        setCheckoutLoading(true)
         handlePayment()
       } else {
+        setCheckoutLoading(true)
         handlePayment()
       }
 
     } catch (error) {
+      toast({
+        title: 'something wrong in checkout try after some time',
+        status: 'error',
+        position: "top-right",
+        duration: 3000,
+        isClosable: true,
+      })
       console.log(error.message)
-      // Handle any errors that occurred during the request
-      // You might want to handle errors appropriately, such as displaying an error message
     }
+    setCheckoutLoading(false)
   };
 
 
@@ -310,21 +329,25 @@ const Cart = () => {
     setAddress(initialAddress)
     onClose()
   }
+  const token = localStorage.getItem("token")
 
   useEffect(() => {
-    getCartProduct();
+    if(token){
+      getCartProduct();
+    }
   }, [update, theme]);
 
 
 
   return (
-    <>
-      {paymentLoading ? (
-        <Box position={'relative'}>
-          <Box  position={'absolute'} mt={"30px"} left={'50%'}>
+ <>
+ <Box>
+      {paymentLoading==true ? (
+       
+          <Box width={"100%"} height={"300px"} position={'relative'}top={"150px"} left={"50%"}>
             <Spinner thickness="4px" speed="0.65s" emptyColor="gray.200" color="blue.500" size="xl" />
           </Box>
-        </Box>
+       
       ) : (
         <DIV>
           <Modal initialFocusRef={initialRef} finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose}>
@@ -381,7 +404,7 @@ const Cart = () => {
 
           {cartData.length > 0 ? (
             <>
-              <Heading ml={5} color={"gray.500"} mt={5} fontSize={{base:"20px", md:'25px'}} fontWeight="bold">
+              <Heading ml={5} color={"gray.500"} mt={5} fontSize={{ base: "20px", md: '25px' }} fontWeight="bold">
                 Shopping Cart ({cartData.length} items)
               </Heading>
               <Box
@@ -391,96 +414,92 @@ const Cart = () => {
                 display="flex"
                 flexDirection={['column', 'column', 'row']}
               >
-                {deleteloading ? <Box gap={"20px"}  display={"flex"} flexDirection={"column"} width={['100%', '100%', '65%']} height="100%" mb={['20px', '20px', '0']}> <Box padding='6' boxShadow='lg' bg='white'>
-              <SkeletonCircle size='10' />
-              <SkeletonText mt='4' noOfLines={4} spacing='4' skeletonHeight='2' />
-            </Box>
-            <Box padding='6' boxShadow='lg' bg='white'>
-              <SkeletonCircle size='10' />
-              <SkeletonText mt='4' noOfLines={4} spacing='4' skeletonHeight='2' />
-            </Box>
-            <Box padding='6' boxShadow='lg' bg='white'>
-              <SkeletonCircle size='10' />
-              <SkeletonText mt='4' noOfLines={4} spacing='4' skeletonHeight='2' />
-            </Box></Box> : 
-                 <Box width={['100%', '100%', '65%']} height="100%" mb={['20px', '20px', '0']}>
-                  {cartData && cartData.map((item) => (
-                    <Box
-                      className='cart_Main'
-                  
-                      key={item._id}
-                      boxShadow="rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;"
-                      flexWrap="wrap"
-                      alignItems={"center"}
-                      justifyContent="space-between"
-                      display="flex"
-                mt={"15px"}
-                      height="30%"
-                    // border={"1px solid red"}
-                    >
-                      {/* Image */}
-                      <Box className='image_outer'  width="25%"   height={{base:"50%",md:'150px'}}>
-                        <Image
-                          className='cart_image'
-                          borderRadius="10px"
-                          width={"100%"}
-                         height={"100%"}
-                          objectFit="cover"
-                          src={item.image}
-                          alt={item.title}
-                        />
-                
+                {deleteloading ? <Box gap={"20px"} display={"flex"} flexDirection={"column"} width={['100%', '100%', '65%']} height="100%" mb={['20px', '20px', '0']}> <Box padding='6' boxShadow='lg' bg='white'>
+                  <SkeletonCircle size='10' />
+                  <SkeletonText mt='4' noOfLines={4} spacing='4' skeletonHeight='2' />
+                </Box>
+                  <Box padding='6' boxShadow='lg' bg='white'>
+                    <SkeletonCircle size='10' />
+                    <SkeletonText mt='4' noOfLines={4} spacing='4' skeletonHeight='2' />
+                  </Box>
+                  <Box padding='6' boxShadow='lg' bg='white'>
+                    <SkeletonCircle size='10' />
+                    <SkeletonText mt='4' noOfLines={4} spacing='4' skeletonHeight='2' />
+                  </Box></Box> :
+                  <Box width={['100%', '100%', '65%']} height="100%" mb={['20px', '20px', '0']}>
+                    {cartData && cartData.map((item) => (
+                      <Box
+                        className='cart_Main'
+
+                        key={item._id}
+                        boxShadow="rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;"
+                        flexWrap="wrap"
+                        alignItems={"center"}
+                        justifyContent="space-between"
+                        display="flex"
+                        mt={"20px"}
+                        height="30%"
+                      //  border={"1px solid red"}
+                      >
+                        {/* Image */}
+                        <Box className='image_outer' width="25%" height={{ base: "50%", md: '150px' }}>
+                          <Image
+                            className='cart_image'
+                            borderRadius="10px"
+                            width={"100%"}
+                            height={"100%"}
+                            objectFit="cover"
+                            src={item.image}
+                            alt={item.title}
+                          />
+
+                        </Box>
+
+                        {/* Title box */}
+                        <Box className='cart_title' width="auto" height="100%">
+                          <Text className='title' fontSize="17px" color="gray.600">
+                            {item.title}
+                          </Text>
+                        </Box>
+
+                        {/* Select quantity box */}
+                        <Box className='cart_quality' width="10%" height="100%">
+                          <Select onChange={(e) => handleQuantity(item._id, e)} >
+                            {[1, 2, 3, 4, 5].map((value) => (
+                              <option key={value} value={value}>
+                                {value}
+                              </option>
+                            ))}
+                          </Select>
+                        </Box>
+                        <Text className='product_quality' fontSize="17px" color="gray.600">{item.quality}</Text>
+
+                        {/* Price box */}
+                        <Box className='product_price' width="14%" height="100%">
+                          <Text className='price' fontSize={{ base: "20px", md: "17px" }} color="gray.600">
+                            ₹ {item.price * (item.quantity || 1)} Per Ratti
+                          </Text>
+                        </Box>
+
+                        {/* Delete icon */}
+
+                        <Box onClick={() => handleDelete(item._id)} className='cart_delete' width="10%" position="relative" height="100%" p={4}>
+                          <IconButton
+
+                            icon={<CloseIcon />}
+                            colorScheme='red'
+                            variant={"outline"}
+                            isRound
+                          />
+
+
+                        </Box>
                       </Box>
 
-                      {/* Title box */}
-                      <Box className='cart_title' width="auto"  height="100%">
-                        <Text className='title' fontSize="17px"  color="gray.600">
-                         {item.title}
-                        </Text>
-                      </Box>
 
-                      {/* Select quantity box */}
-                      <Box className='cart_quality' width="10%"  height="100%">
-                        <Select onChange={(e) => handleQuantity(item._id, e)} >
-                          {[1, 2, 3, 4, 5].map((value) => (
-                            <option key={value} value={value}>
-                              {value}
-                            </option>
-                          ))}
-                        </Select>
-                      </Box>
-                      <Text className='product_quality' fontSize="17px"  color="gray.600">{item.quality}</Text>
-
-                      {/* Price box */}
-                      <Box className='product_price' width="14%"  height="100%">
-                        <Text className='price'  fontSize={{base:"20px", md:"17px"}} color="gray.600">
-                          ₹ {item.price * (item.quantity || 1)} Per Ratti
-                        </Text>
-                      </Box>
-
-                      {/* Delete icon */}
-
-                      <Box onClick={()=>handleDelete(item._id)} className='cart_delete' width="10%" position="relative" height="100%" p={4}>
-                        <IconButton
-                        
-                          icon={<CloseIcon />}
-                          colorScheme='red'
-                          variant={"outline"}
-                          isRound
-                        />
-
-                      
-                      </Box>
-                    </Box>
-
-
-                  ))}
-                </Box>}
+                    ))}
+                  </Box>}
                 {/* Left box */}
-               
-
-
-
                 {/* Right box */}
                 <Box width={['100%', '100%', '30%']} borderRadius="5px" height="100%" mt={['20px', '20px', '0']}>
                   <Stack spacing="8" borderWidth="1px" rounded="lg" padding="8" width="full">
@@ -512,7 +531,7 @@ const Cart = () => {
                       fontSize="md"
                       rightIcon={<FaArrowRight />}
                     >
-                      Checkout
+                   {checkoutLoading ? "please wait..." : "Checkout" }   
                     </Button>
 
                     <Center>
@@ -537,7 +556,7 @@ const Cart = () => {
           ) : (
             <Center height={'40vh'} display={'flex'} flexDirection={'column'} alignItems={'center'}>
 
-              <Box  mt={{base:"100px", md:"170px"}} mb={3}><GiShoppingCart size={"150px"} /></Box>
+              <Box mt={{ base: "100px", md: "170px" }} mb={3}><GiShoppingCart size={"150px"} /></Box>
               <Box mb={'70px'}>
                 <Text fontSize="lg" marginLeft={5} fontWeight="bold">
                   Your Cart is Empty
@@ -549,7 +568,8 @@ const Cart = () => {
           )}
         </DIV>
       )}
-    </>
+    </Box> 
+ </>
   );
 };
 

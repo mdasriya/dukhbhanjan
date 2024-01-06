@@ -32,13 +32,13 @@ const Cardmain = ({ author }) => {
     <VStack spacing={5}>
       <motion.div whileHover={{ y: -5, scale: 1.1 }}>
         {/* Use motion.div here */}
-        <Box  _hover={{ boxShadow: "lg" }} >
-        <Avatar size='2xl' name='Segun Adebayo' src={image} 
-         />
+        <Box _hover={{ boxShadow: "lg" }} >
+          <Avatar size='2xl' name='Segun Adebayo' src={image}
+          />
         </Box>
       </motion.div>
       <Heading
-      mt={"10px"}
+        mt={"10px"}
         fontSize="xl"
         fontFamily="body"
         textTransform="capitalize"
@@ -46,7 +46,7 @@ const Cardmain = ({ author }) => {
       >
         {author.name}
       </Heading>
-     
+
       <Fade in>
         {/* <Text
           color="gray.500"

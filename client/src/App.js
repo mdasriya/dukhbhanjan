@@ -27,6 +27,8 @@ import Practiescart from "./pages/Practiescart";
 import Mantra from "./pages/Mantra";
 import Loading from "./components/Loading";
 import styled from "@emotion/styled";
+import AddProduct from "./pages/AddProduct";
+
 
 AOS.init({
   duration: 1200,
@@ -44,38 +46,40 @@ const App = () => {
   return (
     <StyledApp>
       {/* <div className={`main ${loader ? "loading" : ""}`}> */}
-        {loader ? (
-          <Loading />
-        ) : (
-          <Router>
-            <Nav />
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="services" element={<Services />} />
-              <Route path="gemstones" element={<Gemstones />} />
-              <Route path="contact" element={<Contact />} />
-              <Route path="about" element={<AboutUs />} />
-              <Route path="signup" element={<SignUp />} />
-              <Route path="login" element={<Login />} />
-              <Route
-                path="kundali"
-                element={<PrivateRoutes><Kundali /></PrivateRoutes>}
-              />
-              <Route path="readmore" element={<ReadMore />} />
-              <Route path="workshipitems" element={<WorkshipItems />} />
-              <Route path="yantra" element={<Yantra />} />
-              <Route path="success" element={<Success />} />
-              <Route path="/profile" element={<PrivateRoutes><Profile /></PrivateRoutes> } />
-              <Route path="/orders" element={<PrivateRoutes><Oderse /></PrivateRoutes>} />
-              <Route path="/newcart" element={<Cart />} />
-              <Route path="/pra" element={<Practiescart />} />
-              {/* <Route path="/stepper" element={<MultiStepForm />} /> */}
-              <Route path="/success" element={<PrivateRoutes><Success /></PrivateRoutes>} />
-              <Route path="/mantra" element={<Mantra />} />
-            </Routes>
-            <Footer />
-          </Router>
-        )}
+      {loader ? (
+        <Loading />
+      ) : (
+        <Router>
+          <Nav />
+
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="services" element={<Services />} />
+            <Route path="gemstones" element={<Gemstones />} />
+            <Route path="contact" element={<Contact />} />
+            <Route path="about" element={<AboutUs />} />
+            <Route path="signup" element={<SignUp />} />
+            <Route path="login" element={<Login />} />
+            <Route path="admin" element={<AddProduct />} />
+            <Route
+              path="kundali"
+              element={<PrivateRoutes><Kundali /></PrivateRoutes>}
+            />
+            <Route path="readmore" element={<ReadMore />} />
+            <Route path="workshipitems" element={<WorkshipItems />} />
+            <Route path="yantra" element={<Yantra />} />
+            <Route path="success" element={<Success />} />
+            <Route path="/profile" element={<PrivateRoutes><Profile /></PrivateRoutes>} />
+            <Route path="/orders" element={<PrivateRoutes><Oderse /></PrivateRoutes>} />
+            <Route path="/newcart" element={<Cart />} />
+            <Route path="/pra" element={<Practiescart />} />
+            {/* <Route path="/stepper" element={<MultiStepForm />} /> */}
+            <Route path="/success" element={<PrivateRoutes><Success /></PrivateRoutes>} />
+            <Route path="/mantra" element={<Mantra />} />
+          </Routes>
+          <Footer />
+        </Router>
+      )}
       {/* </div> */}
     </StyledApp>
   );

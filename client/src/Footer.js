@@ -21,7 +21,8 @@ const Footer = () => {
   var currentYear = currentDate.getFullYear();
 
   return (
-    <div  style={{ marginTop: "40px" }}>
+    <div style={{ marginTop: "40px" }}>
+<hr />
       <Box p={{ base: 5, md: 8 }} maxW="5xl" marginInline="auto">
         <Stack
           spacing={{ base: 8, md: 0 }}
@@ -41,11 +42,11 @@ const Footer = () => {
             justifyContent={{ sm: "space-between", md: "normal" }}
           >
             <VStack spacing={4} alignItems="center" textAlign={"center"}>
-              <Text fontSize="md" ml={{base:"30px"}} fontWeight="bold">
+              <Text fontSize="md" ml={{ base: "30px" }} fontWeight="bold">
                 Address
               </Text>
               <VStack spacing={2} alignItems="flex-start" color="gray.500">
-                <Text ml={{base:"50px"}}>L1603 Sashtri Nagar Meerut-25004</Text>
+                <Text ml={{ base: "50px" }}>L1603 Sashtri Nagar Meerut-25004</Text>
               </VStack>
             </VStack>
           </HStack>
@@ -66,7 +67,7 @@ const Footer = () => {
           </Text>
           <Stack spacing={2} direction={{ base: "column", md: "row" }}>
             <Button
-              leftIcon={<FaFacebook />}
+              leftIcon={<FaFacebook size={"20px"}/>}
               as={Link}
               href="#"
               rounded="md"
@@ -75,18 +76,21 @@ const Footer = () => {
               _hover={{ bg: "blue.600" }}
             ></Button>
             <Button
-              leftIcon={<IoLogoYoutube />}
+              leftIcon={<IoLogoYoutube size={"20px"}/>}
               as={Link}
               href="https://youtube.com/@Dhukhbhanjan?si=9As3OXYEDouEzcvh"
+              target="_blank"
               rounded="md"
               color="white"
               bg="red.500"
               _hover={{ bg: "red.600" }}
             ></Button>
             <Button
-              leftIcon={<FaInstagram />}
+           
+              leftIcon={<FaInstagram  size={"20px"}/>}
               as={Link}
-              href="https://instagram.com/dhukhbhanjan2023?igshid=YTQwZjQ0NmI0OA=="
+              href="https://www.instagram.com/dhukh_bhanjan?igsh=dTJhcTUwZmFtZTJh"
+              target="_blank"
               rounded="md"
               color="white"
               bg="pink.500"
@@ -101,7 +105,7 @@ const Footer = () => {
             Designed and Developed by &copy;
           </Text>
           <Link
-            href="http://royalswebtechpvtltd.com"
+            href="http://royalswebtech.com"
             isExternal
             target="_blank"
           >
@@ -111,7 +115,7 @@ const Footer = () => {
               fontWeight={"600"}
               fontSize={"lg"}
             >
-              Royal's WebTech
+              Royals WebTech
             </Text>
           </Link>
           <Text
@@ -119,7 +123,7 @@ const Footer = () => {
             color={"gray"}
             fontWeight={"600"}
             fontSize={"lg"}
-            href="http://royalswebtechpvtltd.com/"
+            href="http://royalswebtech.com/"
           >
             &nbsp;{currentYear}
           </Text>

@@ -5,15 +5,50 @@
   text-decoration: none;
   transition: color 0.3s ease-in-out; /* Add a smooth transition effect */
 }
+.VIpgJd-ZVi9od-aZ2wEe{
+  visibility: hidden;
+} 
+ .VIpgJd-ZVi9od-aZ2wEe-OiiCO{
+  visibility: hidden;
+}
+
+
+
+.goog-te-combo{
+  border: 1px solid gray;
+  margin-left: 10px;
+}
+/* .VIpgJd-ZVi9od-l4eHX-hSRGPd{
+  visibility: hidden;
+} */
+.skiptranslate {
+  padding: 5px;
+ margin-left: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+}
+
+.skiptranslate img{
+  text-align: center;
+  
+width: 30%;
+text-align: center;
+
+}
+
+/* .skiptranslate{
+  display: none;
+} */
+
 
 /* Add hover effect */
 .nav-link:hover {
   color: #fff44f; /* Change the color on hover */
 }
 
-.css-1kw2fa0{
-  margin-left: -19px;
-}
+
 
 /* nav log css rortae start */
 .container{

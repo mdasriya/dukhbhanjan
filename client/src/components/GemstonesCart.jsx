@@ -36,25 +36,25 @@ const GemstonesCart = ({
   const [selectedQuality, setSelectedQuality] = useState("");
   const [radioItem, setRadioItem] = useState(0);
   const [emptyRadio, setEmptyRadio] = useState(false);
-const [isLoading, setLoading] = useState(false)
-const {toggleTheme } = useContext(ThemeContext);
-
+  const [isLoading, setLoading] = useState(false)
+  const { toggleTheme } = useContext(ThemeContext);
+  const [show, setShow] = useState('nowrap');
 
   let matchdatafound = qualities.find((el) => el.type === selectedQuality);
   const token = localStorage.getItem("token")
- 
+
 
   const handleCartData = async () => {
-   if(!token){
-    toast({
-      title: "Login first",
-      status: 'error',
-      duration: 2000,
-      isClosable: true,
-      position: 'top-right',
-    });
-    return
-   }
+    if (!token) {
+      toast({
+        title: "Login first",
+        status: 'error',
+        duration: 2000,
+        isClosable: true,
+        position: 'top-right',
+      });
+      return
+    }
     setLoading(true)
     if (!radioItem) {
       setEmptyRadio(true);
@@ -86,7 +86,8 @@ const {toggleTheme } = useContext(ThemeContext);
           status: 'success',
           duration: 3000,
           isClosable: true,
-          
+          position:'top'
+
         });
         setLoading(false)
         onClose();
@@ -130,7 +131,6 @@ const {toggleTheme } = useContext(ThemeContext);
   return (
     <Box mt={"10px"}>
       <Box
-        onClick={onOpen}
         border="1px solid #ececec"
         padding="10px"
         width={['85%', '250px']}
@@ -139,17 +139,41 @@ const {toggleTheme } = useContext(ThemeContext);
         textAlign="center"
         cursor="pointer"
         borderRadius="3px"
+        boxShadow="rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;"
         _hover={{
           border: 'none',
-          boxShadow:"rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px",
+          boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px;",
           borderRadius: '3px',
         }}
       >
-        <Image src={image} borderRadius={"10px"} alt={title} width="100%" height={['190px', '200px']} />
-        <Box textAlign="left" ml={5} mt={2}>
-          <Text>Name: {title}</Text>
-          <Text>Des: {description}</Text>
-        </Box>
+        <Box
+  as="div"
+  position="relative"
+  overflow="hidden"
+  borderRadius="10px"
+>
+
+  <Box
+    as="div"
+    transition="transform 0.3s ease-in-out"
+    _hover={{ transform: 'scale(1.1)'}}
+    onClick={onOpen}
+
+  >
+    <Image src={image} borderRadius="10px" alt={title} width="100%" height={['190px', '200px']} />
+  </Box>
+
+  <Box textAlign="left" p={2} mt={2}>
+    <Text  fontWeight={{base:'600', md:'500'}} fontSize={{base:'20px', md:'17px'}} 
+        onClick={onOpen}
+        >
+      {title}
+    </Text>
+    <Text textOverflow={'ellipsis'}overflow={'hidden'} whiteSpace={show}transition={'ease-in 0.3s'}
+    onClick={()=>{show == 'nowrap' ? setShow('normal') : setShow('nowrap')}}>{description}</Text>
+  </Box>
+</Box>
+
       </Box>
 
       <Modal isOpen={isOpen} onClose={onClose} size="xl">
@@ -180,12 +204,12 @@ const {toggleTheme } = useContext(ThemeContext);
                 </Alert>}
                 {selectedQuality && <FormLabel>Quality Per Ratti Price</FormLabel>}
                 {matchdatafound && matchdatafound.prices.map((item) => (
-                 <Box key={item} onChange={handleSort} style={{ marginBottom: '8px' }}>
-                 <input type="radio" name='order' value={item} style={{ marginRight: '10px' }}/>
-                 {/* <label style={{ textDecoration: 'line-through', color: 'teal' }}>₹{(item * 10) / 100 + item}</label> */}
+                  <Box key={item} onChange={handleSort} style={{ marginBottom: '8px' }}>
+                    <input type="radio" name='order' value={item} style={{ marginRight: '10px' }} />
+                    {/* <label style={{ textDecoration: 'line-through', color: 'teal' }}>₹{(item * 10) / 100 + item}</label> */}
 
-                 <label style={{ marginLeft: '8px' }}>₹{item}</label><br />
-               </Box>
+                    <label style={{ marginLeft: '8px' }}>₹{item}</label><br />
+                  </Box>
                 ))}
               </FormControl>
             </Box>

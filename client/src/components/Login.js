@@ -84,6 +84,13 @@ export default function Login() {
         }
       }).catch((error) => {
         console.log(error)
+        toast({
+          title: 'Unable to Login try After Sometime',
+          status: 'error',
+          duration: 2000,
+          isClosable: true,
+          position: "top-right"
+        })
 
       }).finally(() => {
         setIsLoading(false)
@@ -110,11 +117,11 @@ export default function Login() {
         duration: 2000,
         isClosable: true,
       })
-setVerifyText("verify")
+      setVerifyText("verify")
     } else if (changeEmail.includes("@")) {
       setPinLoading(true)
       const response = await axios.patch("https://outrageous-shoulder-pads-fly.cyclic.app/user/forgot-password", { changeEmail }, {
-       
+
       })
       if (response.data.state) {
         toast({
@@ -126,7 +133,7 @@ setVerifyText("verify")
         setPinGenrated(response.data.pincode)
         setPinLoading(false)
       } else {
-        console.log(response.data.msg)
+        // console.log(response.data.msg)
         setPinLoading(false)
         toast({
           title: response.data.msg,
@@ -158,62 +165,62 @@ setVerifyText("verify")
 
   const handleVerifyPinCode = () => {
     // Log the entered pin code
-if(enteredPin.length === pinGenrated.length){
-  if (pinGenrated === enteredPin) {
-    setVerifyText("verified")
-    setOpenPassInput(true)
-  }
-  setOpenPassInput(true) 
-}else{
-  toast({
-    title: 'please fill input feild',
-    status: 'error',
-    duration: 2000,
-    isClosable: true,
-  })
+    if (enteredPin.length === pinGenrated.length) {
+      if (pinGenrated === enteredPin) {
+        setVerifyText("verified")
+        setOpenPassInput(true)
+      }
+      setOpenPassInput(true)
+    } else {
+      toast({
+        title: 'please fill input feild',
+        status: 'error',
+        duration: 2000,
+        isClosable: true,
+      })
 
-}
-   
+    }
+
 
     // TODO: Add logic to verify the pin
   };
 
 
-const handleFinalCall = async() => {
-   if(password === repassword){
-     const response = await axios.patch(`https://outrageous-shoulder-pads-fly.cyclic.app/user/verify-password/${enteredPin}`,{email:changeEmail,pass:password}, {
-     
-     })
-if(response.data.state){
-  toast({
-    title: "password update success",
-    description:'Login Again',
-    status: 'success',
-    duration: 3000,
-    isClosable: true,
-  })
- await setTimeout(()=> {
-  handlecloseModal()
-  },1000)
-}else{
-  toast({
-    title: "unable to change password",
-    status: 'error',
-    duration: 3000,
-    isClosable: true,
-  })
-  return
-}
-    
-   }else{
-    toast({
-      title: 'password not match',
-      status: 'error',
-      duration: 2000,
-      isClosable: true,
-    })
-   }
-}
+  const handleFinalCall = async () => {
+    if (password === repassword) {
+      const response = await axios.patch(`https://outrageous-shoulder-pads-fly.cyclic.app/user/verify-password/${enteredPin}`, { email: changeEmail, pass: password }, {
+
+      })
+      if (response.data.state) {
+        toast({
+          title: "password update success",
+          description: 'Login Again',
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+        })
+        await setTimeout(() => {
+          handlecloseModal()
+        }, 1000)
+      } else {
+        toast({
+          title: "unable to change password",
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        })
+        return
+      }
+
+    } else {
+      toast({
+        title: 'password not match',
+        status: 'error',
+        duration: 2000,
+        isClosable: true,
+      })
+    }
+  }
 
 
 
@@ -236,19 +243,16 @@ if(response.data.state){
     return () => clearInterval(timer);
   }, [isOpen, pinGenrated])
 
-const openModal = () => {
-  setChangeEmail("")
-  setPassword("")
-  setRePassword("")
-  onOpen()
-  setOpenPassInput(false)
-  setEnteredPin("")
+  const openModal = () => {
+    setChangeEmail("")
+    setPassword("")
+    setRePassword("")
+    onOpen()
+    setOpenPassInput(false)
+    setEnteredPin("")
 
-}
+  }
 
-
-  console.log(pinGenrated)
-  console.log(countdown)
   return (
     <>
 
@@ -281,21 +285,21 @@ const openModal = () => {
               </HStack>  <Text mt={3} color={countdown < 10 ? "red" : "green"} >Pin code valid for {countdown} seconds</Text></> : <FormControl>  <FormLabel >Email</FormLabel>
                 <Flex>
                   <Input value={changeEmail} ref={initialRef} placeholder='Enter Your Email' onChange={handleChangeMessage} />
-                  <Button   colorScheme='blue' ml={3} onClick={handleForgotMessage}>
-                  {pinLoading ? "Wait...": "Send"} 
+                  <Button colorScheme='blue' ml={3} onClick={handleForgotMessage}>
+                    {pinLoading ? "Wait..." : "Send"}
                   </Button>
                 </Flex></FormControl>}
               {openPassInput && <> <FormControl>
                 <FormLabel>Password</FormLabel>
-                <Input value={password} onChange={(e)=>setPassword(e.target.value)} ref={initialRef} placeholder='First name' />
+                <Input value={password} onChange={(e) => setPassword(e.target.value)} ref={initialRef} placeholder='First name' />
               </FormControl>
 
                 <FormControl mt={4}>
                   <FormLabel>ReEnter Password</FormLabel>
-                  <Input value={repassword} onChange={(e)=>setRePassword(e.target.value)} placeholder='Last name' />
+                  <Input value={repassword} onChange={(e) => setRePassword(e.target.value)} placeholder='Last name' />
                 </FormControl> <Center>  <Button mt={5} p={"5px 50px"} colorScheme='green' variant='solid' onClick={handleFinalCall}>
-    Update
-  </Button></Center></> }
+                  Update
+                </Button></Center></>}
 
               {emailError && <Alert status='error' width={"80%"} mt={2}>
                 <AlertIcon />

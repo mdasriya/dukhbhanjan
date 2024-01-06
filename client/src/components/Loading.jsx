@@ -7,16 +7,16 @@ const Loading = () => {
   return (
     <DIV>
       <Box className="rotate-container">
-      <Image
-      className="rotate-image"
-  borderRadius='full'
-  boxSize='150px'
-  src={sun}
-  alt='Dan Abramov'
-/>
-<Text mt={2} ml={7} fontSize={"23px"}>Loading...</Text>
+        <Image
+          className="rotate-image"
+          borderRadius='full'
+          boxSize='150px'
+          src={sun}
+          alt='Dan Abramov'
+        />
+        <Text mt={2} ml={7} fontSize={"23px"}>Loading...</Text>
       </Box>
- 
+
     </DIV>
   )
 }

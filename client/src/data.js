@@ -15,7 +15,7 @@ const data = [
   {
     id: "1",
     title: "VICTORY IN LAWSUITS",
-    img: s8,
+    img: "https://cdn.gencraft.com/prod/user/a0bbce1a-4827-46bb-8b63-ef0b0dbc5539/82ef8770-b27e-4de8-a6b2-975bde7b7285/image/image0_0.jpg?Expires=1704371130&Signature=PrSzA7SpPe2igUtfoR7Y~HB73ZZ0PiMlLZIYRCag~RLHqOlkZW~RKJpocuMAv5T-aMsMu8SGZkqkTuKw5ffLVwrbNuXHd0AF2Rnu6Zg--~rDI0Qo0bHpRBpJgedI8Q2ndJdUSuyUUIfHREt9tt6AaDtYq113ojFm7rTKD8VWfLwm~aN1qhcaZR4Nvppcx~VgOBnzF8XYlKUVK2yt3NSdterut9ADEjSIOFsFH0AaphjzBpVmlWYQSSYTx1FMTmYLWvLa4I2GdcnIh3plOBZAFYuDAXr8KhjMJr2OjPDiWh77OgFuDcmdAHQqszo6uVEjL1QF51H9nKnbP91kTwD4uA__&Key-Pair-Id=K3RDDB1TZ8BHT8",
   },
   {
     id: "2",

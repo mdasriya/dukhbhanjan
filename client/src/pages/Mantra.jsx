@@ -5,7 +5,6 @@ import {
   Tbody,
   Tr,
   Th,
-  Text,
   Td,
   TableCaption,
   TableContainer,
@@ -24,26 +23,24 @@ const Mantra = () => {
     <>
       <Box>
         <Center>
-          <Heading as="h3" fontSize={{base:"20px"}}>Mantras for your Problems</Heading>
+          <Heading as="h3" fontSize={{ base: "20px" }}>Mantras for your Problems</Heading>
         </Center>
         <Center>
           <a href={pdf} download="mantra" target="_blank">
             <Button
-            colorScheme="yellow"
-            textAlign={"right"}
-            color={"white"}
+              colorScheme="yellow"
+              textAlign={"right"}
+              color={"white"}
               position="relative"
               top={"15px"}
               fontWeight={"600"}
-              
-              // onClick={handleDownload}
             >
               Downlaod Mantra
               <FaArrowDownLong ml={24} fontSize={"15px"} />
             </Button>
           </a>
 
-          
+
         </Center>
         <TableContainer>
           <Table

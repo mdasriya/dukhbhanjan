@@ -2,30 +2,36 @@ import React from "react";
 import {
   Heading,
   Box,
-  Center,
-  Text,
   Stack,
   Button,
   Image,
-  Badge,
   useColorModeValue,
   SimpleGrid,
 } from "@chakra-ui/react";
 import data from "../data";
-const ServicesCard = ({ title, img }) => (
-  <Box
+
+const ServicesCard = ({ title, img }) => {
+  const handleButtonClick = () => {
+    window.location.href = "tel:+917060308055";
+  };
+
+  return (
+    <Box
     maxW={"320px"}
     w={"full"}
     bg={useColorModeValue("white", "gray.900")}
     boxShadow={"2xl"}
+    borderRadius={"10px"}
     p={6}
     textAlign={"center"}
+    transition={"transform 0.3s ease-in-out"}
+    _hover={{ transform: "scale(1.05)" }} // Zoom effect on hover
   >
     <Image
-      size={"xl"}
+      height={"200px"}
+      width={"300px"}
       src={img}
       mb={4}
-      pos={"relative"}
       _after={{
         content: '""',
         w: 4,
@@ -37,7 +43,7 @@ const ServicesCard = ({ title, img }) => (
         right: 3,
       }}
     />
-    <Heading fontSize={"2xl"} fontFamily={"body"}>
+    <Heading fontSize={"xl"} fontFamily={"body"}>
       {title}
     </Heading>
 
@@ -57,12 +63,14 @@ const ServicesCard = ({ title, img }) => (
         _focus={{
           bg: "yellow.500",
         }}
+        onClick={handleButtonClick}
       >
         Call Us Now
       </Button>
     </Stack>
   </Box>
-);
+  );
+};
 
 export default function Services() {
   return (
@@ -71,7 +79,7 @@ export default function Services() {
         What We Provide...
       </Heading>
 
-      <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={10}>
+      <SimpleGrid columns={{ base: 1, sm: 2, md: 2, lg: 4 }}  pl={[8,5]} spacing={7}>
         {data && data.map(({ id, title, img }) => (
           <ServicesCard key={id} title={title} img={img} />
         ))}

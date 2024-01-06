@@ -18,7 +18,7 @@ export default function Home() {
   const location = useLocation();
   return (
     <>
-<Badge
+      <Badge
         colorScheme="yellow"
         position={"sticky"}
         top={"30%"}
@@ -37,7 +37,7 @@ export default function Home() {
         display={location.pathname == "/mantra" ? "none" : "block"}
       >
         Click here for Mantras
-      </Badge> 
+      </Badge>
 
 
       <Stack minH={"100vh"} direction={{ base: "column", md: "row" }}>

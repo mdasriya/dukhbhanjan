@@ -2,11 +2,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import { IoCart } from "react-icons/io5";
 import "./style/Nav.css"
+
 import { CgProfile } from "react-icons/cg";
 import { BsBucket } from "react-icons/bs";
 import { IoLogInOutline } from "react-icons/io5";
 import { MdLogout } from "react-icons/md";
 import { MdGTranslate } from "react-icons/md";
+import { IoIosArrowDown } from "react-icons/io";
+
 import {
   Button,
   Box,
@@ -22,7 +25,7 @@ import {
   MenuList,
   MenuItem,
   Avatar,
-  
+
 } from "@chakra-ui/react";
 import sun from "../src/imgs/sun.png"
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
@@ -30,6 +33,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useToast } from '@chakra-ui/react'
 import axios from "axios";
 import ThemeContext from "./components/ThemeContext";
+
 export default function Nav() {
   const [cartItems, setCartItems] = useState(0);
   const location = useLocation()
@@ -62,37 +66,67 @@ export default function Nav() {
     onClose()
   }
 
-const handleChangeLanguage = () => {
-  alert("we are working on this featues")
-}
+  // const handleChangeLanguage = () => {
+  //   alert("we are working on this featues")
+  // }
 
+  const getCartProduct = () => {
+    return axios
+      .get('https://outrageous-shoulder-pads-fly.cyclic.app/cart', {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      })
+      .then((res) => {
+        setCartItems(res.data.length)
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
+const token = localStorage.getItem("token")
 
 
   useEffect(() => {
     setUsername(localStorage.getItem("firstname"))
-  }, [username, location])
+  }, [username,cartItems, location])
 
   useEffect(() => {
-    const getCartProduct = () => {
-      return axios
-        .get('https://outrageous-shoulder-pads-fly.cyclic.app/cart', {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-        })
-        .then((res) => {
-          setCartItems(res.data.length)
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    };
+  if(token){
     getCartProduct()
+  }
   }, [theme, cartItems])
 
 
+
+  useEffect(() => {
+    const loadGoogleTranslateScript = () => {
+      const script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+      script.async = true;
+      document.body.appendChild(script);
+    };
+
+    const googleTranslateElementInit = () => {
+      new window.google.translate.TranslateElement({ pageLanguage: 'en' }, 'google_translate_element');
+    };
+
+    if (!window.google || !window.google.translate) {
+      loadGoogleTranslateScript();
+    } else {
+      googleTranslateElementInit();
+    }
+
+    return () => {
+      const script = document.querySelector('script[src*="translate.google.com"]');
+      if (script) {
+        document.body.removeChild(script);
+      }
+    };
+  }, []);
 
   return (
     <>
@@ -106,10 +140,10 @@ const handleChangeLanguage = () => {
             onClick={isOpen ? onClose : onOpen}
           />
           <HStack spacing={8} alignItems={"center"}>
-            <Box onClick={()=> navigate("/")} className="rotate-container" _hover={{cursor:"pointer"}}>
+            <Box onClick={() => navigate("/")} className="rotate-container" _hover={{ cursor: "pointer" }}>
               <Image src={sun} className="rotate-image" height={"60px"} width={"60px"} />
             </Box>
-            <Text fontWeight="bold" fontSize={{ base: "20px", md: "30px" }} ml={{base:"-60px 0px"}}>
+            <Text fontWeight="bold" fontSize={{ base: "20px", md: "30px" }} ml={{ base: "-60px 0px" }}>
               Dukha Bhanjan
             </Text>
 
@@ -121,22 +155,26 @@ const handleChangeLanguage = () => {
               position={"relative"}
               left={"21rem"}
             >
+
+
               <Link to="/" style={{ fontWeight: "600", color: "gray" }}>HOME</Link>
               <Link to="/contact" style={{ fontWeight: "600", color: "gray" }} >CONTACT US</Link>
               <Menu>
                 <MenuButton bg="transparent" fontWeight={"600"} color={"gray"} >
                   SHOP
+
                 </MenuButton>
                 <MenuList>
+                <MenuItem>
+                    <Link to="/gemstones">Gemstones</Link>
+                  </MenuItem>
                   <MenuItem>
                     <Link to="/yantra">Yantra</Link>
                   </MenuItem>
                   <MenuItem>
                     <Link to="/workshipitems">WorkShip Items</Link>
                   </MenuItem>
-                  <MenuItem>
-                    <Link to="/gemstones">Gemstones</Link>
-                  </MenuItem>
+              
                 </MenuList>
               </Menu>
               <Menu>
@@ -152,18 +190,18 @@ const handleChangeLanguage = () => {
                   </MenuItem>
                 </MenuList>
               </Menu>
-           
+
+
               <Link to="/about" style={{ fontWeight: "600", color: "gray" }}>ABOUT US</Link>
-            
-            
-            <Box as="button" onClick={handleChangeLanguage} _hover={{cursor:"pointer"}}>
 
+
+              {/* <Box as="button" onClick={handleChangeLanguage} _hover={{cursor:"pointer"}}>
               <MdGTranslate size={"20px"}/>
-            </Box>
+            </Box> */}
+
+              {/* <div id="google_translate_element"></div> */}
 
 
-
-              {/* <Link to="/newcart" style={{ fontWeight: "600", color: "gray.900" }}>CART</Link> */}
               <Link to="/newcart">
                 <IoCart size={24} style={{ marginRight: '5px' }} />
                 {cartItems >= 0 && (
@@ -193,7 +231,7 @@ const handleChangeLanguage = () => {
             {/* {username && <Text fontSize={"18px"}>{username.toUpperCase()}</Text>} */}
             <Menu>
               <MenuButton
-             
+
                 as={Button}
                 rounded={'full'}
                 variant={'link'}
@@ -205,37 +243,39 @@ const handleChangeLanguage = () => {
 
               <MenuList mt={"13px"}>
 
-              <Box p={1} onClick={()=>navigate('/signup')}> 
-                <Box p={1} display={"flex"} justifyContent={"space-between"} > 
-                <Text fontSize={"17px"} mt={"5px"}>New Customer?</Text>
-               <Text  color={"blue"} ml={3} fontSize={"20px"} fontWeight={500} _hover={{cursor:"pointer"}}>Sign Up</Text>
+                <Box p={1} onClick={() => navigate('/signup')}>
+                  <Box p={1} display={"flex"} justifyContent={"space-between"} >
+                    <Text fontSize={"17px"} mt={"5px"}>New Customer?</Text>
+                    <Text color={"blue"} ml={3} fontSize={"20px"} fontWeight={500} _hover={{ cursor: "pointer" }}>Sign Up</Text>
+                  </Box>
+                  <hr />
                 </Box>
-              <hr />
-                </Box>
-               
+
 
 
                 <Flex >
-                <MenuItem onClick={() => navigate("/orders")}> 
-                <BsBucket  size={"20px"}/>
-                <label style={{marginLeft:'10px'}}>Orders</label>
-                </MenuItem>
-                </Flex>
-                
-                <MenuItem  onClick={() => navigate("/profile")}>
-                <CgProfile  size={"20px"}/>
-                <label style={{marginLeft:'10px'}}>My Profile</label>
+                  <MenuItem onClick={() => navigate("/orders")}>
+                    <BsBucket size={"20px"} />
+                    <label style={{ marginLeft: '10px' }}>Orders</label>
                   </MenuItem>
+                </Flex>
+
+                <MenuItem onClick={() => navigate("/profile")}>
+                  <CgProfile size={"20px"} />
+                  <label style={{ marginLeft: '10px' }}>My Profile</label>
+                </MenuItem>
                 {
                   !username ? <MenuItem onClick={() => navigate("/login")}>
-                    <IoLogInOutline   size={"20px"}/>
-                    <label style={{marginLeft:'10px'}}>Login</label>
-                    </MenuItem> : <MenuItem onClick={handleLogout}>
-                    <MdLogout    size={"20px"}/>
-                    <label style={{marginLeft:'10px'}}>Logout</label>
-                    
-                      </MenuItem>
+                    <IoLogInOutline size={"20px"} />
+                    <label style={{ marginLeft: '10px' }}>Login</label>
+                  </MenuItem> : <MenuItem onClick={handleLogout}>
+                    <MdLogout size={"20px"} />
+                    <label style={{ marginLeft: '10px' }}>Logout</label>
+
+                  </MenuItem>
                 }
+                <Box mt={2}></Box>
+                <div id="google_translate_element"></div>
 
                 {/* <MenuDivider /> */}
 
@@ -257,7 +297,7 @@ const handleChangeLanguage = () => {
               <Link to="/newcart" onClick={handleCloseNav}>My Cart</Link>
 
               <Menu>
-                <MenuButton  textAlign={"start"} bg="transparent" fontWeight={"400"}>
+                <MenuButton textAlign={"start"} bg="transparent" fontWeight={"400"}>
                   Shop
                 </MenuButton>
                 <MenuList>
@@ -274,7 +314,7 @@ const handleChangeLanguage = () => {
               </Menu>
               <Menu>
                 <MenuButton bg="transparent" fontWeight={"400"}>
-                  <Box className="sbtn" ml={{base:"-10px", md:"0px"}} textAlign={"start"}>Services</Box>
+                  <Box className="sbtn" ml={{ base: "-10px", md: "0px" }} textAlign={"start"}>Services</Box>
                 </MenuButton>
                 <MenuList>
                   <MenuItem>

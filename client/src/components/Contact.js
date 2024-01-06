@@ -31,98 +31,91 @@ const contactOptions = [
   },
   {
     label: "PHONE NUMBER",
-    value: "+91 7276301985",
+    value: "+91 7276301985 , +91 7276901955",
     icon: FaPhone,
   },
   {
     label: "EMAIL",
-    value: "support@dukhbhanjan.com  accounts@dukhbhanjan.com",
+    value: "support@dukhbhanjan.com   accounts@dukhbhanjan.com",
     icon: IoMail,
   },
 ];
 
 const initialState = {
-  name:"",
-  email:"",
-  PhoneNo:"",
-  subject:"",
-  message:""
+  name: "",
+  email: "",
+  PhoneNo: "",
+  subject: "",
+  message: ""
 }
 
 
 const Contact = () => {
-const [data, setData] = useState(initialState)
-const [isLoading, setIsLoading] = useState(false)
-const toast = useToast()
-const handleChangeData = (e) => {
-   const {name,value} = e.target
-   setData((prev)=> {
-    return {...prev, [name]:value}
-   })
-}
+  const [data, setData] = useState(initialState)
+  const [isLoading, setIsLoading] = useState(false)
+  const toast = useToast()
+  const handleChangeData = (e) => {
+    const { name, value } = e.target
+    setData((prev) => {
+      return { ...prev, [name]: value }
+    })
+  }
 
-const handleSend = async() => {
-  setIsLoading(true)
-if(data.name && data.email && data.PhoneNo && data.message && data.subject){
-  try {
-    const response = await axios.post("https://outrageous-shoulder-pads-fly.cyclic.app/contact/create", data, {
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${localStorage.getItem("token")}`
+  const handleSend = async () => {
+    setIsLoading(true)
+    if (data.name && data.email && data.PhoneNo && data.message && data.subject) {
+      try {
+        const response = await axios.post("https://outrageous-shoulder-pads-fly.cyclic.app/contact/create", data, {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem("token")}`
+          }
+        });
+
+        if (response.data) {
+          toast({
+            title: "Your Query send successfully",
+            status: "success",
+            duration: 5000,
+            isClosable: true,
+            position: "top-right"
+          })
+          setData(initialState)
+          setIsLoading(false)
+        } else {
+          toast({
+            title: "input fiels is required",
+            status: "error",
+            duration: 3000,
+            isClosable: true,
+          });
+
+        }
+
+      } catch (error) {
+        // Log and show an error toast
+        console.error("Error submitting form:", error.response.data.error);
+        toast({
+          title: "something wrong try again after sometime",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+          position: "top-right"
+        });
       }
-    });
-
-if(response.data){
-toast({
-title: "Your Query send successfully",
-status: "success",
-duration: 5000,
-isClosable: true,
-position:"top-right"
-})
-setData(initialState)
-setIsLoading(false)
-}else{
-toast({
-title: "input fiels is required",
-status: "error",
-duration: 3000,
-isClosable: true,
-});
-
-}
-
-} catch (error) {
-  // Log and show an error toast
-  console.error("Error submitting form:", error.response.data.error);
-  toast({
-    title: "something wrong try again after sometime",
-    status: "error",
-    duration: 3000,
-    isClosable: true,
-    position:"top-right"
-  });
-}
-setIsLoading(false)
-}else{
+      setIsLoading(false)
+    } else {
 
       toast({
         title: 'Input Filed is required',
-      position:"top-right",
+        position: "top-right",
         status: 'error',
         duration: 3000,
         isClosable: true,
       })
       setIsLoading(false)
-  }
-  
-
-
- 
-};
-
-
-
+    }
+  };
   return (
     <div data-aos="fade-in">
       <Container maxW="7xl" py={10} px={{ base: 5, md: 8 }}>
@@ -137,22 +130,22 @@ setIsLoading(false)
           </VStack>
           <SimpleGrid columns={{ base: 1, md: 3 }} spacing={20}>
             {contactOptions.map((option, index) => (
-              <Flex 
-              borderRadius="5px"
-           boxShadow={"rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em, rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;"}
-              padding={"30px"}
+              <Flex
+                borderRadius="5px"
+                boxShadow={"rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em, rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;"}
+                padding={"30px"}
                 key={index}
                 direction="column"
                 align="center"
                 textAlign="center"
-                _hover={{bgColor:"yellow.300",borderRadius:"5px", cursor:"pointer"}}
+                _hover={{ bgColor: "yellow.300", borderRadius: "5px", cursor: "pointer" }}
               >
                 <Icon as={option.icon} w={10} h={10} color="yellow.400" />
                 <Text fontSize="lg" fontWeight="semibold">
-                  {option.label}
+                  {option.label.toUpperCase()}
                 </Text>
                 <Text fontSize="md" textAlign="center">
-                  {option.value}
+                  {option.value} <br />
                 </Text>
               </Flex>
             ))}
@@ -181,9 +174,9 @@ setIsLoading(false)
                 </FormControl>
                 <FormControl id="email">
                   <FormLabel>Email</FormLabel>
-                  <Input type="email" placeholder="Your Mail" required rounded="md"  name="email"
+                  <Input type="email" placeholder="Your Mail" required rounded="md" name="email"
                     value={data.email}
-                    onChange={handleChangeData}/>
+                    onChange={handleChangeData} />
                 </FormControl>
                 <FormControl id="phone">
                   <FormLabel>Phone Number</FormLabel>
@@ -199,9 +192,9 @@ setIsLoading(false)
               </SimpleGrid>
               <FormControl id="subject">
                 <FormLabel>Subject</FormLabel>
-                <Input type="text" placeholder="Your Problem" rounded="md"  name="subject"
-                    value={data.subject}
-                    onChange={handleChangeData}/>
+                <Input type="text" placeholder="Your Problem" rounded="md" name="subject"
+                  value={data.subject}
+                  onChange={handleChangeData} />
               </FormControl>
               <FormControl id="message">
                 <FormLabel>Message</FormLabel>
@@ -217,9 +210,9 @@ setIsLoading(false)
             </VStack>
             <VStack w="100%">
               <Button
-              isLoading={isLoading}
-              padding={"25px"}
-              onClick={handleSend}
+                isLoading={isLoading}
+                padding={"25px"}
+                onClick={handleSend}
                 colorScheme="yellow"
                 color="white"
                 _hover={{
@@ -230,8 +223,8 @@ setIsLoading(false)
               >
                 Send Message
               </Button>
-              
-              
+
+
             </VStack>
           </VStack>
         </Stack>

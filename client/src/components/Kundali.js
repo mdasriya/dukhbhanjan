@@ -18,16 +18,16 @@ import {
 import { SingleDatepicker } from "chakra-dayzed-datepicker";
 
 const initialdata = {
-  
-    fname: "",
-    lname: "",
-    phone: "",
-    dob: "",
-    hours: "",
-    min: "",
-    pob: "",
-    selectedTime: "",
-  }
+
+  fname: "",
+  lname: "",
+  phone: "",
+  dob: "",
+  hours: "",
+  min: "",
+  pob: "",
+  selectedTime: "",
+}
 
 
 
@@ -36,57 +36,58 @@ const Kundali = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [selectedTime, setSelectedTime] = useState(null);
   const [formData, setFormData] = useState(initialdata);
-const toast = useToast()
+  const toast = useToast()
+
   const handleCheckboxChange = (time) => {
     setSelectedTime(time);
     setFormData({ ...formData, selectedTime: time });
   };
 
   const handleChange = (e) => {
-     const { name, value } = e.target;
-     setFormData((prev)=> {
-      return {...prev, [name]:value}
-     });
+    const { name, value } = e.target;
+    setFormData((prev) => {
+      return { ...prev, [name]: value }
+    });
   };
 
-  const handleDateChange = (newDate) => {
-    setDate(newDate);
-    setFormData({ ...formData, dob: newDate.toISOString() });
-  };
+
 
   const handleSubmit = async() => {
-setIsLoading(true)
+  
+    if(formData.pob && formData.fname && formData.lname && formData.phone && formData.dob && formData.hours && formData.min && formData.selectedTime){
+     
+    setIsLoading(true)
     try {
-        // Make the HTTP request and wait for the response
-        const response = await axios.post("https://outrageous-shoulder-pads-fly.cyclic.app/kundali/create", formData, {
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${localStorage.getItem("token")}`
-          }
+      // Make the HTTP request and wait for the response
+      const response = await axios.post("https://outrageous-shoulder-pads-fly.cyclic.app/kundali/create", formData, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
+        }
+      });
+      // Log the response data
+      // Show a success toast
+      if (response.data) {
+        toast({
+          title: "kundali submitted successfully",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+          position: "top-right"
+        })
+        setFormData(initialdata)
+        setDate(new Date());
+        setSelectedTime(null);
+        setIsLoading(false)
+      } else {
+        toast({
+          title: response.data.error,
+          status: "error",
+          duration: 3000,
+          isClosable: true,
         });
-        // Log the response data
- // Show a success toast
-if(response.data){
-  toast({
-    title: "kundali submitted successfully",
-    status: "success",
-    duration: 3000,
-    isClosable: true,
-    position:"top-right"
-  })
-  setFormData(initialdata)
-  setDate(new Date());
-  setSelectedTime(null);
-  setIsLoading(false)
-}else{
-  toast({
-    title: response.data.error,
-    status: "error",
-    duration: 3000,
-    isClosable: true,
-  });
-  setIsLoading(false)
-}
+        setIsLoading(false)
+      }
 
     } catch (error) {
       setIsLoading(false)
@@ -99,11 +100,16 @@ if(response.data){
         isClosable: true,
       });
     }
-
-  
    
+    }else{
+      toast({
+        title: 'Fill Input field first',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      }) 
+    }
   };
-
   return (
     <>
       <div data-aos="flip-right">
@@ -141,13 +147,13 @@ if(response.data){
                         placeholder="Your First Name"
                         rounded="md"
                         onChange={handleChange}
-                     required
-                     />
+                        required
+                      />
                     </FormControl>
                     <FormControl id="lname">
                       <FormLabel>Last Name</FormLabel>
                       <Input
-                      value={formData.lname}
+                        value={formData.lname}
                         type="text"
                         name="lname"
                         placeholder="Your Last Name"
@@ -159,7 +165,7 @@ if(response.data){
                     <FormControl id="phone">
                       <FormLabel>Phone Number</FormLabel>
                       <Input
-                      value={formData.phone}
+                        value={formData.phone}
                         type="tel"
                         name="phone"
                         placeholder="Your Phone Number"
@@ -170,18 +176,19 @@ if(response.data){
                     </FormControl>
                     <FormControl id="dob">
                       <FormLabel>Select Your DOB</FormLabel>
-                      <SingleDatepicker
+                      <Input placeholder='Basic usage' value={formData.dob}  name="dob"  required onChange={handleChange} type='date'/>
+                      {/* <SingleDatepicker
                         name="date-input"
                         date={date}
                         onDateChange={handleDateChange}
                         required
-                      />
+                      /> */}
                     </FormControl>
 
                     <FormControl id="hours">
                       <FormLabel>Hours</FormLabel>
                       <Input
-                      value={formData.hours}
+                        value={formData.hours}
                         type="number"
                         name="hours"
                         placeholder="Write Hours"
@@ -193,7 +200,7 @@ if(response.data){
                     <FormControl id="min">
                       <FormLabel>Minutes</FormLabel>
                       <Input
-                      value={formData.min}
+                        value={formData.min}
                         type="number"
                         name="min"
                         placeholder="Writes Minutes"
@@ -205,7 +212,7 @@ if(response.data){
                     <FormControl id="pob">
                       <FormLabel>Place of Birth</FormLabel>
                       <Input
-                      value={formData.pob}
+                        value={formData.pob}
                         type="text"
                         name="pob"
                         placeholder="Place of Birth"
@@ -244,7 +251,7 @@ if(response.data){
                     w="100%"
                     onClick={handleSubmit}
                   >
-                 {isLoading ? "Please wait...": "Send"}   
+                    {isLoading ? "Please wait..." : "Send"}
                   </Button>
                 </VStack>
               </VStack>

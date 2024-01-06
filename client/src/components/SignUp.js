@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   Flex,
   Box,
@@ -17,109 +18,91 @@ import {
   AlertIcon,
   VStack,
 } from "@chakra-ui/react";
-import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-// import axios from "axios";
-// import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import axios from "axios"
-import { useNavigate } from 'react-router-dom'
-
-
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function SignUp() {
   const toast = useToast();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [firstName, setFirstname] = useState("");
   const [lastName, setLastname] = useState("");
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const token = localStorage.getItem("token")
+
+  // State variables to track input validation status
+  const [firstNameValid, setFirstNameValid] = useState(true);
+  const [lastNameValid, setLastNameValid] = useState(true);
+  const [emailValid, setEmailValid] = useState(true);
+  const [passValid, setPassValid] = useState(true);
 
   const handlePasswordChange = (e) => {
     const newPassword = e.target.value;
     setPass(newPassword);
     setError('');
+    setPassValid(true);
   };
 
-
-  const getPasswordStrength = () => {
-    const minLength = 8;
-    const hasUpperCase = /[A-Z]/.test(pass);
-    const hasLowerCase = /[a-z]/.test(pass);
-    const hasNumber = /\d/.test(pass);
-    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(pass);
-
-    if (
-      pass.length >= minLength &&
-      hasUpperCase &&
-      hasLowerCase &&
-      hasNumber &&
-      hasSpecialChar
-    ) {
-      return 'Strong';
-    } else if (pass.length >= minLength && (hasUpperCase || hasLowerCase || hasNumber)) {
-      return 'Medium';
-    } else {
-      return 'Weak';
-    }
-  };
-
-  const getValidationColor = (condition) => (condition ? 'green' : 'red');
-
+  const getValidationColor = (condition) => (condition ? 'green' : 'black');
 
 
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    // pass validation criteria
-    const minLength = 8;
-    const hasUpperCase = /[A-Z]/.test(pass);
-    const hasLowerCase = /[a-z]/.test(pass);
-    const hasNumber = /\d/.test(pass);
+    e.preventDefault();
 
-    // Check if password meets the criteria
-    if (pass.length < minLength || !hasUpperCase || !hasLowerCase || !hasNumber) {
-      setError('Invalid password. Please ensure it meets the criteria.');
+    // Validation logic for required fields
+    if (!firstName || !lastName || !email || !pass) {
+      setFirstNameValid(!!firstName);
+      setLastNameValid(!!lastName);
+      setEmailValid(!!email);
+      setPassValid(!!pass);
       return;
-    } else {
-      let data = { firstName, lastName, email, pass }
-      axios.post("https://outrageous-shoulder-pads-fly.cyclic.app/user/register", data)
-        .then(res => {
-          setError(false)
-          if(res.data.msg){
-            // alert(res.data.msg)
-            localStorage.setItem("firstname", firstName)
-            toast({
-              title: 'Account created successfully.',
-             
-              status: 'success',
-              duration: 3000,
-              isClosable: true,
-              position:"top-right"
-            })
-            navigate("/login")
-          }
-        })
-        .catch((error) => {
-          console.log(error)
-        })
-       setFirstname("")
-       setLastname("")
-        setEmail("")
-        setPass("")
+    }
+
+    // Other validation logic...
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(email)) {
+      setError('Invalid email format. Please enter a valid email address.');
+      setEmailValid(false);
+      return;
     }
 
     // Proceed with user registration logic
-    // You can send a request to your server for registration here
-
-
-
-  }
-
-
+    setIsLoading(true);
+    let data = { firstName, lastName, email, pass };
+    axios
+      .post("https://outrageous-shoulder-pads-fly.cyclic.app/user/register", data)
+      .then((res) => {
+        setError(false);
+        if (res.data.msg) {
+          localStorage.setItem("firstname", firstName);
+          toast({
+            title: 'Account created successfully.',
+            status: 'success',
+            duration: 3000,
+            isClosable: true,
+            position: "top-right",
+          });
+          navigate("/login");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+        setFirstname("");
+        setLastname("");
+        setEmail("");
+        setPass("");
+      });
+  };
 
   return (
     <div data-aos="flip-right">
@@ -152,7 +135,11 @@ export default function SignUp() {
                     <Input
                       type="text"
                       value={firstName}
-                      onChange={(e) => setFirstname(e.target.value)}
+                      onChange={(e) => {
+                        setFirstname(e.target.value);
+                        setFirstNameValid(true);
+                      }}
+                      borderColor={firstNameValid ? "" : "red"}
                     />
                   </FormControl>
                 </Box>
@@ -162,7 +149,11 @@ export default function SignUp() {
                     <Input
                       type="text"
                       value={lastName}
-                      onChange={(e) => setLastname(e.target.value)}
+                      onChange={(e) => {
+                        setLastname(e.target.value);
+                        setLastNameValid(true);
+                      }}
+                      borderColor={lastNameValid ? "" : "red"}
                     />
                   </FormControl>
                 </Box>
@@ -172,7 +163,11 @@ export default function SignUp() {
                 <Input
                   type="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    setEmailValid(true);
+                  }}
+                  borderColor={emailValid ? "" : "red"}
                 />
               </FormControl>
               <FormControl id="password" isRequired>
@@ -182,6 +177,7 @@ export default function SignUp() {
                     type={showPassword ? "text" : "password"}
                     value={pass}
                     onChange={handlePasswordChange}
+                    borderColor={passValid ? getValidationColor(pass.length >= 8) : "red"}
                   />
                   <InputRightElement h={"full"}>
                     <Button
@@ -194,60 +190,54 @@ export default function SignUp() {
                     </Button>
                   </InputRightElement>
                 </InputGroup>
-               
               </FormControl>
               <Stack spacing={10} pt={2}>
+                {pass && (
+                  <VStack align="start" spacing={2} mb="4">
+                    <Text>
+                      Password Strength:{' '}
+                      <span style={{ color: getValidationColor(pass.length >= 8) }}>Length</span> |{' '}
+                      <span style={{ color: getValidationColor(/[A-Z]/.test(pass)) }}>Uppercase</span> |{' '}
+                      <span style={{ color: getValidationColor(/[a-z]/.test(pass)) }}>Lowercase</span> |{' '}
+                      <span style={{ color: getValidationColor(/\d/.test(pass)) }}>Number</span> |{' '}
+                      <span style={{ color: getValidationColor(/[!@#$%^&*(),.?":{}|<>]/.test(pass)) }}>
+                        Special Character
+                      </span>
+                    </Text>
+                  </VStack>
+                )}
 
-              {pass && (
-        <VStack align="start" spacing={2} mb="4">
-          <Text>
-            Password Strength:{' '}
-            <span style={{ color: getValidationColor(pass.length >= 8) }}>Length</span> |{' '}
-            <span style={{ color: getValidationColor(/[A-Z]/.test(pass)) }}>Uppercase</span> |{' '}
-            <span style={{ color: getValidationColor(/[a-z]/.test(pass)) }}>Lowercase</span> |{' '}
-            <span style={{ color: getValidationColor(/\d/.test(pass)) }}>Number</span> |{' '}
-            <span style={{ color: getValidationColor(/[!@#$%^&*(),.?":{}|<>]/.test(pass)) }}>
-              Special Character
-            </span>
-          </Text>
-         
-        </VStack>
-      )}
-
-
-              {/* code for error start */}
                 {error && (
                   <Alert status="error" mb="4">
                     <AlertIcon />
                     {error}
                   </Alert>
                 )}
-              {/* code for error end */}
 
-              {
-                  isLoading ? <Button
-                  isLoading
-                     bg={"yellow.500"}
-                     color={"white"}
-                     _hover={{
-                       bg: "yellow.500",
-                     }}
-                     
-                     onClick={handleSubmit}
-                   >
-                     Login
-                   </Button> : <Button
-                     bg={"yellow.400"}
-                     color={"white"}
-                     _hover={{
-                       bg: "yellow.500",
-                     }}
-                     
-                     onClick={handleSubmit}
-                   >
+                {isLoading ? (
+                  <Button
+                    isLoading
+                    bg={"yellow.500"}
+                    color={"white"}
+                    _hover={{
+                      bg: "yellow.500",
+                    }}
+                    onClick={handleSubmit}
+                  >
+                    Login
+                  </Button>
+                ) : (
+                  <Button
+                    bg={"yellow.400"}
+                    color={"white"}
+                    _hover={{
+                      bg: "yellow.500",
+                    }}
+                    onClick={handleSubmit}
+                  >
                     Sign Up
-                   </Button>
-                  }
+                  </Button>
+                )}
               </Stack>
               <Stack pt={6}>
                 <Text align={"center"}>
