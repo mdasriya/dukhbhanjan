@@ -60,10 +60,10 @@ const { id } = req.params
 
   try {
    const address = await addressModel.findOne({ _id: id })
-   console.log(address)
+  
    const userIDinaddressDoc = address.UserId
    if (userIdinUserDoc === userIDinaddressDoc) {
-          console.log("if call")
+       
        await addressModel.findByIdAndUpdate({_id:id}, req.body)
       res.json({msg:`Your address has been updated`,state:true})
    } else {

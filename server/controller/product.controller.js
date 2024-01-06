@@ -22,7 +22,7 @@ const handleGetProduct = async (req, res) => {
 
 const handleUpadteProduct = async (req, res) => {
    const { productId } = req.params
-   console.log(productId)
+   // console.log(productId)
    try {
       await ProductModel.findByIdAndDelete({ _id: productId }, req.body)
       res.json({ msg: `product has been updated` })

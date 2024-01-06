@@ -149,7 +149,7 @@ const handleForgotPass = async (req, res) => {
                     console.log(error.message)
                     res.status(400).json({ msg: 'Unable to send email try  after sometime', state: false })
                 } else if (info.response) {
-                    console.log('Email sent: ' + info.response);
+                    // console.log('Email sent: ' + info.response);
 
                     res.status(200).json({ msg: 'Email send Successfully', state: true, pincode: randomPin })
                 }
@@ -170,7 +170,7 @@ const handleVerifyPass = async (req, res) => {
     const { pin } = req.params
     const data = req.body
     const { email, pass } = req.body
-    console.log(req.body)
+    // console.log(req.body)
     try {
         const user = await UserModel.findOne({ email })
         if (user) {
