@@ -125,7 +125,7 @@ const Footer = () => {
             fontSize={"lg"}
             href="http://royalswebtech.com/"
           >
-            &nbsp;{currentYear}
+          &nbsp;{currentYear}
           </Text>
         </Center>
       </Box>

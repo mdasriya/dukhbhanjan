@@ -154,7 +154,7 @@ const Cart = () => {
     }
   };
 
-  const initPayment = (data) => {
+  const initPayment = async(data) => {
     const options = {
       key: "rzp_test_FZa7FJ6Bglhj8Y", // Replace with your actual key
       amount: data.amount,
@@ -166,6 +166,7 @@ const Cart = () => {
        
         try {
           await axios.post("https://outrageous-shoulder-pads-fly.cyclic.app/api/payment/verify", response, {
+           
             headers: {
               'Content-Type': 'application/json',
               Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -173,6 +174,7 @@ const Cart = () => {
           });
 
           if (response.razorpay_signature) {
+            // console.log("res",response)
             setPaymentLoading(true)
             toast({
               title: 'Paymeny Done Successfully.',
@@ -182,6 +184,13 @@ const Cart = () => {
               duration: 3000,
               isClosable: true,
             })
+            // console.log("res", response)
+            const {razorpay_order_id,razorpay_payment_id } = response
+        await   cartData.forEach((item)=> {
+            item.razorpay_order_id = razorpay_order_id;
+            item.razorpay_payment_id = razorpay_payment_id;
+           })
+            console.log("new", cartData) 
             await handleMyOrderData(cartData)
             await handledeleteCartData(cartData)
             setPaymentLoading(false)

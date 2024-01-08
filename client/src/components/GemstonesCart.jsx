@@ -18,6 +18,7 @@ import {
   AlertIcon,
   Alert,
   AlertTitle,
+  Heading,
 } from '@chakra-ui/react';
 import axios from 'axios';
 import React, { useContext, useState } from 'react';
@@ -29,7 +30,7 @@ const GemstonesCart = ({
   description,
   image,
   title,
-  qualities
+  qualities, benefits
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
@@ -43,7 +44,13 @@ const GemstonesCart = ({
   let matchdatafound = qualities.find((el) => el.type === selectedQuality);
   const token = localStorage.getItem("token")
 
+  const benefitsArray = benefits.split('.').map(benefit => benefit.trim());
+  // Exclude the last item using slice(0, -1)
+  const numberedBenefits = benefitsArray.slice(0, -1).map((benefit, index) => `${index + 1}. ${benefit}`);
 
+
+
+  console.log("msain", numberedBenefits)
   const handleCartData = async () => {
     if (!token) {
       toast({
@@ -86,7 +93,7 @@ const GemstonesCart = ({
           status: 'success',
           duration: 3000,
           isClosable: true,
-          position:'top'
+          position: 'top'
 
         });
         setLoading(false)
@@ -147,32 +154,39 @@ const GemstonesCart = ({
         }}
       >
         <Box
-  as="div"
-  position="relative"
-  overflow="hidden"
-  borderRadius="10px"
->
-
-  <Box
-    as="div"
-    transition="transform 0.3s ease-in-out"
-    _hover={{ transform: 'scale(1.1)'}}
-    onClick={onOpen}
-
-  >
-    <Image src={image} borderRadius="10px" alt={title} width="100%" height={['190px', '200px']} />
-  </Box>
-
-  <Box textAlign="left" p={2} mt={2}>
-    <Text  fontWeight={{base:'600', md:'500'}} fontSize={{base:'20px', md:'17px'}} 
-        onClick={onOpen}
+          as="div"
+          position="relative"
+          overflow="hidden"
+          borderRadius="10px"
         >
-      {title}
-    </Text>
-    <Text textOverflow={'ellipsis'}overflow={'hidden'} whiteSpace={show}transition={'ease-in 0.3s'}
-    onClick={()=>{show == 'nowrap' ? setShow('normal') : setShow('nowrap')}}>{description}</Text>
-  </Box>
-</Box>
+
+          <Box
+            as="div"
+            transition="transform 0.3s ease-in-out"
+            _hover={{ transform: 'scale(1.1)' }}
+            onClick={onOpen}
+
+          >
+            <Image src={image} borderRadius="10px" alt={title} width="100%" height={['190px', '200px']} />
+          </Box>
+
+          <Box textAlign="left" p={2} mt={2}>
+            <Text fontWeight={{ base: '600', md: '500' }} fontSize={{ base: '20px', md: '17px' }}
+              onClick={onOpen}
+            >
+              {title}
+            </Text>
+            <Text textOverflow={'ellipsis'} overflow={'hidden'} whiteSpace={show} transition={'ease-in 0.3s'}
+              onClick={() => { show == 'nowrap' ? setShow('normal') : setShow('nowrap') }}>{description}</Text>
+            {/* <hr />
+            <Box textAlign={"center"}>
+              <Button color={"white"} mt={"10px"}  p={"10px 30px"} colorScheme="yellow" mr={3} onClick={() => onOpen()}>
+                View Details
+              </Button>
+            </Box> */}
+
+          </Box>
+        </Box>
 
       </Box>
 
@@ -184,11 +198,26 @@ const GemstonesCart = ({
           <ModalBody>
             <Image height={['50%', '200px']} src={image} alt={title} />
             <Box mt={4}>
-              <Flex>
-                <FormLabel>Description</FormLabel>
-                <Text>{description}</Text>
-              </Flex>
+
+              <FormLabel>Description: </FormLabel>
+              <Text>{description}</Text>
+
             </Box>
+
+            <div>
+              <FormLabel>Benefits:</FormLabel>
+
+              {numberedBenefits.map((benefit, index) => (
+                <Text key={index}>{benefit}</Text>
+
+              ))}
+
+            </div>
+
+
+
+
+
             <Box display={"flex"}>
               <FormControl mt={4} width={"40%"}>
                 <FormLabel>Quality</FormLabel>

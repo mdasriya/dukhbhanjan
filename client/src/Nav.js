@@ -9,7 +9,7 @@ import { IoLogInOutline } from "react-icons/io5";
 import { MdLogout } from "react-icons/md";
 import { MdGTranslate } from "react-icons/md";
 import { IoIosArrowDown } from "react-icons/io";
-
+import { IoChevronDown } from "react-icons/io5";
 import {
   Button,
   Box,
@@ -86,17 +86,17 @@ export default function Nav() {
       });
   };
 
-const token = localStorage.getItem("token")
+  const token = localStorage.getItem("token")
 
 
   useEffect(() => {
     setUsername(localStorage.getItem("firstname"))
-  }, [username,cartItems, location])
+  }, [username, cartItems, location])
 
   useEffect(() => {
-  if(token){
-    getCartProduct()
-  }
+    if (token) {
+      getCartProduct()
+    }
   }, [theme, cartItems])
 
 
@@ -165,7 +165,7 @@ const token = localStorage.getItem("token")
 
                 </MenuButton>
                 <MenuList>
-                <MenuItem>
+                  <MenuItem>
                     <Link to="/gemstones">Gemstones</Link>
                   </MenuItem>
                   <MenuItem>
@@ -174,7 +174,7 @@ const token = localStorage.getItem("token")
                   <MenuItem>
                     <Link to="/workshipitems">WorkShip Items</Link>
                   </MenuItem>
-              
+
                 </MenuList>
               </Menu>
               <Menu>
@@ -231,14 +231,18 @@ const token = localStorage.getItem("token")
             {/* {username && <Text fontSize={"18px"}>{username.toUpperCase()}</Text>} */}
             <Menu>
               <MenuButton
-
+ display={"flex"}
                 as={Button}
                 rounded={'full'}
                 variant={'link'}
                 cursor={'pointer'}
                 minW={0}>
-                <Avatar size={"sm"} name={username} src='https://bit.ly/broken-link' />
-
+               <Flex gap={2}>
+               <Avatar  size={"sm"} name={username} src='https://bit.ly/broken-link' />
+            <Text>Login</Text>
+            <IoChevronDown style={{marginTop:"5px"}}/>
+               </Flex>
+             
               </MenuButton>
 
               <MenuList mt={"13px"}>
@@ -302,13 +306,13 @@ const token = localStorage.getItem("token")
                 </MenuButton>
                 <MenuList>
                   <MenuItem>
+                    <Link to="/gemstones" onClick={handleCloseNav}>Gemstones</Link>
+                  </MenuItem>
+                  <MenuItem>
                     <Link to="/yantra" onClick={handleCloseNav}>Yantra</Link>
                   </MenuItem>
                   <MenuItem>
                     <Link to="/workshipitems" onClick={handleCloseNav}>WorkShip Items</Link>
-                  </MenuItem>
-                  <MenuItem>
-                    <Link to="/gemstones" onClick={handleCloseNav}>Gemstones</Link>
                   </MenuItem>
                 </MenuList>
               </Menu>
